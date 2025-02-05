@@ -11,14 +11,19 @@ class UserViewModel{
     var people: Observable<[Person]> = Observable([])
     
     var addFivePersonDataButtonTapped: Observable<Void> = Observable(())
+    var removeAllPersonDataButtonTapped: Observable<Void> = Observable(())
     
     init(){
         self.addFivePersonDataButtonTapped.bind { _ in
             self.people.value = self.addFivePersonData()
         }
+        
+        self.removeAllPersonDataButtonTapped.bind { _ in
+            self.people.value = self.removeAllPersonData()
+        }
     }
     
-    func addFivePersonData() -> [Person]{
+    private func addFivePersonData() -> [Person]{
         return [
             Person(name: "James", age: Int.random(in: 20...70)),
             Person(name: "Mary", age: Int.random(in: 20...70)),
@@ -26,6 +31,10 @@ class UserViewModel{
             Person(name: "Patricia", age: Int.random(in: 20...70)),
             Person(name: "Robert", age: Int.random(in: 20...70))
         ]
+    }
+    
+    private func removeAllPersonData() -> [Person]{
+        return []
     }
     
     

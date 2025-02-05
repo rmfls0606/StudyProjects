@@ -108,8 +108,7 @@ class UserViewController: UIViewController {
     }
     
     @objc private func resetButtonTapped() {
-//        people.removeAll()
-//        tableView.reloadData()
+        viewModel.removeAllPersonDataButtonTapped.value = ()
     }
     
     @objc private func addButtonTapped() {
