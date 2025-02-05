@@ -8,6 +8,11 @@
 import UIKit
 import SnapKit
 
+struct Person {
+    let name: String
+    let age: Int
+}
+
 class UserViewController: UIViewController {
  
     private var people: [Person] = []
