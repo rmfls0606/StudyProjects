@@ -17,7 +17,7 @@ class CurrencyViewModel{
     private let exchangeRate = 1446.40
     
     init(){
-        self.inputTextField.bind { text in
+        self.inputTextField.lazyBind { text in
             self.validation()
         }
         exchangeRateLabel.value = "현재 환율: 1 USD = \(exchangeRate) KRW"
