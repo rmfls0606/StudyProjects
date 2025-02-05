@@ -130,5 +130,13 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-//    tabs
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let delete = UIContextualAction(style: .normal, title: "삭제") { _, _, success in
+            self.viewModel.swipeCellDeleteData.value = indexPath.row
+        }
+        
+        delete.backgroundColor = .red
+        
+        return UISwipeActionsConfiguration(actions: [delete])
+    }
 }

@@ -13,6 +13,7 @@ class UserViewModel{
     var addFivePersonDataButtonTapped: Observable<Void> = Observable(())
     var removeAllPersonDataButtonTapped: Observable<Void> = Observable(())
     var addOnePersonDataButtonTapped: Observable<Void> = Observable(())
+    var swipeCellDeleteData: Observable<Int?> = Observable(nil)
     
     init(){
         self.addFivePersonDataButtonTapped.lazyBind { _ in
@@ -28,6 +29,13 @@ class UserViewModel{
             newData.append(contentsOf: self.addOnePersonData())
             self.people.value = newData
         }
+        
+        self.swipeCellDeleteData.lazyBind { index in
+            guard let index = index else{
+                return
+            }
+            self.people.value = self.removeOnePersonDelete(index: index)
+        }
     }
     
     private func addFivePersonData() -> [Person]{
@@ -40,5 +48,11 @@ class UserViewModel{
     
     private func addOnePersonData() -> [Person]{
         return [PersonDummyData.DummyData.randomElement()!]
+    }
+    
+    private func removeOnePersonDelete(index: Int) -> [Person]{
+        var newdata = self.people.value
+        newdata.remove(at: index)
+        return newdata
     }
 }
