@@ -12,10 +12,15 @@ class UserViewModel{
     
     var addFivePersonDataButtonTapped: Observable<Void> = Observable(())
     var removeAllPersonDataButtonTapped: Observable<Void> = Observable(())
+    var addOnePersonDataButtonTapped: Observable<Void> = Observable(())
     
     init(){
         self.addFivePersonDataButtonTapped.bind { _ in
             self.people.value = self.addFivePersonData()
+        }
+        
+        self.addOnePersonDataButtonTapped.bind { _ in
+            self.people.value.append(contentsOf: self.addOnePersonData())
         }
         
         self.removeAllPersonDataButtonTapped.bind { _ in
@@ -24,19 +29,14 @@ class UserViewModel{
     }
     
     private func addFivePersonData() -> [Person]{
-        return [
-            Person(name: "James", age: Int.random(in: 20...70)),
-            Person(name: "Mary", age: Int.random(in: 20...70)),
-            Person(name: "John", age: Int.random(in: 20...70)),
-            Person(name: "Patricia", age: Int.random(in: 20...70)),
-            Person(name: "Robert", age: Int.random(in: 20...70))
-        ]
+        return PersonDummyData.DummyData
     }
     
     private func removeAllPersonData() -> [Person]{
         return []
     }
     
-    
-    
+    private func addOnePersonData() -> [Person]{
+        return [PersonDummyData.DummyData.randomElement()!]
+    }
 }

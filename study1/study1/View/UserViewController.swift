@@ -61,6 +61,7 @@ class UserViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
+        
         setupTableView()
         setupActions()
         
@@ -112,10 +113,7 @@ class UserViewController: UIViewController {
     }
     
     @objc private func addButtonTapped() {
-//        let names = ["James", "Mary", "John", "Patricia", "Robert", "Jennifer", "Michael", "Linda", "William", "Elizabeth", "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah", "Charles", "Karen"]
-//        let user = Person(name: names.randomElement()!, age: Int.random(in: 20...70))
-//        people.append(user)
-//        tableView.reloadData()
+        viewModel.addOnePersonDataButtonTapped.value = ()
     }
 }
  
