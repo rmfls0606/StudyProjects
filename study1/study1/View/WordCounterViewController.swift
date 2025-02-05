@@ -29,11 +29,17 @@ class WordCounterViewController: UIViewController {
         return label
     }()
      
+    let viewModel = WordCounterViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
         setupTextView()
+        
+        viewModel.countLabel.bind { text in
+            self.countLabel.text = text
+        }
     }
      
     private func setupUI() {
@@ -63,8 +69,7 @@ class WordCounterViewController: UIViewController {
     }
      
     private func updateCharacterCount() {
-        let count = textView.text.count
-        countLabel.text = "현재까지 \(count)글자 작성중"
+        viewModel.inputTextView.value = textView.text
     }
 }
  
