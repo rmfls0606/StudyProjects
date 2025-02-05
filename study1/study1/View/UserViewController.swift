@@ -8,14 +8,7 @@
 import UIKit
 import SnapKit
 
-struct Person {
-    let name: String
-    let age: Int
-}
-
 class UserViewController: UIViewController {
- 
-    private var people: [Person] = []
     
     private let tableView: UITableView = {
         let table = UITableView()
@@ -62,12 +55,18 @@ class UserViewController: UIViewController {
         return stackView
     }()
      
+    let viewModel = UserViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
         setupTableView()
         setupActions()
+        
+        viewModel.people.bind { data in
+            self.tableView.reloadData()
+        }
     }
      
     private func setupUI() {
@@ -105,37 +104,30 @@ class UserViewController: UIViewController {
     }
      
     @objc private func loadButtonTapped() {
-        people = [
-            Person(name: "James", age: Int.random(in: 20...70)),
-            Person(name: "Mary", age: Int.random(in: 20...70)),
-            Person(name: "John", age: Int.random(in: 20...70)),
-            Person(name: "Patricia", age: Int.random(in: 20...70)),
-            Person(name: "Robert", age: Int.random(in: 20...70))
-        ]
-        tableView.reloadData()
+        viewModel.addFivePersonDataButtonTapped.value = ()
     }
     
     @objc private func resetButtonTapped() {
-        people.removeAll()
-        tableView.reloadData()
+//        people.removeAll()
+//        tableView.reloadData()
     }
     
     @objc private func addButtonTapped() {
-        let names = ["James", "Mary", "John", "Patricia", "Robert", "Jennifer", "Michael", "Linda", "William", "Elizabeth", "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah", "Charles", "Karen"]
-        let user = Person(name: names.randomElement()!, age: Int.random(in: 20...70))
-        people.append(user)
-        tableView.reloadData()
+//        let names = ["James", "Mary", "John", "Patricia", "Robert", "Jennifer", "Michael", "Linda", "William", "Elizabeth", "David", "Barbara", "Richard", "Susan", "Joseph", "Jessica", "Thomas", "Sarah", "Charles", "Karen"]
+//        let user = Person(name: names.randomElement()!, age: Int.random(in: 20...70))
+//        people.append(user)
+//        tableView.reloadData()
     }
 }
  
 extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return people.count
+        return viewModel.people.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath)
-        let person = people[indexPath.row]
+        let person = viewModel.people.value[indexPath.row]
         cell.textLabel?.text = "\(person.name), \(person.age)세"
         return cell
     }
