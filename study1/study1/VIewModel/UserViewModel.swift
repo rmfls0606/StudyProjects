@@ -15,16 +15,18 @@ class UserViewModel{
     var addOnePersonDataButtonTapped: Observable<Void> = Observable(())
     
     init(){
-        self.addFivePersonDataButtonTapped.bind { _ in
+        self.addFivePersonDataButtonTapped.lazyBind { _ in
             self.people.value = self.addFivePersonData()
         }
         
-        self.addOnePersonDataButtonTapped.bind { _ in
-            self.people.value.append(contentsOf: self.addOnePersonData())
+        self.removeAllPersonDataButtonTapped.lazyBind { _ in
+            self.people.value = self.removeAllPersonData()
         }
         
-        self.removeAllPersonDataButtonTapped.bind { _ in
-            self.people.value = self.removeAllPersonData()
+        self.addOnePersonDataButtonTapped.lazyBind { _ in
+            var newData = self.people.value
+            newData.append(contentsOf: self.addOnePersonData())
+            self.people.value = newData
         }
     }
     
