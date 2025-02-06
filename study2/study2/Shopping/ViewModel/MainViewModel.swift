@@ -15,17 +15,6 @@ final class MainViewModel{
     
     init(){
         print("MainViewModel init")
-        inputSearchBarReturnButtonTapped.lazyBind { [weak self] text in
-            self?.validation()
-        }
-    }
-    
-    private func validation(){
-        guard let text = inputSearchBarReturnButtonTapped.value, text.count >= 2 else{
-            print("2글자 이상 입력해주세요.")
-            return
-        }
-        outputSearchBarText.value = text
     }
     
     deinit{

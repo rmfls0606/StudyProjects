@@ -47,7 +47,6 @@ final class MainViewController: UIViewController {
     
     private func setBind(){
         viewModel.inputSearchBarReturnButtonTapped.lazyBind { [weak self] text in
-            print("=------\(text)")
             let nextVC = SearchDetailViewController()
             nextVC.viewModel.outputSearchText.value = text
             self?.navigationController?.pushViewController(nextVC, animated: true)
@@ -58,14 +57,14 @@ final class MainViewController: UIViewController {
 extension MainViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
-        //        guard let query = searchBar.text, query.count >= 2 else{
-        //            showAlert(title: "검색 실패", message: "2글자 이상 검색어를 입력해주세요.") {
-        //                print("2글자 이상 입력해주세요.")
-        //            }
-        //            return
-        //        }
+        guard let query = searchBar.text, query.count >= 2 else{
+            showAlert(title: "검색 실패", message: "2글자 이상 검색어를 입력해주세요.") {
+                print("2글자 이상 입력해주세요.")
+            }
+            return
+        }
         // TODO: 2글자 이하면 alert 나오게 하기
-        viewModel.inputSearchBarReturnButtonTapped.value = searchBar.text
+        viewModel.inputSearchBarReturnButtonTapped.value = query
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
