@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class MainViewController: UIViewController {
-
+    
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "브랜드, 상품, 프로필, 태그 등"
@@ -34,7 +34,7 @@ final class MainViewController: UIViewController {
     private func setUp(){
         self.navigationItem.title = "도봉러의 쇼핑쇼핑"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
-    
+        
         self.view.backgroundColor = .black
         
         self.view.addSubview(searchBar)
@@ -46,8 +46,10 @@ final class MainViewController: UIViewController {
     }
     
     private func setBind(){
-        viewModel.inputSearchBarReturnButtonTapped.lazyBind { [weak self] _ in
+        viewModel.inputSearchBarReturnButtonTapped.lazyBind { [weak self] text in
+            print("=------\(text)")
             let nextVC = SearchDetailViewController()
+            nextVC.viewModel.outputSearchText.value = text
             self?.navigationController?.pushViewController(nextVC, animated: true)
         }
     }
@@ -56,13 +58,14 @@ final class MainViewController: UIViewController {
 extension MainViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
-        guard let query = searchBar.text, query.count >= 2 else{
-            showAlert(title: "검색 실패", message: "2글자 이상 검색어를 입력해주세요.") {
-                print("2글자 이상 입력해주세요.")
-            }
-            return
-        }
-        viewModel.inputSearchBarReturnButtonTapped.value = ()
+        //        guard let query = searchBar.text, query.count >= 2 else{
+        //            showAlert(title: "검색 실패", message: "2글자 이상 검색어를 입력해주세요.") {
+        //                print("2글자 이상 입력해주세요.")
+        //            }
+        //            return
+        //        }
+        // TODO: 2글자 이하면 alert 나오게 하기
+        viewModel.inputSearchBarReturnButtonTapped.value = searchBar.text
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

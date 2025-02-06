@@ -8,6 +8,9 @@
 import Foundation
 
 final class SearchDetailViewModel{
+    
+    let outputSearchText: Observable<String?> = Observable(nil)
+    
     init(){
         print("SearchDetailViewModel init")
     }

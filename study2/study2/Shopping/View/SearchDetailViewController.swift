@@ -43,10 +43,13 @@ final class SearchDetailViewController: UIViewController, SearchItemsViewDelegat
         super.viewDidLoad()
         view.backgroundColor = .red
         setUp()
+        setBind()
         if let query = self.query{
             callRequest(query: query, start: self.start, sortOption: collectionview.sortOption)
         }
     }
+    
+    let viewModel = SearchDetailViewModel()
     
     private func setUp(){
         if let query = self.query{
@@ -63,6 +66,12 @@ final class SearchDetailViewController: UIViewController, SearchItemsViewDelegat
         }
         
         collectionview.configureDelegate(delegate: self, dataSource: self, prefetchDataSource: self)
+    }
+    
+    private func setBind(){
+        viewModel.outputSearchText.bind { text in
+            self.navigationItem.title = text
+        }
     }
     
     private func callRequest(query: String, start: Int, sortOption: sortOptions){
