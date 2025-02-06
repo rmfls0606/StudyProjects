@@ -23,9 +23,12 @@ final class MainViewController: UIViewController {
         return searchBar
     }()
     
+    let viewModel = MainViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setUp()
+        setBind()
     }
     
     private func setUp(){
@@ -41,6 +44,13 @@ final class MainViewController: UIViewController {
             make.trailing.equalToSuperview()
         }
     }
+    
+    private func setBind(){
+        viewModel.inputSearchBarReturnButtonTapped.lazyBind { [weak self] _ in
+            let nextVC = SearchDetailViewController()
+            self?.navigationController?.pushViewController(nextVC, animated: true)
+        }
+    }
 }
 
 extension MainViewController: UISearchBarDelegate{
@@ -52,9 +62,7 @@ extension MainViewController: UISearchBarDelegate{
             }
             return
         }
-        let nextVC = SearchDetailViewController()
-        nextVC.query = query
-        self.navigationController?.pushViewController(nextVC, animated: true)
+        viewModel.inputSearchBarReturnButtonTapped.value = ()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {

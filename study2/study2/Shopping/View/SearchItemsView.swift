@@ -15,7 +15,7 @@ enum sortOptions: String{
     case dsc = "dsc"
 }
 
-class SearchItemsView: BaseView{
+final class SearchItemsView: BaseView{
     private(set) lazy var collectionView = createCollectionView()
     private lazy var totalLabel = UILabel()
     private lazy var accuracyBtn = SortButtonView(text: "정확도")
@@ -28,14 +28,14 @@ class SearchItemsView: BaseView{
     
     weak var delegate: SearchItemsViewDelegate?
     
-    func createCollectionView() -> UICollectionView{
+    private func createCollectionView() -> UICollectionView{
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(SearchItemCollectionViewCell.self, forCellWithReuseIdentifier: SearchItemCollectionViewCell.identifier)
         collectionView.collectionViewLayout = createCollectionViewLayout()
         return collectionView
     }
     
-    func createCollectionViewLayout() -> UICollectionViewLayout{
+    private func createCollectionViewLayout() -> UICollectionViewLayout{
         let padding = 12.0
         let spacing = 12.0
         
