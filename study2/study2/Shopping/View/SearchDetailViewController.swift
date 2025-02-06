@@ -10,20 +10,15 @@ import SnapKit
 import Alamofire
 
 protocol SearchItemsViewDelegate: AnyObject{
-    func didSelectSortOption(_ sortOptions: sortOptions)
+    func didSelectSortOption(_ sortOption: sortOptions)
 }
 
 final class SearchDetailViewController: UIViewController, SearchItemsViewDelegate {
-    func didSelectSortOption(_ sortOptions: sortOptions) {
-        self.start = 1
-        callRequest(query: self.query!, start: 1, sortOption: sortOptions)
+    func didSelectSortOption(_ sortOption: sortOptions) {
+        viewModel.inputSortOptionResult.value = sortOption
     }
-    var query: String?
     
     let numberFormatter = NumberFormatter()
-    
-    private var start = 1
-    private var isEnd = false
     
     private var searchList = [Item]()
     
@@ -41,20 +36,14 @@ final class SearchDetailViewController: UIViewController, SearchItemsViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = .black
         setUp()
         setBind()
-        if let query = self.query{
-            callRequest(query: query, start: self.start, sortOption: collectionview.sortOption)
-        }
     }
     
     let viewModel = SearchDetailViewModel()
     
     private func setUp(){
-        if let query = self.query{
-            self.navigationItem.title = query
-        }
         self.navigationController?.navigationBar.tintColor = .white
         self.view.backgroundColor = .black
         self.view.addSubview(collectionview)
@@ -65,53 +54,16 @@ final class SearchDetailViewController: UIViewController, SearchItemsViewDelegat
             make.leading.trailing.bottom.equalToSuperview()
         }
         
-        collectionview.configureDelegate(delegate: self, dataSource: self, prefetchDataSource: self)
+        collectionview.configureDelegate(delegate: self, dataSource: self)
     }
     
     private func setBind(){
         viewModel.outputSearchText.bind { text in
             self.navigationItem.title = text
         }
-    }
-    
-    private func callRequest(query: String, start: Int, sortOption: sortOptions){
         
-        let url = "https://openapi.naver.com/v1/search/shop.json?"
-
-        let parameters: [String: Any] = [
-            "query": self.query == "" ? self.query! : query,
-            "start": start,
-            "sort": sortOption.rawValue,
-            "display": 30
-        ]
-        
-        let headers: HTTPHeaders = HTTPHeaders([
-            "X-Naver-Client-Id": cliendID,
-            "X-Naver-Client-Secret": cliendSecret
-        ])
-        
-        NetworkManager.shared.loadData(url: url,
-                                       method: .get,
-                                       parameters: parameters,
-                                       headers: headers) { (result: Result<ItemList, Error>) in
-            switch result{
-            case .success(let data):
-                print(data)
-                if self.start == 1{
-                    self.searchList = data.items
-                }else{
-                    self.searchList.append(contentsOf: data.items)
-                }
-                
-                self.isEnd = self.searchList.count >= data.total
-                
-                let result = data.total.formatted(.number)
-                self.collectionview.setTotalDate(text: result)
-                self.collectionview.reloadData()
-            case .failure(let error):
-                fatalError(error.localizedDescription)
-            }
-            
+        viewModel.outputItemList.bind { item in
+            self.collectionview.reloadData()
         }
     }
 }
@@ -119,41 +71,15 @@ final class SearchDetailViewController: UIViewController, SearchItemsViewDelegat
 extension SearchDetailViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.searchList.count
+        self.viewModel.outputItemList.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchItemCollectionViewCell.identifier, for: indexPath) as? SearchItemCollectionViewCell else{
             return UICollectionViewCell()
         }
-        let data = searchList[indexPath.item]
+        let data = self.viewModel.outputItemList.value[indexPath.item]
         cell.configureData(data: data)
         return cell
-    }
-    
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if indexPath.item == searchList.count - 1 && !isEnd{
-//            self.start += 1
-//            callRequest(query: self.query!, start: self.start)
-//        }
-//    }
-}
-
-extension SearchDetailViewController: UICollectionViewDataSourcePrefetching{
-    func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-        
-        guard !isEnd else { return }
-
-        for item in indexPaths{
-            if searchList.count - 5 == item.item{
-                self.start += 30
-                callRequest(query: query!, start: self.start, sortOption: self.collectionview.sortOption)
-                break
-            }
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {
-        
     }
 }

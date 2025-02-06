@@ -49,6 +49,7 @@ final class MainViewController: UIViewController {
         viewModel.inputSearchBarReturnButtonTapped.lazyBind { [weak self] text in
             let nextVC = SearchDetailViewController()
             nextVC.viewModel.outputSearchText.value = text
+            nextVC.viewModel.inputSortOptionResult.value = .sim
             self?.navigationController?.pushViewController(nextVC, animated: true)
         }
     }

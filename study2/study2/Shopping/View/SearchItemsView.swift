@@ -8,13 +8,6 @@
 import UIKit
 import SnapKit
 
-enum sortOptions: String{
-    case sim = "sim"
-    case date = "date"
-    case asc = "asc"
-    case dsc = "dsc"
-}
-
 final class SearchItemsView: BaseView{
     private(set) lazy var collectionView = createCollectionView()
     private lazy var totalLabel = UILabel()
@@ -99,10 +92,9 @@ final class SearchItemsView: BaseView{
         }
     }
     
-    func configureDelegate(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, prefetchDataSource: UICollectionViewDataSourcePrefetching){
+    func configureDelegate(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource){
         self.collectionView.delegate = delegate
         self.collectionView.dataSource = dataSource
-        self.collectionView.prefetchDataSource = prefetchDataSource
     }
     
     func reloadData(){
