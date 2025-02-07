@@ -9,7 +9,9 @@ import UIKit
 import SnapKit
 
 class OnboardingView: BaseView {
-
+    
+    var onButtonTapped: (() -> Void)?
+    
     private lazy var onboardingImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
@@ -53,6 +55,7 @@ class OnboardingView: BaseView {
         config.attributedTitle = title
         
         btn.configuration = config
+        btn.addTarget(self, action: #selector(onboardingStartButtonTapped), for: .touchUpInside)
         return btn
     }()
     
@@ -85,6 +88,12 @@ class OnboardingView: BaseView {
             make.trailing.equalToSuperview().offset(-12)
             make.bottom.lessThanOrEqualToSuperview().offset(-20)
         }
+    }
+    
+    //MARK: - Actions
+    @objc
+    private func onboardingStartButtonTapped(){
+        self.onButtonTapped?()
     }
 
 }
