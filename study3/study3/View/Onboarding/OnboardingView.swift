@@ -13,21 +13,25 @@ class OnboardingView: BaseView {
     private lazy var onboardingImageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
+        view.image = UIImage(named: "onboarding")
         return view
     }()
     
     private lazy var onboardingTitle: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 24)
+        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 30)
+        label.text = "Onboarding"
         label.textAlignment = .center
         return label
     }()
     
     private lazy var onboardingContent: UILabel = {
         let label = UILabel()
-        label.textColor = .white
-        label.font = .boldSystemFont(ofSize: 12)
+        label.textColor = .black
+        label.font = .boldSystemFont(ofSize: 14)
+        label.text = "당신만의 영화 세상,\nMovieLike를 시작해보세요."
+        label.numberOfLines = 0
         label.textAlignment = .center
         return label
     }()
