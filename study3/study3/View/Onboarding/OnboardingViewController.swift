@@ -44,7 +44,8 @@ final class OnboardingViewController: UIViewController {
     
     private func setBind(){
         self.viewModel.outputNextButtonTapped.lazyBind { [weak self] _ in
-            let nextVC = ViewController()
+            // TODO: 새로운 rootViewController로 설정
+            let nextVC = ProfileSettingViewController()
             self?.navigationController?.pushViewController(nextVC, animated: true)
         }
     }
