@@ -17,6 +17,7 @@ final class ProfileSettingViewController: UIViewController {
 
         setUI()
         setLayout()
+        setLogic()
     }
     
     private func setUI(){
@@ -29,5 +30,16 @@ final class ProfileSettingViewController: UIViewController {
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
+    
+    private func setLogic(){
+        self.profileSetiingView.configureDelegate(delegate: self)
+    }
 
+}
+
+//UITextField
+extension ProfileSettingViewController: UITextFieldDelegate {
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        
+    }
 }

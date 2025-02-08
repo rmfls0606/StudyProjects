@@ -221,4 +221,8 @@ class ProfileSettingView: BaseView {
         }
         return button
     }
+    
+    func configureDelegate(delegate: UITextFieldDelegate){
+        self.profileNickenameTextField.delegate = delegate
+    }
 }
