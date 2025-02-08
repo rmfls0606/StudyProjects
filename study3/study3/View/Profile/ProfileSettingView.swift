@@ -60,6 +60,7 @@ class ProfileSettingView: BaseView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = UIColor(named: "lightGrayColor")
+        label.text = "닉네임에 숫자는 포함할 수 없어요"
         return label
     }()
     
@@ -91,10 +92,21 @@ class ProfileSettingView: BaseView {
             // TODO: 최대 20으로 수정
             make.size.equalTo(20)
         }
+        
         self.profileNickenameTextField.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().offset(12)
-            make.top.equalTo(profileImageUIView.snp.bottom).offset(12)
-            make.height.equalTo(350)
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.top.equalTo(profileImageUIView.snp.bottom).offset(24)
+        }
+        
+        self.profileNicknameLine.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.top.equalTo(profileNickenameTextField.snp.bottom).offset(10)
+            make.height.equalTo(1)
+        }
+        
+        self.profileNicknameValidTextt.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.top.equalTo(profileNicknameLine.snp.bottom).offset(10)
         }
         
     }
