@@ -91,6 +91,26 @@ class ProfileSettingView: BaseView {
         return view
     }()
     
+    private lazy var successButton: UIButton = {
+        let btn = UIButton(configuration: .filled())
+        
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = UIColor(named: "unSuccessColor")
+        config.baseForegroundColor = .white
+        config.cornerStyle = .capsule
+        config.background.strokeColor = UIColor(named: "unSuccessColor")
+        config.background.strokeWidth = 2.0
+        config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0)
+        config.titleAlignment = .center
+        
+        var title = AttributedString("완료")
+        title.font = UIFont.boldSystemFont(ofSize: 14)
+        config.attributedTitle = title
+        
+        btn.configuration = config
+        return btn
+    }()
+    
     override func configureHierarchy() {
         self.addSubview(profileImageUIView)
         self.profileImageUIView.addSubview(selectedImageView)
@@ -100,6 +120,7 @@ class ProfileSettingView: BaseView {
         self.addSubview(profileNicknameLine)
         self.addSubview(profileNicknameValidTextt)
         self.addSubview(mbtiOuterStackView)
+        self.addSubview(successButton)
     }
     
     override func configureLayout() {
@@ -144,6 +165,12 @@ class ProfileSettingView: BaseView {
         self.mbtiOuterStackView.snp.makeConstraints { make in
             make.top.equalTo(profileNicknameValidTextt.snp.bottom).offset(24)
             make.leading.trailing.equalToSuperview().inset(12)
+        }
+        
+        self.successButton.snp.makeConstraints { make in
+            make.top.greaterThanOrEqualTo(mbtiOuterStackView.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview().inset(12)
+            make.bottom.equalToSuperview().offset(-24)
         }
     }
     
