@@ -69,3 +69,4 @@ extension ProfileSettingViewController: UITextFieldDelegate {
         self.viewModel.inputNicknameTextfield.value = textField.text
     }
 }
+

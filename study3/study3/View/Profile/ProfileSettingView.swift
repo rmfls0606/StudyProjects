@@ -12,29 +12,8 @@ class ProfileSettingView: BaseView {
     
     private var buttonGroup: [[UIButton]] = []
     
-    private let selectedImageView = ProfileImageView()
-    
-    private lazy var cameraIcon: UIButton = {
-        let btn = UIButton(configuration: .filled())
-        
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = UIColor(named: "blueColor")
-        config.baseForegroundColor = .white
-        
-        // TODO: 버튼의 높이에 맞게 -12하기
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 8)
-        let image = UIImage(systemName: "camera.fill", withConfiguration: imageConfig)
-        
-        config.image = image
-        btn.configuration = config
-        return btn
-    }()
-    
-    private lazy var profileImageUIView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
+    private lazy var profileImageAndCameraIconView = ProfileImageAndCameraIconView()
+
     private lazy var profileNickenameTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "닉네임을 입력해주세요 :)"
@@ -103,10 +82,7 @@ class ProfileSettingView: BaseView {
     }()
     
     override func configureHierarchy() {
-        self.addSubview(profileImageUIView)
-        self.profileImageUIView.addSubview(selectedImageView)
-        self.profileImageUIView.addSubview(cameraIcon)
-        
+        self.addSubview(profileImageAndCameraIconView)
         self.addSubview(profileNickenameTextField)
         self.addSubview(profileNicknameLine)
         self.addSubview(profileNicknameValidTextt)
@@ -115,27 +91,15 @@ class ProfileSettingView: BaseView {
     }
     
     override func configureLayout() {
-        
-        self.profileImageUIView.snp.makeConstraints { make in
-            // TODO: 최대 80으로 수정
+        self.profileImageAndCameraIconView.snp.makeConstraints { make in
             make.size.equalTo(80)
             make.top.equalToSuperview().offset(12)
             make.centerX.equalToSuperview()
         }
         
-        self.selectedImageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        self.cameraIcon.snp.makeConstraints { make in
-            make.trailing.bottom.equalToSuperview()
-            // TODO: 최대 20으로 수정
-            make.size.equalTo(20)
-        }
-        
         self.profileNickenameTextField.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(12)
-            make.top.equalTo(profileImageUIView.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.top.equalTo(profileImageAndCameraIconView.snp.bottom).offset(24)
         }
         
         self.profileNicknameLine.snp.makeConstraints { make in
@@ -223,6 +187,6 @@ class ProfileSettingView: BaseView {
     
     func configureImage(imageName: String){
         let image = UIImage(named: imageName)
-        self.selectedImageView.image = image
+        self.profileImageAndCameraIconView.selectedImageView.image = image
     }
 }
