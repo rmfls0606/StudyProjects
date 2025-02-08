@@ -14,6 +14,7 @@ class ProfileSelectedImageView: BaseView {
     
     private func createCollectionView() -> UICollectionView {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.register(ProfileSelectedImageCell.self, forCellWithReuseIdentifier: ProfileSelectedImageCell.identifier)
         collectionView.collectionViewLayout = createCollectionViewLayout()
         return collectionView
     }
@@ -22,6 +23,7 @@ class ProfileSelectedImageView: BaseView {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 10
+        layout.sectionInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         let padding = 12.0
         let spacing = 10.0
         let width = (UIScreen.main.bounds.width - (padding * 2) - (spacing * 3)) / 4
@@ -45,5 +47,10 @@ class ProfileSelectedImageView: BaseView {
             make.top.equalTo(profileImageAndCameraIconView.snp.bottom).offset(24)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    func configureDelegate(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource){
+        self.collectionView.delegate = delegate
+        self.collectionView.dataSource = dataSource
     }
 }

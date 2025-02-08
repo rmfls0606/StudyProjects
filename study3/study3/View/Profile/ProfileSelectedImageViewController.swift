@@ -16,6 +16,7 @@ class ProfileSelectedImageViewController: UIViewController {
 
         setUI()
         setLayout()
+        setLogic()
     }
     
     private func setUI() {
@@ -30,4 +31,25 @@ class ProfileSelectedImageViewController: UIViewController {
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
+    
+    private func setLogic(){
+        self.profileSelectedImageview.configureDelegate(delegate: self, dataSource: self)
+    }
+}
+
+extension ProfileSelectedImageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        12
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileSelectedImageCell.identifier, for: indexPath) as? ProfileSelectedImageCell else {
+            return UICollectionViewCell()
+        }
+        let imageName = "profile_\(indexPath.item)"
+        cell.configureImage(imageName: imageName)
+        return cell
+    }
+    
+    
 }
