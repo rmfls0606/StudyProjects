@@ -29,6 +29,8 @@ final class OnboardingViewController: UIViewController {
     private func setUI(){
         self.view.addSubview(self.onboardingView)
         self.view.backgroundColor = .white
+        
+        self.navigationItem.title = ""
     }
     
     private func setLayout(){

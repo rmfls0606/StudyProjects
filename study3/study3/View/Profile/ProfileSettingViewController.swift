@@ -30,6 +30,8 @@ final class ProfileSettingViewController: UIViewController {
     private func setUI(){
         self.view.addSubview(profileSetiingView)
         self.view.backgroundColor = .white
+        
+        self.navigationItem.title = "PROFILE SETTING"
     }
     
     private func setLayout(){
