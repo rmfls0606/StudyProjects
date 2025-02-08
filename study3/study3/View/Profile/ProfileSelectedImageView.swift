@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 class ProfileSelectedImageView: BaseView {
+    private lazy var profileImageAndCameraIconView = ProfileImageAndCameraIconView()
     private lazy var collectionView = createCollectionView()
     
     private func createCollectionView() -> UICollectionView {
@@ -29,12 +30,20 @@ class ProfileSelectedImageView: BaseView {
     }
     
     override func configureHierarchy() {
+        self.addSubview(profileImageAndCameraIconView)
         self.addSubview(collectionView)
     }
     
     override func configureLayout() {
+        self.profileImageAndCameraIconView.snp.makeConstraints { make in
+            make.size.equalTo(100)
+            make.top.equalToSuperview().offset(12)
+            make.centerX.equalToSuperview()
+        }
+        
         self.collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(profileImageAndCameraIconView.snp.bottom).offset(24)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

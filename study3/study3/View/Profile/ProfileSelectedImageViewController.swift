@@ -20,6 +20,9 @@ class ProfileSelectedImageViewController: UIViewController {
     
     private func setUI() {
         self.view.addSubview(profileSelectedImageview)
+        self.view.backgroundColor = .white
+        
+        self.navigationItem.title = "PROFILE SETTING"
     }
     
     private func setLayout() {
