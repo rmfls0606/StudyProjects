@@ -225,4 +225,8 @@ class ProfileSettingView: BaseView {
     func configureDelegate(delegate: UITextFieldDelegate){
         self.profileNickenameTextField.delegate = delegate
     }
+    
+    func configureNickenameValidResultText(_ text: String?){
+        self.profileNicknameValidTextt.text = text
+    }
 }

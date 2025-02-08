@@ -12,12 +12,15 @@ final class ProfileSettingViewController: UIViewController {
 
     private let profileSetiingView = ProfileSettingView()
     
+    let viewModel = ProfileViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setUI()
         setLayout()
         setLogic()
+        setBind()
     }
     
     private func setUI(){
@@ -34,12 +37,17 @@ final class ProfileSettingViewController: UIViewController {
     private func setLogic(){
         self.profileSetiingView.configureDelegate(delegate: self)
     }
-
+    
+    private func setBind(){
+        viewModel.ouputNicknameValidResultText.bind { [weak self] text in
+            self?.profileSetiingView.configureNickenameValidResultText(text)
+        }
+    }
 }
 
 //UITextField
 extension ProfileSettingViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        
+        self.viewModel.inputNicknameTextfield.value = textField.text
     }
 }
