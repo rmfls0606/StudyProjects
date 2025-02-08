@@ -8,6 +8,12 @@
 import UIKit
 
 class ProfileImageView: UIImageView {
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.frame.width / 2
+    }
+    
     init(borderColor: UIColor? = UIColor(named: "blueColor"), borderWidtth: CGFloat = 3.0){
         super.init(frame: .zero)
         configure(borderColor: borderColor, borderwidtth: borderWidtth)

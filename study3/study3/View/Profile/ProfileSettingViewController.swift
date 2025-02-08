@@ -23,6 +23,10 @@ final class ProfileSettingViewController: UIViewController {
         setBind()
     }
     
+    deinit {
+        print("ProfileSettingViewController Deinit")
+    }
+    
     private func setUI(){
         self.view.addSubview(profileSetiingView)
         self.view.backgroundColor = .white
@@ -36,12 +40,24 @@ final class ProfileSettingViewController: UIViewController {
     
     private func setLogic(){
         self.profileSetiingView.configureDelegate(delegate: self)
+        self.randomSelectedProfileImage()
     }
     
     private func setBind(){
         viewModel.ouputNicknameValidResultText.bind { [weak self] text in
             self?.profileSetiingView.configureNickenameValidResultText(text)
         }
+    
+        viewModel.outputProfileImage.bind { [weak self] imageName in
+            // todo: 기본 이미지 넣기
+            self?.profileSetiingView.configureImage(imageName: imageName!)
+        }
+    }
+    
+    private func randomSelectedProfileImage(){
+        let index = Int.random(in: 0...11)
+        let imageName = "profile_\(index)"
+        viewModel.outputProfileImage.value = imageName
     }
 }
 

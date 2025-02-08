@@ -220,4 +220,9 @@ class ProfileSettingView: BaseView {
     func configureNickenameValidResultText(_ text: String?){
         self.profileNicknameValidTextt.text = text
     }
+    
+    func configureImage(imageName: String){
+        let image = UIImage(named: imageName)
+        self.selectedImageView.image = image
+    }
 }
