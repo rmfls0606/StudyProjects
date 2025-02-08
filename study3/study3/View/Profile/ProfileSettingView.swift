@@ -12,16 +12,7 @@ class ProfileSettingView: BaseView {
     
     private var buttonGroup: [[UIButton]] = []
     
-    private lazy var selectedImageView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFill
-        view.clipsToBounds = true
-        // TODO: remove code
-        view.image = UIImage(named: "profile_1")
-        view.layer.borderColor = UIColor(named: "blueColor")?.cgColor
-        view.layer.borderWidth = 3.0
-        return view
-    }()
+    private let selectedImageView = ProfileImageView()
     
     private lazy var cameraIcon: UIButton = {
         let btn = UIButton(configuration: .filled())
