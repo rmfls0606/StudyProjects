@@ -41,10 +41,36 @@ class ProfileSettingView: BaseView {
         return view
     }()
     
+    private lazy var profileNickenameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "닉네임을 입력해주세요 :)"
+        textField.attributedPlaceholder = NSAttributedString(string: textField.placeholder!, attributes: [.foregroundColor: UIColor(named: "lightGrayColor")!])
+        textField.borderStyle = .none
+        textField.font = .systemFont(ofSize: 14)
+        return textField
+    }()
+    
+    private lazy var profileNicknameLine: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "lightGrayColor")
+        return view
+    }()
+    
+    private lazy var profileNicknameValidTextt: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = UIColor(named: "lightGrayColor")
+        return label
+    }()
+    
     override func configureHierarchy() {
         self.addSubview(profileImageUIView)
         self.profileImageUIView.addSubview(selectedImageView)
         self.profileImageUIView.addSubview(cameraIcon)
+        
+        self.addSubview(profileNickenameTextField)
+        self.addSubview(profileNicknameLine)
+        self.addSubview(profileNicknameValidTextt)
     }
     
     override func configureLayout() {
@@ -56,14 +82,20 @@ class ProfileSettingView: BaseView {
             make.centerX.equalToSuperview()
         }
         
-        selectedImageView.snp.makeConstraints { make in
+        self.selectedImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
-        cameraIcon.snp.makeConstraints { make in
+        self.cameraIcon.snp.makeConstraints { make in
             make.trailing.bottom.equalToSuperview()
             // TODO: 최대 20으로 수정
             make.size.equalTo(20)
         }
+        self.profileNickenameTextField.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().offset(12)
+            make.top.equalTo(profileImageUIView.snp.bottom).offset(12)
+            make.height.equalTo(350)
+        }
+        
     }
 }
