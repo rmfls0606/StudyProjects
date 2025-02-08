@@ -43,6 +43,7 @@ final class ProfileSettingViewController: UIViewController {
     private func setLogic(){
         self.profileSetiingView.configureDelegate(delegate: self)
         self.randomSelectedProfileImage()
+        self.profileSetiingView.profileImageAndCameraIconView.onButtonTapped = moveSelectProfileImage
     }
     
     private func setBind(){
@@ -54,12 +55,21 @@ final class ProfileSettingViewController: UIViewController {
             // todo: 기본 이미지 넣기
             self?.profileSetiingView.configureImage(imageName: imageName!)
         }
+        
+        viewModel.inputMoveSelectedImageButtonTapped.lazyBind { [weak self] in
+            let nextVC = ProfileSelectedImageViewController()
+            self?.navigationController?.pushViewController(nextVC, animated: true)
+        }
     }
     
     private func randomSelectedProfileImage(){
         let index = Int.random(in: 0...11)
         let imageName = "profile_\(index)"
         viewModel.outputProfileImage.value = imageName
+    }
+    
+    private func moveSelectProfileImage(){
+        viewModel.inputMoveSelectedImageButtonTapped.value = ()
     }
 }
 

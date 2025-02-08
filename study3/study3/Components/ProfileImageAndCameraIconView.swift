@@ -10,6 +10,8 @@ import SnapKit
 
 class ProfileImageAndCameraIconView: BaseView {
 
+    var onButtonTapped: (() -> Void)?
+    
     private(set) var selectedImageView = ProfileImageView()
     
     private lazy var cameraIcon: UIButton = {
@@ -25,6 +27,7 @@ class ProfileImageAndCameraIconView: BaseView {
         
         config.image = image
         btn.configuration = config
+        btn.addTarget(self, action: #selector(handleButtonTapped), for: .touchUpInside)
         return btn
     }()
 
@@ -43,5 +46,15 @@ class ProfileImageAndCameraIconView: BaseView {
             // TODO: 최대 20으로 수정
             make.size.equalTo(20)
         }
+    }
+    
+    override func configureView() {
+        self.selectedImageView.gestureRecognizers = [UITapGestureRecognizer(target:  self, action: #selector(handleButtonTapped))]
+        self.selectedImageView.isUserInteractionEnabled = true
+    }
+    
+    @objc
+    private func handleButtonTapped() {
+        self.onButtonTapped?()
     }
 }

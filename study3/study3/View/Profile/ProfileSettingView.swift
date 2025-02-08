@@ -12,7 +12,7 @@ class ProfileSettingView: BaseView {
     
     private var buttonGroup: [[UIButton]] = []
     
-    private lazy var profileImageAndCameraIconView = ProfileImageAndCameraIconView()
+    private(set) lazy var profileImageAndCameraIconView = ProfileImageAndCameraIconView()
 
     private lazy var profileNickenameTextField: UITextField = {
         let textField = UITextField()
