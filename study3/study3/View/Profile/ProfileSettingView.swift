@@ -10,7 +10,8 @@ import SnapKit
 
 class ProfileSettingView: BaseView {
     
-    private var buttonGroup: [[UIButton]] = []
+    private var buttonGroups: [[UIButton]] = []
+    
     
     private(set) lazy var profileImageAndCameraIconView = ProfileImageAndCameraIconView()
 
@@ -136,7 +137,7 @@ class ProfileSettingView: BaseView {
     private func configureMbtiButtons(){
         let mbtiTextGroups = [["E","I"], ["S", "N"], ["T", "F"], ["J", "P"]]
         
-        for group in mbtiTextGroups {
+        for groupIndex in 0..<mbtiTextGroups.count {
             let stackView: UIStackView = {
                 let view = UIStackView()
                 view.axis = .vertical
@@ -147,8 +148,8 @@ class ProfileSettingView: BaseView {
             
             var buttons: [UIButton] = []
             
-            for title in group {
-                let button = createButton(title: title)
+            for title in mbtiTextGroups[groupIndex] {
+                let button = createButton(title: title, row: groupIndex)
                 DispatchQueue.main.async {
                     button.layer.cornerRadius = button.bounds.width / 2
                 }
@@ -156,12 +157,12 @@ class ProfileSettingView: BaseView {
                 stackView.addArrangedSubview(button)
             }
             
-            self.buttonGroup.append(buttons)
+            self.buttonGroups.append(buttons)
             mbtiStackView.addArrangedSubview(stackView)
         }
     }
     
-    private func createButton(title: String) -> UIButton {
+    private func createButton(title: String, row: Int) -> UIButton {
         let button = UIButton()
         button.setTitle(title, for: .normal)
         button.setTitleColor(UIColor(named: "lightGrayColor"), for: .normal)
@@ -169,7 +170,9 @@ class ProfileSettingView: BaseView {
         button.backgroundColor = .clear
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor(named: "lightGrayColor")?.cgColor
-        
+        button.addAction(UIAction{ [weak self] _ in
+            self?.mbtiButtonTapped(selectedButton: button, row: row)
+        }, for: .touchUpInside)
         // Todo: 최대 60으로
         button.snp.makeConstraints { make in
             make.size.equalTo(60)
@@ -189,5 +192,15 @@ class ProfileSettingView: BaseView {
     func configureImage(imageName: String){
         let image = UIImage(named: imageName)
         self.profileImageAndCameraIconView.selectedImageView.image = image
+    }
+    
+    private func mbtiButtonTapped(selectedButton: UIButton, row: Int){
+        for button in buttonGroups[row]{
+            button.backgroundColor = .white
+            button.setTitleColor(UIColor(named: "lightGrayColor"), for: .normal)
+        }
+        
+        selectedButton.backgroundColor = UIColor(named: "blueColor")
+        selectedButton.setTitleColor(.white, for: .normal)
     }
 }
