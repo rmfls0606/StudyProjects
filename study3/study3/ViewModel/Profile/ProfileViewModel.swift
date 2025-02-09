@@ -12,7 +12,7 @@ class ProfileViewModel {
     let inputMoveSelectedImageButtonTapped: Observable<Void> = Observable(())
     let inputProfileImageCellTapped: Observable<String?> = Observable(nil)
     let inputSelectedMBTIButtons: Observable<[String]> = Observable(["","","",""])
-    
+    let inputProfileSuccessButtonTapped: Observable<Void> = Observable(())
     
     let outputNicknameValidResultText: Observable<NicknameValidResult> = Observable(.empty)
     let outputProfileImage: Observable<String?> = Observable(nil)

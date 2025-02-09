@@ -10,6 +10,7 @@ import SnapKit
 
 protocol ProfileSettingViewDelegate: AnyObject {
     func didSelectMBTIButton(groupIndex: Int, selectedOption: String)
+    func didSelectSuccessButton()
 }
 
 class ProfileSettingView: BaseView {
@@ -84,6 +85,7 @@ class ProfileSettingView: BaseView {
         
         btn.configuration = config
         btn.isUserInteractionEnabled = false
+        btn.addTarget(self, action: #selector(successButtonTapped), for: .touchUpInside)
         return btn
     }()
     
@@ -226,5 +228,10 @@ class ProfileSettingView: BaseView {
             successButton.configuration?.baseBackgroundColor = UIColor(named: "unSuccessColor")
         }
         successButton.isUserInteractionEnabled = isEnabled
+    }
+    
+    @objc
+    private func successButtonTapped(){
+        delegate?.didSelectSuccessButton()
     }
 }

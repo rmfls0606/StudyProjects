@@ -72,6 +72,15 @@ final class ProfileSettingViewController: UIViewController {
         viewModel.outputProfileSuccessButton.bind { [weak self] isEnabled in
             self?.profileSetiingView.configureSuccessButtonState(isEnabled: isEnabled)
         }
+        
+        viewModel.inputProfileSuccessButtonTapped.lazyBind { _ in
+            UserDefaults.standard.set(true, forKey: "isOnboarding")
+            guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+            
+            let mainVC = MainViewController()
+            sceneDelegate.window?.rootViewController = UINavigationController(rootViewController: mainVC)
+            sceneDelegate.window?.makeKeyAndVisible()
+        }
     }
     
     private func randomSelectedProfileImage(){
@@ -93,7 +102,12 @@ extension ProfileSettingViewController: UITextFieldDelegate {
 }
 
 extension ProfileSettingViewController: ProfileSettingViewDelegate {
+    func didSelectSuccessButton() {
+        viewModel.inputProfileSuccessButtonTapped.value = ()
+    }
+    
     func didSelectMBTIButton(groupIndex: Int, selectedOption: String) {
         viewModel.updateSelectedMBTI(groupIndex: groupIndex, selectedOption: selectedOption)
     }
+    
 }
