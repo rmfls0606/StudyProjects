@@ -58,6 +58,7 @@ final class ProfileSettingViewController: UIViewController {
         
         viewModel.inputMoveSelectedImageButtonTapped.lazyBind { [weak self] in
             let nextVC = ProfileSelectedImageViewController()
+            nextVC.viewModel = self?.viewModel
             self?.navigationController?.pushViewController(nextVC, animated: true)
         }
     }

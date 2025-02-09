@@ -53,4 +53,9 @@ class ProfileSelectedImageView: BaseView {
         self.collectionView.delegate = delegate
         self.collectionView.dataSource = dataSource
     }
+    
+    func configureImage(imageName: String){
+        let image = UIImage(named: imageName)
+        self.profileImageAndCameraIconView.selectedImageView.image = image
+    }
 }

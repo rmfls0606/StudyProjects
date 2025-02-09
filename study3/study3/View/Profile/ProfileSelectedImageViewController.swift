@@ -11,6 +11,8 @@ import SnapKit
 class ProfileSelectedImageViewController: UIViewController {
     private let profileSelectedImageview = ProfileSelectedImageView()
     
+    var viewModel: ProfileViewModel?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -34,6 +36,10 @@ class ProfileSelectedImageViewController: UIViewController {
     
     private func setLogic(){
         self.profileSelectedImageview.configureDelegate(delegate: self, dataSource: self)
+        
+        if let imageName = viewModel?.outputProfileImage.value{
+            self.profileSelectedImageview.configureImage(imageName: imageName)
+        }
     }
 }
 
