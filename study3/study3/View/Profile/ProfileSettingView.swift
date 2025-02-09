@@ -189,4 +189,8 @@ class ProfileSettingView: BaseView {
         let image = UIImage(named: imageName)
         self.profileImageAndCameraIconView.selectedImageView.image = image
     }
+    
+    func configureNicknameValidTextColor(color: UIColor){
+        self.profileNicknameValidTextt.textColor = color
+    }
 }

@@ -46,6 +46,7 @@ final class ProfileSettingViewController: UIViewController {
         self.profileSetiingView.profileImageAndCameraIconView.onButtonTapped = moveSelectProfileImage
     }
     
+    
     private func setBind(){
         viewModel.ouputNicknameValidResultText.bind { [weak self] text in
             self?.profileSetiingView.configureNickenameValidResultText(text)
