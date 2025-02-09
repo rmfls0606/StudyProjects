@@ -41,6 +41,7 @@ final class ProfileSettingViewController: UIViewController {
     }
     
     private func setLogic(){
+        self.profileSetiingView.delegate = self
         self.profileSetiingView.configureDelegate(delegate: self)
         self.randomSelectedProfileImage()
         self.profileSetiingView.profileImageAndCameraIconView.onButtonTapped = moveSelectProfileImage
@@ -48,12 +49,13 @@ final class ProfileSettingViewController: UIViewController {
     
     
     private func setBind(){
-        viewModel.ouputNicknameValidResultText.bind { [weak self] status in
+        viewModel.outputNicknameValidResultText.bind { [weak self] status in
             if status == .success {
                 self?.profileSetiingView.configureNickenameValidResultText(status.description, color: .blue)
             }else{
                 self?.profileSetiingView.configureNickenameValidResultText(status.description, color: .red)
             }
+            self?.viewModel.profleSuccessEnable()
         }
     
         viewModel.outputProfileImage.bind { [weak self] imageName in
@@ -65,6 +67,10 @@ final class ProfileSettingViewController: UIViewController {
             let nextVC = ProfileSelectedImageViewController()
             nextVC.viewModel = self?.viewModel
             self?.navigationController?.pushViewController(nextVC, animated: true)
+        }
+        
+        viewModel.outputProfileSuccessButton.bind { [weak self] isEnabled in
+            self?.profileSetiingView.configureSuccessButtonState(isEnabled: isEnabled)
         }
     }
     
@@ -83,5 +89,11 @@ final class ProfileSettingViewController: UIViewController {
 extension ProfileSettingViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         self.viewModel.inputNicknameTextfield.value = textField.text
+    }
+}
+
+extension ProfileSettingViewController: ProfileSettingViewDelegate {
+    func didSelectMBTIButton(groupIndex: Int, selectedOption: String) {
+        viewModel.updateSelectedMBTI(groupIndex: groupIndex, selectedOption: selectedOption)
     }
 }

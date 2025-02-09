@@ -8,10 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol ProfileSettingViewDelegate: AnyObject {
+    func didSelectMBTIButton(groupIndex: Int, selectedOption: String)
+}
+
 class ProfileSettingView: BaseView {
     
     private var buttonGroups: [[UIButton]] = []
-    
+    weak var delegate: ProfileSettingViewDelegate?
     
     private(set) lazy var profileImageAndCameraIconView = ProfileImageAndCameraIconView()
 
@@ -79,6 +83,7 @@ class ProfileSettingView: BaseView {
         config.attributedTitle = title
         
         btn.configuration = config
+        btn.isUserInteractionEnabled = false
         return btn
     }()
     
@@ -166,8 +171,7 @@ class ProfileSettingView: BaseView {
         let button = UIButton()
         button.setTitle(title, for: .normal)
         button.setTitleColor(UIColor(named: "lightGrayColor"), for: .normal)
-        button.setTitleColor(.white, for: .selected)
-        button.backgroundColor = .clear
+        button.backgroundColor = .white
         button.layer.borderWidth = 1
         button.layer.borderColor = UIColor(named: "lightGrayColor")?.cgColor
         button.addAction(UIAction{ [weak self] _ in
@@ -195,12 +199,32 @@ class ProfileSettingView: BaseView {
     }
     
     private func mbtiButtonTapped(selectedButton: UIButton, row: Int){
+        
+        let currentIsSelected = selectedButton.isSelected
+        var selectedOption = ""
+        
         for button in buttonGroups[row]{
+            button.isSelected = false
             button.backgroundColor = .white
-            button.setTitleColor(UIColor(named: "lightGrayColor"), for: .normal)
         }
         
-        selectedButton.backgroundColor = UIColor(named: "blueColor")
-        selectedButton.setTitleColor(.white, for: .normal)
+        if currentIsSelected{
+            selectedButton.backgroundColor = .white
+            selectedOption = ""
+        }else{
+            selectedButton.isSelected = true
+            selectedOption = selectedButton.currentTitle!
+            selectedButton.backgroundColor = UIColor(named: "blueColor")
+        }
+        delegate?.didSelectMBTIButton(groupIndex: row, selectedOption: selectedOption)
+    }
+    
+    func configureSuccessButtonState(isEnabled: Bool){
+        if isEnabled{
+            successButton.configuration?.baseBackgroundColor = UIColor(named: "successColor")
+        }else{
+            successButton.configuration?.baseBackgroundColor = UIColor(named: "unSuccessColor")
+        }
+        successButton.isUserInteractionEnabled = isEnabled
     }
 }

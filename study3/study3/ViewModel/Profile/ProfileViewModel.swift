@@ -11,9 +11,12 @@ class ProfileViewModel {
     let inputNicknameTextfield: Observable<String?> = Observable(nil)
     let inputMoveSelectedImageButtonTapped: Observable<Void> = Observable(())
     let inputProfileImageCellTapped: Observable<String?> = Observable(nil)
+    let inputSelectedMBTIButtons: Observable<[String]> = Observable(["","","",""])
     
-    let ouputNicknameValidResultText: Observable<NicknameValidResult> = Observable(.empty)
+    
+    let outputNicknameValidResultText: Observable<NicknameValidResult> = Observable(.empty)
     let outputProfileImage: Observable<String?> = Observable(nil)
+    let outputProfileSuccessButton: Observable<Bool> = Observable(false)
     
     init() {
         print("ProfileViewModel Init")
@@ -28,25 +31,40 @@ class ProfileViewModel {
     
     private func validation(){
         guard let text = inputNicknameTextfield.value, !text.isEmpty else{
-            ouputNicknameValidResultText.value = .empty
+            outputNicknameValidResultText.value = .empty
             return
         }
         
         guard text.count >= 2, text.count < 10 else {
-            ouputNicknameValidResultText.value = .rangeError
+            outputNicknameValidResultText.value = .rangeError
             return
         }
         
         guard !text.contains(where: {"@#$%".contains($0)}) else{
-            ouputNicknameValidResultText.value = .incorrectCharacterError
+            outputNicknameValidResultText.value = .incorrectCharacterError
             return
         }
         
         guard !text.contains(where: {"0123456789".contains($0)}) else{
-            ouputNicknameValidResultText.value = .containsNumberError
+            outputNicknameValidResultText.value = .containsNumberError
             return
         }
         
-        ouputNicknameValidResultText.value = .success
+        outputNicknameValidResultText.value = .success
+    }
+    
+    func updateSelectedMBTI(groupIndex: Int, selectedOption: String){
+        var updateMBTI = inputSelectedMBTIButtons.value
+        updateMBTI[groupIndex] = selectedOption
+        inputSelectedMBTIButtons.value = updateMBTI
+        profleSuccessEnable()
+    }
+    
+    func profleSuccessEnable(){
+        if outputNicknameValidResultText.value == .success && !inputSelectedMBTIButtons.value.contains(""){
+            outputProfileSuccessButton.value = true
+        }else{
+            outputProfileSuccessButton.value = false
+        }
     }
 }
