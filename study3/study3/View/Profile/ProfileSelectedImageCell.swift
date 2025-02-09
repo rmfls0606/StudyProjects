@@ -23,8 +23,10 @@ class ProfileSelectedImageCell: BaseCollectionViewCell {
         }
     }
     
-    func configureImage(imageName: String){
+    func configureImage(imageName: String, isSelected: Bool){
         let image = UIImage(named: imageName)
         self.imageView.image = image
+        self.imageView.layer.borderColor = isSelected ? UIColor(named: "blueColor")?.cgColor : UIColor(named: "lightGrayColor")?.cgColor
+        self.imageView.layer.borderWidth = isSelected ? 3.0 : 1.0
     }
 }

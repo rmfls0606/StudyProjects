@@ -15,6 +15,7 @@ class ProfileViewModel {
     let ouputNicknameValidResultText: Observable<String?> = Observable(nil)
     let outputProfileImage: Observable<String?> = Observable(nil)
     
+    
     init() {
         print("ProfileViewModel Init")
         inputNicknameTextfield.bind { [weak self] text in

@@ -14,9 +14,9 @@ class ProfileImageView: UIImageView {
         self.layer.cornerRadius = self.frame.width / 2
     }
     
-    init(borderColor: UIColor? = UIColor(named: "lightGrayColor"), borderWidtth: CGFloat = 1.0){
+    init(){
         super.init(frame: .zero)
-        configure(borderColor: borderColor, borderwidtth: borderWidtth)
+        configure()
     }
     
     required init?(coder: NSCoder) {
@@ -24,12 +24,10 @@ class ProfileImageView: UIImageView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    
-    private func configure(borderColor: UIColor? , borderwidtth: CGFloat){
+    private func configure(){
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
-        self.layer.borderColor = borderColor?.cgColor
-        self.layer.borderWidth = borderwidtth
+        self.layer.borderColor = UIColor(named: "blueColor")?.cgColor
+        self.layer.borderWidth = 3.0
     }
 }

@@ -62,7 +62,11 @@ extension ProfileSelectedImageViewController: UICollectionViewDelegate, UICollec
             return UICollectionViewCell()
         }
         let imageName = "profile_\(indexPath.item)"
-        cell.configureImage(imageName: imageName)
+        if imageName == viewModel?.outputProfileImage.value{
+            cell.configureImage(imageName: imageName, isSelected: true)
+        }else{
+            cell.configureImage(imageName: imageName, isSelected: false)
+        }
         return cell
     }
     
