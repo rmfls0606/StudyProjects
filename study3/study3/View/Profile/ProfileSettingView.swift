@@ -181,16 +181,13 @@ class ProfileSettingView: BaseView {
         self.profileNickenameTextField.delegate = delegate
     }
     
-    func configureNickenameValidResultText(_ text: String?){
+    func configureNickenameValidResultText(_ text: String?, color: UIColor){
         self.profileNicknameValidTextt.text = text
+        self.profileNicknameValidTextt.textColor = color
     }
     
     func configureImage(imageName: String){
         let image = UIImage(named: imageName)
         self.profileImageAndCameraIconView.selectedImageView.image = image
-    }
-    
-    func configureNicknameValidTextColor(color: UIColor){
-        self.profileNicknameValidTextt.textColor = color
     }
 }

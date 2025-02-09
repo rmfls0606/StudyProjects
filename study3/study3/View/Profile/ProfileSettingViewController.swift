@@ -48,8 +48,12 @@ final class ProfileSettingViewController: UIViewController {
     
     
     private func setBind(){
-        viewModel.ouputNicknameValidResultText.bind { [weak self] text in
-            self?.profileSetiingView.configureNickenameValidResultText(text)
+        viewModel.ouputNicknameValidResultText.bind { [weak self] status in
+            if status == .success {
+                self?.profileSetiingView.configureNickenameValidResultText(status.description, color: .blue)
+            }else{
+                self?.profileSetiingView.configureNickenameValidResultText(status.description, color: .red)
+            }
         }
     
         viewModel.outputProfileImage.bind { [weak self] imageName in
