@@ -10,6 +10,7 @@ import Foundation
 class ProfileViewModel {
     let inputNicknameTextfield: Observable<String?> = Observable(nil)
     let inputMoveSelectedImageButtonTapped: Observable<Void> = Observable(())
+    let inputProfileImageCellTapped: Observable<String?> = Observable(nil)
     
     let ouputNicknameValidResultText: Observable<String?> = Observable(nil)
     let outputProfileImage: Observable<String?> = Observable(nil)

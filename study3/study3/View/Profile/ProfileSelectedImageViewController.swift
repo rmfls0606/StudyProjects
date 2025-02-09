@@ -19,6 +19,7 @@ class ProfileSelectedImageViewController: UIViewController {
         setUI()
         setLayout()
         setLogic()
+        setBind()
     }
     
     private func setUI() {
@@ -41,6 +42,14 @@ class ProfileSelectedImageViewController: UIViewController {
             self.profileSelectedImageview.configureImage(imageName: imageName)
         }
     }
+    
+    private func setBind(){
+        viewModel?.inputProfileImageCellTapped.lazyBind { [weak self] imageName in
+            self?.profileSelectedImageview.configureImage(imageName: imageName!)
+            self?.viewModel?.outputProfileImage.value = imageName
+            self?.profileSelectedImageview.relodaData()
+        }
+    }
 }
 
 extension ProfileSelectedImageViewController: UICollectionViewDelegate, UICollectionViewDataSource{
@@ -55,6 +64,10 @@ extension ProfileSelectedImageViewController: UICollectionViewDelegate, UICollec
         let imageName = "profile_\(indexPath.item)"
         cell.configureImage(imageName: imageName)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.viewModel?.inputProfileImageCellTapped.value = "profile_\(indexPath.item)"
     }
     
     

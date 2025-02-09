@@ -58,4 +58,8 @@ class ProfileSelectedImageView: BaseView {
         let image = UIImage(named: imageName)
         self.profileImageAndCameraIconView.selectedImageView.image = image
     }
+    
+    func relodaData(){
+        self.collectionView.reloadData()
+    }
 }
