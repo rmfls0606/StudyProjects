@@ -10,7 +10,7 @@ import SnapKit
 import Alamofire
 
 final class SearchPhotoViewController: UIViewController{
-    private lazy var searchResult = SearchResultView()
+    private lazy var searchResultView = SearchResultView()
     
     private var SearchData = [SearchResult]()
     private var query = ""
@@ -18,74 +18,31 @@ final class SearchPhotoViewController: UIViewController{
     private var page = 1
     private var isEnd = false
     
-    private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.placeholder = "키워드 검색"
-        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: searchBar.placeholder!, attributes: [.foregroundColor: UIColor.lightGray])
-        searchBar.searchTextField.textColor = .lightGray
-        searchBar.searchTextField.leftView?.tintColor = .lightGray
-        
-        searchBar.delegate = self
-        return searchBar
-    }()
-    
-    private lazy var toggleButton: UIButton = {
-        let button = UIButton(configuration: .filled())
-        
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = .white
-        config.baseForegroundColor = .black
-        config.cornerStyle = .capsule
-        config.background.strokeColor = .gray
-        config.background.strokeWidth = 1.0
-        
-        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
-        
-        var title = AttributedString("관련순")
-        title.font = UIFont.systemFont(ofSize: 16)
-        config.attributedTitle = title
-        
-        button.configuration = config
-        
-        button.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
-        
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
         setLayout()
+        setLogic()
     }
     
     private func setUI(){
-        self.navigationItem.title = "SEARCH PHOTO"
-        self.view.backgroundColor = .white
-        
-        self.view.addSubview(searchBar)
-        self.view.addSubview(searchResult)
-        self.view.addSubview(toggleButton)   
+        self.view.addSubview(searchResultView)
     }
     
     private func setLayout(){
-        searchBar.snp.makeConstraints { make in
+        self.searchResultView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
-        }
-        
-        toggleButton.snp.makeConstraints { make in
-            make.top.equalTo(searchBar.snp.bottom)
-            make.trailing.equalToSuperview().offset(-12)
-        }
-        
-        searchResult.snp.makeConstraints { make in
-            make.top.equalTo(toggleButton.snp.bottom).offset(12)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    private func setLogic(){
+        self.navigationItem.title = "SEARCH PHOTO"
+        self.view.backgroundColor = .white
         
-        searchResult.configureDelegate(delegate: self, dataSource: self, prefetchDataSource: self)
+        searchResultView.configureSearchBarDelegate(delegate: self)
+        searchResultView.configureCollectionDelegate(delegate: self, dataSource: self, prefetchDataSource: self)
     }
     
     
@@ -99,22 +56,12 @@ final class SearchPhotoViewController: UIViewController{
             }
             
             self.isEnd = page >= response.total_pages
-            self.searchResult.reloadData()
+            self.searchResultView.reloadData()
             
             self.showAlert(statusCode: statusCode)
         } failHandler: { [weak self] statusCode in
             self?.showAlert(statusCode: statusCode)
         }
-    }
-    
-    @objc
-    private func toggleButtonTapped(){
-        self.sortState.toggle()
-        self.page = 1
-        let text = self.sortState == .sortByLatest ? "최신순" : "관련순"
-        self.toggleButton.setTitle(text, for: .normal)
-        self.toggleButton.setTitle(text, for: .highlighted)
-        callRequest(query: query, page: 1, sort: sortState)
     }
 }
 

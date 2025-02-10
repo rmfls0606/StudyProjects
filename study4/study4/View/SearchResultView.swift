@@ -9,6 +9,38 @@ import UIKit
 import SnapKit
 
 final class SearchResultView: BaseView{
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "키워드 검색"
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: searchBar.placeholder!, attributes: [.foregroundColor: UIColor.lightGray])
+        searchBar.searchTextField.textColor = .lightGray
+        searchBar.searchTextField.leftView?.tintColor = .lightGray
+        return searchBar
+    }()
+    
+    private lazy var toggleButton: UIButton = {
+        let button = UIButton(configuration: .filled())
+        
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .white
+        config.baseForegroundColor = .black
+        config.cornerStyle = .capsule
+        config.background.strokeColor = .gray
+        config.background.strokeWidth = 1.0
+        
+        config.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+        
+        var title = AttributedString("관련순")
+        title.font = UIFont.systemFont(ofSize: 16)
+        config.attributedTitle = title
+        
+        button.configuration = config
+        
+//        button.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
+        
+        return button
+    }()
+    
     private lazy var collectionView = createCollectionView()
     
     private func createCollectionView() -> UICollectionView{
@@ -31,16 +63,34 @@ final class SearchResultView: BaseView{
     }
     
     override func configureHierarchy() {
+        self.addSubview(searchBar)
         self.addSubview(collectionView)
+        self.addSubview(toggleButton)
     }
     
     override func configureLayout() {
+        self.searchBar.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+        
+        self.toggleButton.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom).offset(5)
+            make.trailing.equalToSuperview().inset(12)
+        }
+        
         self.collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(toggleButton.snp.bottom).offset(5)
+            make.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    func configureDelegate(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, prefetchDataSource: UICollectionViewDataSourcePrefetching){
+    func configureSearchBarDelegate(delegate: UISearchBarDelegate){
+        self.searchBar.delegate = delegate
+    }
+    
+    func configureCollectionDelegate(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, prefetchDataSource: UICollectionViewDataSourcePrefetching){
         self.collectionView.delegate = delegate
         self.collectionView.dataSource = dataSource
         self.collectionView.prefetchDataSource = prefetchDataSource
@@ -49,4 +99,15 @@ final class SearchResultView: BaseView{
     func reloadData(){
         self.collectionView.reloadData()
     }
+    
+    //MARK: - Actions
+//    @objc
+//    private func toggleButtonTapped(){
+//        self.sortState.toggle()
+//        self.page = 1
+//        let text = self.sortState == .sortByLatest ? "최신순" : "관련순"
+//        self.toggleButton.setTitle(text, for: .normal)
+//        self.toggleButton.setTitle(text, for: .highlighted)
+//        callRequest(query: query, page: 1, sort: sortState)
+//    }
 }
