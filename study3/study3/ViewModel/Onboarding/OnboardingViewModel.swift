@@ -7,11 +7,29 @@
 
 import Foundation
 
-class OnboardingViewModel{
-    let outputNextButtonTapped: Observable<Void?> = Observable(())
+class OnboardingViewModel: BaseViewModel{
+    private(set) var input: Input
+    private(set) var output: Output
+    
+    struct Input{
+        
+    }
+    
+    struct Output{
+        let NextTapped: Observable<Void?> = Observable(())
+    }
     
     init(){
+        input = Input()
+        output = Output()
+        
+        transform()
         print("OnboardingViewModel Init")
+
+    }
+    
+    func transform() {
+
     }
     
     deinit{

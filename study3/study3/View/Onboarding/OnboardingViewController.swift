@@ -46,7 +46,7 @@ final class OnboardingViewController: UIViewController {
     
     // TODO: 네트워크 오류로 여러번 클릭 시 여러번 넘겨갈 수 있으므로 defer etc.를 사용하여 한번만 호출되게 하기
     private func setBind(){
-        self.viewModel.outputNextButtonTapped.lazyBind { [weak self] _ in
+        self.viewModel.output.NextTapped.lazyBind { [weak self] _ in
             // TODO: 새로운 rootViewController로 설정
             let nextVC = ProfileSettingViewController()
             self?.navigationController?.pushViewController(nextVC, animated: true)
@@ -54,6 +54,6 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func moveNextViewController(){
-        self.viewModel.outputNextButtonTapped.value = ()
+        self.viewModel.output.NextTapped.value = ()
     }
 }
