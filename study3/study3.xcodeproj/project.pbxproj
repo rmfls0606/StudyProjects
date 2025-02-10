@@ -8,12 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		79AD0DC12D566A660095721B /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79AD0DC02D566A660095721B /* SnapKit */; };
-		79FC32E22D594C2D00B97EA1 /* .gitIgnore in Resources */ = {isa = PBXBuildFile; fileRef = 79FC32E12D594C2D00B97EA1 /* .gitIgnore */; };
+		79FC32E22D594C2D00B97EA1 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 79FC32E12D594C2D00B97EA1 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		79AD0CB62D5651590095721B /* study3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = study3.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		79FC32E12D594C2D00B97EA1 /* .gitIgnore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitIgnore; sourceTree = "<group>"; };
+		79FC32E12D594C2D00B97EA1 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -52,7 +52,7 @@
 		79AD0CAD2D5651590095721B = {
 			isa = PBXGroup;
 			children = (
-				79FC32E12D594C2D00B97EA1 /* .gitIgnore */,
+				79FC32E12D594C2D00B97EA1 /* .gitignore */,
 				79AD0CB82D5651590095721B /* study3 */,
 				79AD0CB72D5651590095721B /* Products */,
 			);
@@ -134,7 +134,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79FC32E22D594C2D00B97EA1 /* .gitIgnore in Resources */,
+				79FC32E22D594C2D00B97EA1 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
