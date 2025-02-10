@@ -9,43 +9,35 @@ import UIKit
 import SnapKit
 
 final class SearchResultView: BaseView{
-    private(set) lazy var collectionView = createCollectionView()
+    private lazy var collectionView = createCollectionView()
     
     private func createCollectionView() -> UICollectionView{
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.register(SearchResultCollectionView.self, forCellWithReuseIdentifier: SearchResultCollectionView.identifier)
+        collectionView.register(SearchResultCollectionCell.self, forCellWithReuseIdentifier: SearchResultCollectionCell.identifier)
         collectionView.collectionViewLayout = createCollectionViewLayout()
         return collectionView
     }
     
     private func createCollectionViewLayout() -> UICollectionViewLayout{
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 5.0
-        layout.minimumInteritemSpacing = 5.0
-        let width = (UIScreen.main.bounds.width - 5) / 2
-        layout.itemSize = CGSize(width: width, height: 200)
+        layout.minimumLineSpacing = 10.0
+        layout.minimumInteritemSpacing = 10.0
+        let width = (UIScreen.main.bounds.width - 10) / 2
+        layout.itemSize = CGSize(width: width, height: width * 1.6)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .vertical
         
         return layout
     }
     
     override func configureHierarchy() {
-        addSubview(collectionView)
+        self.addSubview(collectionView)
     }
     
     override func configureLayout() {
-        
         self.collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
-        
-    }
-    
-    override func configureView() {
-        
     }
     
     func configureDelegate(delegate: UICollectionViewDelegate, dataSource: UICollectionViewDataSource, prefetchDataSource: UICollectionViewDataSourcePrefetching){

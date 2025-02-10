@@ -9,7 +9,7 @@ import Alamofire
 import Foundation
 
 enum UnplashRequest{
-    case searchPhotos(query: String, page: Int, sort: SortState)
+    case searchPhotos(query: String, page: Int, sort: SortStatus)
     case topicPhotos(topicId: String)
     case photoStatistics(id: String)
     

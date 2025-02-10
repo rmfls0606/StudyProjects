@@ -9,43 +9,12 @@ import UIKit
 import SnapKit
 import Alamofire
 
-struct SearchResponse: Decodable{
-    let total_pages: Int
-    let results: [SearchResult]
-}
-
-struct SearchResult: Decodable{
-    let id: String
-    let width: Int
-    let height: Int
-    let urls: SearchURLS
-    let likes: Int
-}
-
-struct SearchURLS: Decodable{
-    let thumb: String
-    let small: String
-}
-
-enum SortState: String{
-    case sortByRelevance = "relevant"
-    case sortByLatest = "latest"
-    
-    mutating func toggle(){
-        switch self{
-        case .sortByRelevance:
-            self = .sortByLatest
-        case .sortByLatest:
-            self = .sortByRelevance
-        }
-    }
-}
-
 final class SearchPhotoViewController: UIViewController{
-
+    private lazy var searchResult = SearchResultView()
+    
     private var SearchData = [SearchResult]()
     private var query = ""
-    private var sortState: SortState = SortState.sortByRelevance
+    private var sortState: SortStatus = SortStatus.sortByRelevance
     private var page = 1
     private var isEnd = false
     
@@ -83,22 +52,23 @@ final class SearchPhotoViewController: UIViewController{
         return button
     }()
     
-    private lazy var searchResult = SearchResultView()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUp()
+        setUI()
+        setLayout()
     }
     
-    private func setUp(){
+    private func setUI(){
         self.navigationItem.title = "SEARCH PHOTO"
         self.view.backgroundColor = .white
         
         self.view.addSubview(searchBar)
         self.view.addSubview(searchResult)
-        self.view.addSubview(toggleButton)
-        
+        self.view.addSubview(toggleButton)   
+    }
+    
+    private func setLayout(){
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
             make.leading.equalToSuperview()
@@ -119,8 +89,7 @@ final class SearchPhotoViewController: UIViewController{
     }
     
     
-    
-    private func callRequest(query: String, page: Int, sort: SortState){
+    private func callRequest(query: String, page: Int, sort: SortStatus){
         NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: page, sort: sort)) { (response: SearchResponse, statusCode: Int) in
             
             if self.page <= 1{
@@ -178,7 +147,7 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCollectionView", for: indexPath) as? SearchResultCollectionView else{
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionCell.identifier, for: indexPath) as? SearchResultCollectionCell else{
             return UICollectionViewCell()
         }
         let data = SearchData[indexPath.item]
