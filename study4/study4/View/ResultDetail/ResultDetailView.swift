@@ -77,7 +77,7 @@ class ResultDetailView: BaseView {
     private lazy var valueStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [sizeValueLabel, viewsValueLabel, downloadsValueLabel])
         view.axis = .vertical
-        view.spacing = 2
+        view.spacing = 10
         view.alignment = .trailing
         return view
     }()
