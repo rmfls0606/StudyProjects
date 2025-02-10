@@ -106,7 +106,7 @@ class ResultDetailView: BaseView {
     func configreData(searchResult: SearchResult, resultStatistics: StatisticsResponse){
         self.imageView.kf.setImage(with: URL(string: searchResult.urls.small))
         self.sizeValueLabel.text = "\(searchResult.width) x \(searchResult.height)"
-        self.viewsValueLabel.text = "\(resultStatistics.views.total)"
-        self.downloadsValueLabel.text = "\(resultStatistics.downloads.total)"
+        self.viewsValueLabel.text = "\(resultStatistics.views.total.formatted(.number))"
+        self.downloadsValueLabel.text = "\(resultStatistics.downloads.total.formatted(.number))"
     }
 }
