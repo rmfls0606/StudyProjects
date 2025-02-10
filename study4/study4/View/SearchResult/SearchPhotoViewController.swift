@@ -68,9 +68,6 @@ extension SearchPhotoViewController: UISearchBarDelegate{
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.showsCancelButton = false
         viewModel.input.searchQuery.value = searchBar.text
-//        self.query = query
-//        self.page = 1
-//        callRequest(query: query, page: 1, sort: sortState)
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -108,15 +105,14 @@ extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewD
 
 extension SearchPhotoViewController: UICollectionViewDataSourcePrefetching{
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
-//        guard !isEnd else { return }
-//        
-//        for item in indexPaths{
-//            if SearchData.count - 5 <= item.item{
-//                self.page += 1
-//                callRequest(query: query, page: self.page, sort: sortState)
-//                break
-//            }
-//        }
+        guard !viewModel.output.isLoading.value else { return }
+        
+        for item in indexPaths{
+            if viewModel.output.searchResults.value.count - 5 <= item.item{
+                self.viewModel.input.searchResultPage.value += 1
+                break
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cancelPrefetchingForItemsAt indexPaths: [IndexPath]) {

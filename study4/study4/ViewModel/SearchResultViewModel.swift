@@ -14,11 +14,13 @@ class SearchResultViewModel: BaseViewModel{
     struct Input{
         let searchQuery: Observable<String?> = Observable(nil)
         let searchResultFilterTapped: Observable<SortStatus> = Observable(.sortByRelevance)
+        let searchResultPage: Observable<Int> = Observable(1)
     }
     
     struct Output{
         let searchResults: Observable<[SearchResult]> = Observable([])
         let searchResultFilterText: Observable<String?> = Observable(nil)
+        let isLoading: Observable<Bool> = Observable(false)
     }
     
     init(){
@@ -36,8 +38,13 @@ class SearchResultViewModel: BaseViewModel{
         }
         
         self.input.searchResultFilterTapped.lazyBind { [weak self] status in
+            self?.resetPage()
             self?.callRequest()
             self?.output.searchResultFilterText.value = status.description
+        }
+        
+        self.input.searchResultPage.lazyBind { [weak self] page in
+            self?.callRequest()
         }
     }
     
@@ -47,20 +54,29 @@ class SearchResultViewModel: BaseViewModel{
             return
         }
         
-        NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: 1, sort: input.searchResultFilterTapped.value)) { [weak self] (response: SearchResponse, statusCode: Int) in
+        NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: input.searchResultPage.value, sort: input.searchResultFilterTapped.value)) { [weak self] (response: SearchResponse, statusCode: Int) in
             
-//            if self.page <= 1{
-            self?.output.searchResults.value = response.results
-//            }else{
-//                self.SearchData.append(contentsOf: response.results)
-//            }
+            guard let page = self?.input.searchResultPage.value else { return }
             
-//            self.isEnd = page >= response.total_pages
-//            self.searchResultView.reloadData()
+            if page <= 1{
+                self?.output.searchResults.value = response.results
+            }else{
+                var newData = self?.output.searchResults.value ?? []
+                newData.append(contentsOf: response.results)
+                self?.output.searchResults.value = newData
+            }
             
-//            self.showAlert(statusCode: statusCode)
+            if page >= response.total_pages || response.results.isEmpty {
+                self?.output.isLoading.value = true
+            }
         } failHandler: { [weak self] statusCode in
             print("ERROR Code : \(statusCode)")
         }
+    }
+    
+    private func resetPage(){
+        input.searchResultPage.value = 1
+        output.isLoading.value = false
+        output.searchResults.value = []
     }
 }

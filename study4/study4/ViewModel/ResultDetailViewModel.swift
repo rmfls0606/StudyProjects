@@ -11,6 +11,10 @@ class ResultDetailViewModel: BaseViewModel{
     private(set) var input: Input
     private(set) var output: Output
     
+    private var page = 1
+    private var isEnd = false
+    private var isLoading = false
+    
     struct Input{
         
     }
