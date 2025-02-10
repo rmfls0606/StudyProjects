@@ -15,13 +15,14 @@ class DetailViewController: UIViewController {
 //    private var statisticsData: StatisticsResponse? = nil
     private let resultDetailView = ResultDetailView()
     
+    let viewModel = ResultDetailViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUI()
         setLayout()
-//        callRequest(id: item!.id)
+        setBind()
     }
     
     private func setUI(){
@@ -36,25 +37,12 @@ class DetailViewController: UIViewController {
         }
     }
     
-//    private func callRequest(id: String){
-//        let url = "https://api.unsplash.com/photos/\(id)/statistics?"
-//        
-//        let parametr: [String: Any] = [
-//            "client_id": ApiKey.client_ID
-//        ]
-//        
-//        NetworkManager.shared.loadData(url: url,
-//                                       method: .get,
-//                                       parameters: parametr,
-//                                       completion: {(result: Result<StatisticsResponse, Error>) in
-//            switch result {
-//            case .success(let success):
-//                self.statisticsData = success
-//                self.viewsValueLabel.text = success.views.total.formatted(.number)
-//                self.downloadsValueLabel.text = success.downloads.total.formatted(.number)
-//            case .failure(let failure):
-//                fatalError(failure.localizedDescription)
-//            }
-//        })
-//    }
+    private func setBind(){
+        self.viewModel.output.resultStatistics.bind { [weak self] response in
+            guard let searchResult = self?.viewModel.output.searchResult.value,
+                    let resultStatistic = response else { return }
+            
+            self?.resultDetailView.configreData(searchResult: searchResult, resultStatistics: resultStatistic)
+        }
+    }
 }

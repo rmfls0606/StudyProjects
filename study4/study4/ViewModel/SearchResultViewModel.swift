@@ -47,10 +47,10 @@ class SearchResultViewModel: BaseViewModel{
             return
         }
         
-        NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: 1, sort: input.searchResultFilterTapped.value)) { (response: SearchResponse, statusCode: Int) in
+        NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: 1, sort: input.searchResultFilterTapped.value)) { [weak self] (response: SearchResponse, statusCode: Int) in
             
 //            if self.page <= 1{
-            self.output.searchResults.value = response.results
+            self?.output.searchResults.value = response.results
 //            }else{
 //                self.SearchData.append(contentsOf: response.results)
 //            }

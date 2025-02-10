@@ -102,4 +102,11 @@ class ResultDetailView: BaseView {
         label.font = .systemFont(ofSize: 12)
         return label
     }
+    
+    func configreData(searchResult: SearchResult, resultStatistics: StatisticsResponse){
+        self.imageView.kf.setImage(with: URL(string: searchResult.urls.small))
+        self.sizeValueLabel.text = "\(searchResult.width) x \(searchResult.height)"
+        self.viewsValueLabel.text = "\(resultStatistics.views.total)"
+        self.downloadsValueLabel.text = "\(resultStatistics.downloads.total)"
+    }
 }
