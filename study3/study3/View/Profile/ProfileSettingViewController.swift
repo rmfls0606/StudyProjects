@@ -49,7 +49,7 @@ final class ProfileSettingViewController: UIViewController {
     
     
     private func setBind(){
-        viewModel.outputNicknameValidResultText.bind { [weak self] status in
+        viewModel.output.nicknameValidResultText.bind { [weak self] status in
             if status == .success {
                 self?.profileSetiingView.configureNickenameValidResultText(status.description, color: .blue)
             }else{
@@ -58,22 +58,22 @@ final class ProfileSettingViewController: UIViewController {
             self?.viewModel.profleSuccessEnable()
         }
     
-        viewModel.outputProfileImage.bind { [weak self] imageName in
+        viewModel.output.profileImage.bind { [weak self] imageName in
             // todo: 기본 이미지 넣기
             self?.profileSetiingView.configureImage(imageName: imageName!)
         }
         
-        viewModel.inputMoveSelectedImageButtonTapped.lazyBind { [weak self] in
+        viewModel.input.moveSelectedImageTapped.lazyBind { [weak self] in
             let nextVC = ProfileSelectedImageViewController()
             nextVC.viewModel = self?.viewModel
             self?.navigationController?.pushViewController(nextVC, animated: true)
         }
         
-        viewModel.outputProfileSuccessButton.bind { [weak self] isEnabled in
+        viewModel.output.profileSuccessButton.bind { [weak self] isEnabled in
             self?.profileSetiingView.configureSuccessButtonState(isEnabled: isEnabled)
         }
         
-        viewModel.inputProfileSuccessButtonTapped.lazyBind { _ in
+        viewModel.input.profileSuccessTapped.lazyBind { _ in
             UserDefaults.standard.set(true, forKey: "isOnboarding")
             guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
             
@@ -86,24 +86,24 @@ final class ProfileSettingViewController: UIViewController {
     private func randomSelectedProfileImage(){
         let index = Int.random(in: 0...11)
         let imageName = "profile_\(index)"
-        viewModel.outputProfileImage.value = imageName
+        viewModel.output.profileImage.value = imageName
     }
     
     private func moveSelectProfileImage(){
-        viewModel.inputMoveSelectedImageButtonTapped.value = ()
+        viewModel.input.moveSelectedImageTapped.value = ()
     }
 }
 
 //UITextField
 extension ProfileSettingViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        self.viewModel.inputNicknameTextfield.value = textField.text
+        self.viewModel.input.nickname.value = textField.text
     }
 }
 
 extension ProfileSettingViewController: ProfileSettingViewDelegate {
     func didSelectSuccessButton() {
-        viewModel.inputProfileSuccessButtonTapped.value = ()
+        viewModel.input.profileSuccessTapped.value = ()
     }
     
     func didSelectMBTIButton(groupIndex: Int, selectedOption: String) {

@@ -7,20 +7,34 @@
 
 import Foundation
 
-class ProfileViewModel {
-    let inputNicknameTextfield: Observable<String?> = Observable(nil)
-    let inputMoveSelectedImageButtonTapped: Observable<Void> = Observable(())
-    let inputProfileImageCellTapped: Observable<String?> = Observable(nil)
-    let inputSelectedMBTIButtons: Observable<[String]> = Observable(["","","",""])
-    let inputProfileSuccessButtonTapped: Observable<Void> = Observable(())
+class ProfileViewModel: BaseViewModel {
+    private(set) var input: Input
+    private(set) var output: Output
     
-    let outputNicknameValidResultText: Observable<NicknameValidResult> = Observable(.empty)
-    let outputProfileImage: Observable<String?> = Observable(nil)
-    let outputProfileSuccessButton: Observable<Bool> = Observable(false)
+    struct Input{
+        let nickname: Observable<String?> = Observable(nil)
+        let moveSelectedImageTapped: Observable<Void> = Observable(())
+        let profileImageTapped: Observable<String?> = Observable(nil)
+        let selectedMBTIButtons: Observable<[String]> = Observable(["","","",""])
+        let profileSuccessTapped: Observable<Void> = Observable(())
+    }
     
+    struct Output{
+        let nicknameValidResultText: Observable<NicknameValidResult> = Observable(.empty)
+        let profileImage: Observable<String?> = Observable(nil)
+        let profileSuccessButton: Observable<Bool> = Observable(false)
+    }
+
     init() {
+        input = Input()
+        output = Output()
+        
+        transform()
         print("ProfileViewModel Init")
-        inputNicknameTextfield.bind { [weak self] text in
+    }
+    
+    func transform() {
+        input.nickname.bind { [weak self] text in
             self?.validation()
         }
     }
@@ -30,41 +44,41 @@ class ProfileViewModel {
     }
     
     private func validation(){
-        guard let text = inputNicknameTextfield.value, !text.isEmpty else{
-            outputNicknameValidResultText.value = .empty
+        guard let text = input.nickname.value, !text.isEmpty else{
+            output.nicknameValidResultText.value = .empty
             return
         }
         
         guard text.count >= 2, text.count < 10 else {
-            outputNicknameValidResultText.value = .rangeError
+            output.nicknameValidResultText.value = .rangeError
             return
         }
         
         guard !text.contains(where: {"@#$%".contains($0)}) else{
-            outputNicknameValidResultText.value = .incorrectCharacterError
+            output.nicknameValidResultText.value = .incorrectCharacterError
             return
         }
         
         guard !text.contains(where: {"0123456789".contains($0)}) else{
-            outputNicknameValidResultText.value = .containsNumberError
+            output.nicknameValidResultText.value = .containsNumberError
             return
         }
         
-        outputNicknameValidResultText.value = .success
+        output.nicknameValidResultText.value = .success
     }
     
     func updateSelectedMBTI(groupIndex: Int, selectedOption: String){
-        var updateMBTI = inputSelectedMBTIButtons.value
+        var updateMBTI = input.selectedMBTIButtons.value
         updateMBTI[groupIndex] = selectedOption
-        inputSelectedMBTIButtons.value = updateMBTI
+        input.selectedMBTIButtons.value = updateMBTI
         profleSuccessEnable()
     }
     
     func profleSuccessEnable(){
-        if outputNicknameValidResultText.value == .success && !inputSelectedMBTIButtons.value.contains(""){
-            outputProfileSuccessButton.value = true
+        if output.nicknameValidResultText.value == .success && !input.selectedMBTIButtons.value.contains(""){
+            output.profileSuccessButton.value = true
         }else{
-            outputProfileSuccessButton.value = false
+            output.profileSuccessButton.value = false
         }
     }
 }
