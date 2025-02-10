@@ -17,7 +17,7 @@ class SearchResultViewModel: BaseViewModel{
     }
     
     struct Output{
-        let searchResult: Observable<[SearchResult]> = Observable([])
+        let searchResults: Observable<[SearchResult]> = Observable([])
         let searchResultFilterText: Observable<String?> = Observable(nil)
     }
     
@@ -50,7 +50,7 @@ class SearchResultViewModel: BaseViewModel{
         NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: 1, sort: input.searchResultFilterTapped.value)) { (response: SearchResponse, statusCode: Int) in
             
 //            if self.page <= 1{
-            self.output.searchResult.value = response.results
+            self.output.searchResults.value = response.results
 //            }else{
 //                self.SearchData.append(contentsOf: response.results)
 //            }

@@ -50,7 +50,7 @@ final class SearchPhotoViewController: UIViewController{
     }
     
     private func setBind(){
-        viewModel.output.searchResult.lazyBind { [weak self] _ in
+        viewModel.output.searchResults.lazyBind { [weak self] _ in
             self?.searchResultView.reloadData()
         }
         
@@ -86,14 +86,14 @@ extension SearchPhotoViewController: UISearchBarDelegate{
 
 extension SearchPhotoViewController: UICollectionViewDelegate, UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.viewModel.output.searchResult.value.count
+        self.viewModel.output.searchResults.value.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchResultCollectionCell.identifier, for: indexPath) as? SearchResultCollectionCell else{
             return UICollectionViewCell()
         }
-        let data = self.viewModel.output.searchResult.value[indexPath.item]
+        let data = self.viewModel.output.searchResults.value[indexPath.item]
         cell.configureData(data: data)
         
         return cell

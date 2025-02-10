@@ -16,7 +16,7 @@ class ResultDetailViewModel: BaseViewModel{
     }
     
     struct Output{
-        
+        let searchResult: Observable<SearchResult?> = Observable(nil)
     }
     
     init(){
