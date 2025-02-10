@@ -13,10 +13,12 @@ class SearchResultViewModel: BaseViewModel{
     
     struct Input{
         let searchQuery: Observable<String?> = Observable(nil)
+        let searchResultFilterTapped: Observable<SortStatus> = Observable(.sortByRelevance)
     }
     
     struct Output{
         let searchResult: Observable<[SearchResult]> = Observable([])
+        let searchResultFilterText: Observable<String?> = Observable(nil)
     }
     
     init(){
@@ -32,6 +34,11 @@ class SearchResultViewModel: BaseViewModel{
         self.input.searchQuery.lazyBind { [weak self] text in
             self?.callRequest()
         }
+        
+        self.input.searchResultFilterTapped.lazyBind { [weak self] status in
+            self?.callRequest()
+            self?.output.searchResultFilterText.value = status.description
+        }
     }
     
     private func callRequest(){
@@ -40,7 +47,7 @@ class SearchResultViewModel: BaseViewModel{
             return
         }
         
-        NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: 1, sort: .sortByRelevance)) { (response: SearchResponse, statusCode: Int) in
+        NetworkManager.shared.callRequest(api: .searchPhotos(query: query, page: 1, sort: input.searchResultFilterTapped.value)) { (response: SearchResponse, statusCode: Int) in
             
 //            if self.page <= 1{
             self.output.searchResult.value = response.results
@@ -54,7 +61,6 @@ class SearchResultViewModel: BaseViewModel{
 //            self.showAlert(statusCode: statusCode)
         } failHandler: { [weak self] statusCode in
             print("ERROR Code : \(statusCode)")
-//            self?.showAlert(statusCode: statusCode)
         }
     }
 }

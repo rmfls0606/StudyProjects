@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 final class SearchResultView: BaseView{
+    
+    var onButtonTapped: (() -> Void)?
+    
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "키워드 검색"
@@ -36,7 +39,7 @@ final class SearchResultView: BaseView{
         
         button.configuration = config
         
-//        button.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
         
         return button
     }()
@@ -100,14 +103,13 @@ final class SearchResultView: BaseView{
         self.collectionView.reloadData()
     }
     
+    func configureToggleButtonText(text: String){
+        self.toggleButton.setTitle(text, for: .normal)
+    }
+    
     //MARK: - Actions
-//    @objc
-//    private func toggleButtonTapped(){
-//        self.sortState.toggle()
-//        self.page = 1
-//        let text = self.sortState == .sortByLatest ? "최신순" : "관련순"
-//        self.toggleButton.setTitle(text, for: .normal)
-//        self.toggleButton.setTitle(text, for: .highlighted)
-//        callRequest(query: query, page: 1, sort: sortState)
-//    }
+    @objc
+    private func toggleButtonTapped(){
+        self.onButtonTapped?()
+    }
 }

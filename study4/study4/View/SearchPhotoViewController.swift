@@ -12,11 +12,11 @@ import Alamofire
 final class SearchPhotoViewController: UIViewController{
     private lazy var searchResultView = SearchResultView()
     
-    private var SearchData = [SearchResult]()
-    private var query = ""
-    private var sortState: SortStatus = SortStatus.sortByRelevance
-    private var page = 1
-    private var isEnd = false
+//    private var SearchData = [SearchResult]()
+//    private var query = ""
+//    private var sortState: SortStatus = SortStatus.sortByRelevance
+//    private var page = 1
+//    private var isEnd = false
     
     let viewModel = SearchResultViewModel()
     
@@ -46,12 +46,21 @@ final class SearchPhotoViewController: UIViewController{
         
         searchResultView.configureSearchBarDelegate(delegate: self)
         searchResultView.configureCollectionDelegate(delegate: self, dataSource: self, prefetchDataSource: self)
+        searchResultView.onButtonTapped = self.filterButtonTapped
     }
     
     private func setBind(){
         viewModel.output.searchResult.lazyBind { [weak self] _ in
             self?.searchResultView.reloadData()
         }
+        
+        viewModel.output.searchResultFilterText.lazyBind { [weak self] text in
+            self?.searchResultView.configureToggleButtonText(text: text!)
+        }
+    }
+    
+    private func filterButtonTapped(){
+        viewModel.input.searchResultFilterTapped.value.toggle()
     }
 }
 

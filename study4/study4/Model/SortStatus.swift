@@ -19,4 +19,13 @@ enum SortStatus: String{
             self = .sortByRelevance
         }
     }
+    
+    var description: String{
+        switch self{
+        case .sortByRelevance:
+            return "관련순"
+        case .sortByLatest:
+            return "최신순"
+        }
+    }
 }
