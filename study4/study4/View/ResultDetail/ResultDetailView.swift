@@ -158,10 +158,25 @@ class ResultDetailView: BaseView {
         self.profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
         self.profileImageView.layer.masksToBounds = true
         self.profileNameLabel.text = searchResult.user.name
-        self.profileUploadDateLabel.text = searchResult.user.updated_at
+        self.profileUploadDateLabel.text = self.formattedDate(dateText: searchResult.user.updated_at)
         self.imageView.kf.setImage(with: URL(string: searchResult.urls.small))
         self.sizeValueLabel.text = "\(searchResult.width) x \(searchResult.height)"
         self.viewsValueLabel.text = "\(resultStatistics.views.total.formatted(.number))"
         self.downloadsValueLabel.text = "\(resultStatistics.downloads.total.formatted(.number))"
     }
+    
+    func formattedDate(dateText: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+
+        if let date = isoFormatter.date(from: dateText) {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy년 M월 d일 게시됨"
+            
+            return formatter.string(from: date)
+        }
+        return "-"
+    }
+
 }
+
