@@ -12,12 +12,6 @@ import Alamofire
 final class SearchPhotoViewController: UIViewController{
     private lazy var searchResultView = SearchResultView()
     
-//    private var SearchData = [SearchResult]()
-//    private var query = ""
-//    private var sortState: SortStatus = SortStatus.sortByRelevance
-//    private var page = 1
-//    private var isEnd = false
-    
     let viewModel = SearchResultViewModel()
     
     override func viewDidLoad() {
