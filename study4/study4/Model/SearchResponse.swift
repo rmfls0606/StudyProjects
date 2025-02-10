@@ -18,9 +18,21 @@ struct SearchResult: Decodable{
     let height: Int
     let urls: SearchURLS
     let likes: Int
+    let user: UploadUser
 }
 
 struct SearchURLS: Decodable{
     let thumb: String
     let small: String
 }
+
+struct UploadUser: Decodable{
+    let name: String
+    let profile_image: UploadUserProfileImageSize
+    let updated_at: String
+}
+
+struct UploadUserProfileImageSize: Decodable{
+    let small: String
+}
+

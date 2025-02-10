@@ -9,7 +9,41 @@ import UIKit
 import SnapKit
 
 class ResultDetailView: BaseView {
-    private var imageView: UIImageView = {
+    private lazy var profileImageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
+        return view
+    }()
+    
+    private lazy var profileNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        return label
+    }()
+    
+    private lazy var profileUploadDateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 12)
+        return label
+    }()
+    
+    private lazy var profileInfoVStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [profileNameLabel, profileUploadDateLabel])
+        view.axis = .vertical
+        view.distribution = .fillEqually
+        return view
+    }()
+    
+    private lazy var profileHStackView: UIStackView = {
+        let view = UIStackView(arrangedSubviews: [profileImageView, profileInfoVStackView])
+        view.axis = .horizontal
+        view.spacing = 12
+        view.distribution = .fill
+        return view
+    }()
+    
+    private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.clipsToBounds = true
@@ -39,10 +73,11 @@ class ResultDetailView: BaseView {
         return view
     }()
     
+    
     private lazy var valueStackView: UIStackView = {
         let view = UIStackView(arrangedSubviews: [sizeValueLabel, viewsValueLabel, downloadsValueLabel])
         view.axis = .vertical
-        view.spacing = 10
+        view.spacing = 2
         view.alignment = .trailing
         return view
     }()
@@ -63,13 +98,29 @@ class ResultDetailView: BaseView {
     
     override func configureHierarchy() {
         self.backgroundColor = .white
+        self.addSubview(profileHStackView)
         self.addSubview(imageView)
         self.addSubview(boxView)
     }
     
     override func configureLayout() {
+        
+        self.profileHStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(12)
+            make.leading.trailing.equalToSuperview().inset(12)
+        }
+        
+        self.profileImageView.snp.makeConstraints { make in
+            make.size.equalTo(50)
+        }
+        
+        self.profileInfoVStackView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+        }
+        
         self.imageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalTo(profileHStackView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview()
         }
         
         self.boxView.snp.makeConstraints { make in
@@ -77,7 +128,6 @@ class ResultDetailView: BaseView {
             make.trailing.equalToSuperview().offset(-12)
             make.leading.equalToSuperview().offset(12)
         }
-//        imageView.kf.setImage(with: URL(string: item!.urls.small))
         
         self.titleLabel.snp.makeConstraints { make in
             make.top.leading.equalToSuperview()
@@ -104,6 +154,11 @@ class ResultDetailView: BaseView {
     }
     
     func configreData(searchResult: SearchResult, resultStatistics: StatisticsResponse){
+        self.profileImageView.kf.setImage(with: URL(string: searchResult.user.profile_image.small))
+        self.profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
+        self.profileImageView.layer.masksToBounds = true
+        self.profileNameLabel.text = searchResult.user.name
+        self.profileUploadDateLabel.text = searchResult.user.updated_at
         self.imageView.kf.setImage(with: URL(string: searchResult.urls.small))
         self.sizeValueLabel.text = "\(searchResult.width) x \(searchResult.height)"
         self.viewsValueLabel.text = "\(resultStatistics.views.total.formatted(.number))"
