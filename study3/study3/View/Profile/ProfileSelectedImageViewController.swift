@@ -38,15 +38,15 @@ class ProfileSelectedImageViewController: UIViewController {
     private func setLogic(){
         self.profileSelectedImageview.configureDelegate(delegate: self, dataSource: self)
         
-        if let imageName = viewModel?.outputProfileImage.value{
+        if let imageName = viewModel?.output.profileImage.value{
             self.profileSelectedImageview.configureImage(imageName: imageName)
         }
     }
     
     private func setBind(){
-        viewModel?.inputProfileImageCellTapped.lazyBind { [weak self] imageName in
+        viewModel?.input.profileImageTapped.lazyBind { [weak self] imageName in
             self?.profileSelectedImageview.configureImage(imageName: imageName!)
-            self?.viewModel?.outputProfileImage.value = imageName
+            self?.viewModel?.output.profileImage.value = imageName
             self?.profileSelectedImageview.relodaData()
         }
     }
@@ -62,7 +62,7 @@ extension ProfileSelectedImageViewController: UICollectionViewDelegate, UICollec
             return UICollectionViewCell()
         }
         let imageName = "profile_\(indexPath.item)"
-        if imageName == viewModel?.outputProfileImage.value{
+        if imageName == viewModel?.output.profileImage.value{
             cell.configureImage(imageName: imageName, isSelected: true)
         }else{
             cell.configureImage(imageName: imageName, isSelected: false)
@@ -71,8 +71,9 @@ extension ProfileSelectedImageViewController: UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.viewModel?.inputProfileImageCellTapped.value = "profile_\(indexPath.item)"
+        self.viewModel?.input.profileImageTapped.value = "profile_\(indexPath.item)"
     }
     
     
 }
+ 

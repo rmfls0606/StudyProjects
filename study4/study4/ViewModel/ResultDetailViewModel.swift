@@ -11,12 +11,17 @@ class ResultDetailViewModel: BaseViewModel{
     private(set) var input: Input
     private(set) var output: Output
     
+    private var page = 1
+    private var isEnd = false
+    private var isLoading = false
+    
     struct Input{
         
     }
     
     struct Output{
-        
+        let searchResult: Observable<SearchResult?> = Observable(nil)
+        let resultStatistics: Observable<StatisticsResponse?> = Observable(nil)
     }
     
     init(){
@@ -27,8 +32,19 @@ class ResultDetailViewModel: BaseViewModel{
     }
     
     func transform() {
-        
+        output.searchResult.bind { [weak self] result in
+            self?.callRequest()
+        }
     }
     
-    
+    private func callRequest(){
+        
+        guard let id = output.searchResult.value?.id else { return }
+        
+        NetworkManager.shared.callRequest(api: .photoStatistics(id: id)) { [weak self] (response: StatisticsResponse, statusCode: Int) in
+            self?.output.resultStatistics.value = response
+        } failHandler: { [weak self] statusCode in
+            print("ERROR Code: \(statusCode)")
+        }
+    }
 }
