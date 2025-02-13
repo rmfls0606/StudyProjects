@@ -44,24 +44,25 @@ final class NotificationViewController: UIViewController {
         let content = UNMutableNotificationContent()
         content.title = "Identifier의미 확인해보기: 같은 Identifier"
         content.subtitle = "\(Int.random(in: 1...10000))"
+        content.badge = 6
         
         //1. timeInterval
         //박복이 왜 필요할까?
-//        let trigger = UNTimeIntervalNotificationTrigger(
-//            timeInterval: 3,
-//            repeats: false
-//        )
-//        
-        var componenets = DateComponents()
-        componenets.day = 14
-        componenets.hour = 11
-        componenets.minute = 45
+        let trigger = UNTimeIntervalNotificationTrigger(
+            timeInterval: 3,
+            repeats: false
+        )
         
-        //2. calendar
-        let trigger = UNCalendarNotificationTrigger(dateMatching: componenets,
-                                                    repeats: false)
+//        var componenets = DateComponents()
+//        componenets.day = 14
+//        componenets.hour = 11
+//        componenets.minute = 45
+//        
+//        //2. calendar
+//        let trigger = UNCalendarNotificationTrigger(dateMatching: componenets,
+//                                                    repeats: false)
     
-        let request = UNNotificationRequest.init(identifier: "\(Date())1",
+        let request = UNNotificationRequest.init(identifier: "\(Date())",
                                                  content: content,
                                                  trigger: trigger)
         
