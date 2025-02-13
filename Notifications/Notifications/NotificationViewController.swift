@@ -42,19 +42,28 @@ final class NotificationViewController: UIViewController {
         print(#function)
         
         let content = UNMutableNotificationContent()
-        content.title = "Identifier의미 확인해보기"
+        content.title = "Identifier의미 확인해보기: 같은 Identifier"
         content.subtitle = "\(Int.random(in: 1...10000))"
         
         //1. timeInterval
         //박복이 왜 필요할까?
-        let trigger = UNTimeIntervalNotificationTrigger(
-            timeInterval: 60,
-            repeats: true
-        )
+//        let trigger = UNTimeIntervalNotificationTrigger(
+//            timeInterval: 3,
+//            repeats: false
+//        )
+//        
+        var componenets = DateComponents()
+        componenets.day = 14
+        componenets.hour = 11
+        componenets.minute = 45
         
-        let request = UNNotificationRequest.init(identifier: "\(Date())",
-                                   content: content,
-                                   trigger: trigger)
+        //2. calendar
+        let trigger = UNCalendarNotificationTrigger(dateMatching: componenets,
+                                                    repeats: false)
+    
+        let request = UNNotificationRequest.init(identifier: "\(Date())1",
+                                                 content: content,
+                                                 trigger: trigger)
         
         UNUserNotificationCenter.current().add(request) { error in
             print(error)

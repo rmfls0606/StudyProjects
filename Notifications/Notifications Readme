@@ -34,9 +34,9 @@ Request
     - Body
     - Badge
 - Trigger
-    - Time
-    - Calendar
-    - Location
+    - Time(시간 간격)
+    - Calendar(캘린더 기반)
+    - Location(위치 기반
 
 - Notification
 
@@ -44,3 +44,4 @@ Notification 관련 정책
 - Foreground에서는 알림이 뜨지 않는 것이 default
 - Foreground에서 알림을 받고 싶은 경우, 별도 설정(delegate) 필요
 - TimeInterval 기반 반복은 60초 이상부터 가능
+- 
