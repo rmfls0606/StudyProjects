@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		7969506E2D5D7FC40056A0E4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7969506D2D5D7FC40056A0E4 /* SnapKit */; };
+		796950702D5D83650056A0E4 /* Notifications Readme in Resources */ = {isa = PBXBuildFile; fileRef = 7969506F2D5D83650056A0E4 /* Notifications Readme */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		79694FCD2D5D7A9E0056A0E4 /* Notifications.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Notifications.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7969506F2D5D83650056A0E4 /* Notifications Readme */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Notifications Readme"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,6 +52,7 @@
 		79694FC42D5D7A9E0056A0E4 = {
 			isa = PBXGroup;
 			children = (
+				7969506F2D5D83650056A0E4 /* Notifications Readme */,
 				79694FCF2D5D7A9E0056A0E4 /* Notifications */,
 				79694FCE2D5D7A9E0056A0E4 /* Products */,
 			);
@@ -131,6 +134,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				796950702D5D83650056A0E4 /* Notifications Readme in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
