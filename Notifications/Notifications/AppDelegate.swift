@@ -8,7 +8,7 @@
 import UIKit
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
     
     
@@ -22,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             ) { success, error in
                 print(success, error)
             }
+        
+        UNUserNotificationCenter.current().delegate = self
         
         
         return true
@@ -44,3 +46,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 }
 
+extension AppDelegate{
+    //Notification 2. 포그라운드 수신
+    //ex. 친구랑 1:1 채팅하는 경우, 당사자 푸시는 안옴. 다른 다톡방/갠톡방 등이나 푸시가 오는 것처럼, 특정 화면/조건에 대해서 Foreground에서 알림을 받는 것이 가능
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification,
+        withCompletionHandler completionHandler: @escaping (
+            UNNotificationPresentationOptions
+        ) -> Void
+    ) {
+        completionHandler([.banner, .badge, .list, .sound])
+    }
+    
+    //알람을 사용자가 클릭했는지 알 수 있는 메서드
+    //ex. 딸기 상품 페이지로 이동, 혹은 카카오톡 채팅방 이동
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse,
+        withCompletionHandler completionHandler: @escaping () -> Void
+    ) {
+        print(#function)
+        print(response.notification.request.content.title)
+        print(response.notification.request.content.subtitle)
+        print(response.notification.request.content.userInfo)
+        print(response.notification.request.content.userInfo["type"] as? Int)
+        print(response.notification.request.content.userInfo["id"] as? Int)
+    }
+}
