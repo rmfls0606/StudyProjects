@@ -44,4 +44,5 @@ Notification 관련 정책
 - Foreground에서는 알림이 뜨지 않는 것이 default
 - Foreground에서 알림을 받고 싶은 경우, 별도 설정(delegate) 필요
 - TimeInterval 기반 반복은 60초 이상부터 가능
-- 
+- 알림센터에 알림 스택 기준은 identifer. 각 알림의 고유값을 의미
+- 뱃지 숫자는 알림 갯수와 무관, 일일이 관리 해주어야 함

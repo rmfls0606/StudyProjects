@@ -20,11 +20,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
     }
 
+    //date -> badge -> badege 추가 -> 삭제 -> pendiremoveall
     func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+        //Badge 제거
+        //iOS 17.0
+//        UIApplication.shared.applicationIconBadgeNumber = 0
+        //iOS 18.0+
+        UNUserNotificationCenter.current().setBadgeCount(0)
+        
+        //사용자에게 전달되어 있는 알람 제거 (default로는 알람을 클릭해서 열어주어야 그 알람만 제거됨!)
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
+        
+        //사용자에게 아직 전달되지 않았지만, 앞으로 전달될 알람을 제거
+        UNUserNotificationCenter
+            .current()
+            .removeAllPendingNotificationRequests()
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
