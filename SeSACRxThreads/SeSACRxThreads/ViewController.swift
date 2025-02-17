@@ -1,8 +1,8 @@
 //
 //  ViewController.swift
-//  HolidayCityWeather
+//  SeSACRxThreads
 //
-//  Created by 이상민 on 2/13/25.
+//  Created by jack on 2023/10/30.
 //
 
 import UIKit
@@ -11,7 +11,9 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
+        
+        
     }
 
 

@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  HolidayCityWeather
+//  SeSACRxThreads
 //
-//  Created by 이상민 on 2/13/25.
+//  Created by jack on 2023/10/30.
 //
 
 import UIKit
