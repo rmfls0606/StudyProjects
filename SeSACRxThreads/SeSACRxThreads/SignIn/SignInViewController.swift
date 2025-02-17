@@ -106,12 +106,12 @@ class SignInViewController: UIViewController {
 //        signUpButton.addTarget(self, action: #xselector(signUpButtonClicked), for: .touchUpInside)
         
         // async, stream
-        signUpButton
-            .rx
-            .tap
-            .bind { _ in // bind == subscribe -> 대신 Error, Completed 가 없다 / 주로 UI 에서 사용
-                self.navigationController?.pushViewController(SignUpViewController(), animated: true)
-        }.disposed(by: disposeBag)
+//        signUpButton
+//            .rx
+//            .tap
+//            .bind { _ in // bind == subscribe -> 대신 Error, Completed 가 없다 / 주로 UI 에서 사용
+//                self.navigationController?.pushViewController(SignUpViewController(), animated: true)
+//        }.disposed(by: disposeBag)
         
         signUpButton
             .rx

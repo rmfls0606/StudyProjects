@@ -18,9 +18,72 @@ class SignUpViewController: UIViewController {
     
     let emailPlaceholder = Observable.just("이메일을 입력해주세요.")
     
-    let disposBag = DisposeBag()
+    var disposBag = DisposeBag()
     
     func bind(){
+        //4자리 이상: 다음버튼 나타나고, 중복확인 버튼
+        //4자리 미만: 다음버튼 x, 중복확인 버튼 click x
+//        emailTextField
+//            .rx
+//            .text
+//            .orEmpty //orEmpty 옵셔널을 풀어준다
+//            .bind(with: self) { owner, value in
+//                if value.count >= 4{
+//                    owner.nextButton.isHidden = false
+//                    owner.validationButton.isEnabled = true
+//                }else{
+//                    owner.nextButton.isHidden = true
+//                    owner.validationButton.isEnabled = false
+//                }
+//            }
+//            .disposed(by: disposBag)
+        
+//        let validation = emailTextField
+//            .rx
+//            .text
+//            .orEmpty //String
+//        
+//        validation
+//            .bind(with: self) { owner, value in
+//                if value.count >= 4{
+//                    owner.nextButton.isHidden = false
+//                    owner.validationButton.isEnabled = true
+//                }else{
+//                    owner.nextButton.isHidden = true
+//                    owner.validationButton.isEnabled = false
+//                }
+//            }
+//            .disposed(by: disposBag)
+        
+        let validation = emailTextField
+            .rx
+            .text
+            .orEmpty //String
+            .map{ value in
+                value.count >= 4
+            }
+        
+        validation
+//            .bind(to: nextButton.rx.isEnabled)
+//            .disposed(by: disposBag)
+            .subscribe(
+                with: self) { owner, value in
+                    owner.validationButton.isEnabled = value
+                    print("Validation Next")
+                } onDisposed: { owner in
+                    print("Validation Disposed")
+                }
+                .dispose() //구독 즉시 취소
+        //옵저버블 - 옵저버 사이가 끊김.
+
+        
+        validationButton.rx.tap
+            .bind(with: self) { owner, _ in
+                print("중복확인 버튼 클릭")
+                owner.disposBag = DisposeBag()
+            }
+            .disposed(by: disposBag)
+        
         emailPlaceholder
             .bind(to: emailTextField.rx.placeholder)
             .disposed(by: disposBag)
@@ -33,6 +96,7 @@ class SignUpViewController: UIViewController {
         
         configureLayout()
         configure()
+        bind()
         
         nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
 
