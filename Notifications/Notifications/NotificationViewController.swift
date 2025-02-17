@@ -63,12 +63,16 @@ final class NotificationViewController: UIViewController {
         //        let trigger = UNCalendarNotificationTrigger(dateMatching: componenets,
         //                                                    repeats: false)
         
-        let request = UNNotificationRequest.init(identifier: "\(Date())",
-                                                 content: content,
-                                                 trigger: trigger)
-        
-        UNUserNotificationCenter.current().add(request) { error in
-            print(error)
+        for item in 1...70{
+            
+            let request = UNNotificationRequest.init(identifier: "item-\(item)",
+                                                     content: content,
+                                                     trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request) { error in
+                print(error)
+            }
+            //알림이 63개만 나옴 -> identifier은 고유값을 가지며 64개로 제한이 되어 있기 때문이다.
         }
     }
 }
