@@ -69,11 +69,21 @@ class SimpleTableViewExampleViewController: UIViewController {
             .disposed(by: disposeBag)
         
         //MARK: - 테이블 셀 선택 시
+//        tableView
+//            .rx
+//            .itemSelected
+//            .bind(with: self) { owner, value in
+//                let alert = UIAlertController(title: "셀", message: "\(value.row)번째 셀을 선택하셨습니다.", preferredStyle: .alert)
+//                alert.addAction(UIAlertAction(title: "OK", style: .default))
+//                owner.present(alert, animated: true)
+//            }
+//            .disposed(by: disposeBag)
+        
         tableView
             .rx
-            .itemSelected
+            .modelSelected(String.self)
             .bind(with: self) { owner, value in
-                let alert = UIAlertController(title: "셀", message: "\(value.row)번째 셀을 선택하셨습니다.", preferredStyle: .alert)
+                let alert = UIAlertController(title: "셀", message: "\(value)", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 owner.present(alert, animated: true)
             }
