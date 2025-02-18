@@ -55,5 +55,15 @@ class SimpleTableViewExampleViewController: UIViewController {
                 return cell
             }
             .disposed(by: disposeBag)
+        
+        tableView
+            .rx
+            .itemAccessoryButtonTapped
+            .bind(with: self) { owner, value in
+                let alert = UIAlertController(title: "악세서리", message: "\(value.row)번째 악세서리를 선택하셨습니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                owner.present(alert, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
 }
