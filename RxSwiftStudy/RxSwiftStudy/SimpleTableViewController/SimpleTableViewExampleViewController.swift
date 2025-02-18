@@ -48,6 +48,7 @@ class SimpleTableViewExampleViewController: UIViewController {
     }
     
     func bind(){
+        //MARK: - 셀의 데이터 삽입
         items
             .bind(to: tableView.rx.items){ (tableView, row, element) in
                 let cell = tableView.dequeueReusableCell(withIdentifier: SimpleTableViewCell.identifier) as! SimpleTableViewCell
@@ -56,11 +57,23 @@ class SimpleTableViewExampleViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        //MARK: - 악세서리 선택 시 액션
         tableView
             .rx
             .itemAccessoryButtonTapped
             .bind(with: self) { owner, value in
                 let alert = UIAlertController(title: "악세서리", message: "\(value.row)번째 악세서리를 선택하셨습니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                owner.present(alert, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        //MARK: - 테이블 셀 선택 시
+        tableView
+            .rx
+            .itemSelected
+            .bind(with: self) { owner, value in
+                let alert = UIAlertController(title: "셀", message: "\(value.row)번째 셀을 선택하셨습니다.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 owner.present(alert, animated: true)
             }
