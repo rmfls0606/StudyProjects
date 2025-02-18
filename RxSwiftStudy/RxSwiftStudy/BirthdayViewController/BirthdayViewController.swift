@@ -60,10 +60,11 @@ class BirthdayViewController: UIViewController {
         return picker
     }()
     
+    private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setUI()
         setLayout()
         setView()
@@ -95,7 +96,22 @@ class BirthdayViewController: UIViewController {
     }
     
     func setBind(){
-        
+        datePicker
+            .rx
+            .date
+            .map{ date -> (year: String, month: String, day: String) in
+                let current = Calendar.current
+                let components = current.dateComponents([.year, .month, .day], from: date)
+                let year = "\(components.year ?? 0)"
+                let month = "\(components.month ?? 0)"
+                let day = "\(components.day ?? 0)"
+                return (year, month, day)
+            }
+            .bind(with: self, onNext: { owner, components in
+                owner.yearLabel.text = components.year
+                owner.monthLabel.text = components.month
+                owner.dayLabel.text = components.day
+            })
+            .disposed(by: disposeBag)
     }
-
 }
