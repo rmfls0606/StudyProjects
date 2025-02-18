@@ -7,8 +7,16 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
+
+private let minimainUsernameLenght: Int = 5
+private let minimalPasswordLength: Int = 5
 
 class SimpleValidationViewController: UIViewController {
+    
+    private let disposeBag = DisposeBag()
+    
     private let stackView: UIStackView = {
         let view = UIStackView()
         view.axis = .vertical
@@ -92,9 +100,55 @@ class SimpleValidationViewController: UIViewController {
     
     func setView(){
         self.view.backgroundColor = .white
+        
+        usernameValidOutlet.text = "유저명은 적어도 5글자는 입력되어야 합니다."
+        passwordValidOutlet.text = "비밀번호는 적어도 5글자는 입력되어야 합니다."
     }
     
     func setBind(){
+        let usernameValid = usernameOutlet.rx.text.orEmpty
+            .map{ $0.count >= minimainUsernameLenght }
+            .share(replay: 1)
         
+        let passwordValid = passwordOutlet.rx.text.orEmpty
+            .map{ $0.count >= minimalPasswordLength }
+            .share(replay: 1)
+        
+        let everythingValid = Observable.combineLatest(usernameValid, passwordValid) { $0 && $1 }
+        
+        usernameValid
+            .bind(to: passwordOutlet.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        usernameValid
+            .bind(to: usernameValidOutlet.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        passwordValid
+            .bind(to: passwordValidOutlet.rx.isHidden)
+            .disposed(by: disposeBag)
+
+        everythingValid
+            .bind(to: doSomethingOutlet.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        doSomethingOutlet.rx.tap
+            .bind(with: self) { owner, value in
+                owner.showAlert()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(
+            title: "RxExample",
+            message: "This is wonderful",
+            preferredStyle: .alert
+        )
+        let defaultAction = UIAlertAction(title: "Ok",
+                                          style: .default,
+                                          handler: nil)
+        alert.addAction(defaultAction)
+        present(alert, animated: true, completion: nil)
     }
 }
