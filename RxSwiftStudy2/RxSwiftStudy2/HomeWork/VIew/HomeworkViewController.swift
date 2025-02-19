@@ -96,6 +96,12 @@ class HomeworkViewController: UIViewController {
                 cell.usernameLabel.text = element.name
                 cell.profileImageView.kf
                     .setImage(with: URL(string: element.profileImage))
+                cell.detailButton.rx.tap.bind(with: self) { owner, _ in
+                    let nextVC = DetailViewController()
+                    nextVC.navigationItem.title = element.name
+                    owner.navigationController?.pushViewController(nextVC, animated: true)
+                }
+                .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         

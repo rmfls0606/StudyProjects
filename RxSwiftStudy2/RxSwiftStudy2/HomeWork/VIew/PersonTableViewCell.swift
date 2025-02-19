@@ -7,10 +7,14 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class PersonTableViewCell: UITableViewCell {
     
     static let identifier = "PersonTableViewCell"
+    
+    var disposeBag = DisposeBag()
     
     let usernameLabel: UILabel = {
         let label = UILabel()
@@ -38,6 +42,11 @@ final class PersonTableViewCell: UITableViewCell {
         return button
     }()
       
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
