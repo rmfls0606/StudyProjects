@@ -74,9 +74,9 @@ class HomeworkViewController: UIViewController {
         Person(name: "Ann", email: "ann.howard@example.com", profileImage: "https://randomuser.me/api/portraits/thumb/women/25.jpg")
     ]
     
-    lazy var tableVIewItems = Observable.just(sampleUsers)
+    lazy var tableViewItems = BehaviorSubject(value: sampleUsers)
     var collectionViewItems = BehaviorRelay(value: [String]())
-    
+
     let disposeBag = DisposeBag()
     
     let tableView = UITableView()
@@ -91,7 +91,7 @@ class HomeworkViewController: UIViewController {
      
     private func bind() {
         //MARK: - 데이터를 이용하여 테이블 뷰 셀 보여주기
-        tableVIewItems
+        tableViewItems
             .bind(to: tableView.rx.items(cellIdentifier: PersonTableViewCell.identifier, cellType: PersonTableViewCell.self)){ (row, element, cell) in
                 cell.usernameLabel.text = element.name
                 cell.profileImageView.kf
@@ -111,6 +111,19 @@ class HomeworkViewController: UIViewController {
             .bind(with: self) { owner, name in
                 owner.collectionViewItems
                     .accept(owner.collectionViewItems.value + [name])
+            }
+            .disposed(by: disposeBag)
+        
+        //MARK: - 서치바 텍스트 입력 후 return누르면 검색어 포함된 사용자 필터링
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty, resultSelector: { _, text in
+                return text
+            })
+            .distinctUntilChanged()
+            .bind(with: self) { owner, text in
+                let result = text.isEmpty ? owner.sampleUsers : owner.sampleUsers.filter{ $0.name.contains(text)}
+                
+                owner.tableViewItems.onNext(result)
             }
             .disposed(by: disposeBag)
     }
