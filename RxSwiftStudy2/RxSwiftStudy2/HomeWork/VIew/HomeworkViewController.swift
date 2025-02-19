@@ -74,7 +74,9 @@ class HomeworkViewController: UIViewController {
         Person(name: "Ann", email: "ann.howard@example.com", profileImage: "https://randomuser.me/api/portraits/thumb/women/25.jpg")
     ]
     
-    lazy var items = Observable.just(sampleUsers)
+    lazy var tableVIewItems = Observable.just(sampleUsers)
+    var collectionViewItems = BehaviorRelay(value: [String]())
+    
     let disposeBag = DisposeBag()
     
     let tableView = UITableView()
@@ -88,11 +90,27 @@ class HomeworkViewController: UIViewController {
     }
      
     private func bind() {
-        items
+        //MARK: - 데이터를 이용하여 테이블 뷰 셀 보여주기
+        tableVIewItems
             .bind(to: tableView.rx.items(cellIdentifier: PersonTableViewCell.identifier, cellType: PersonTableViewCell.self)){ (row, element, cell) in
                 cell.usernameLabel.text = element.name
                 cell.profileImageView.kf
                     .setImage(with: URL(string: element.profileImage))
+            }
+            .disposed(by: disposeBag)
+        
+        collectionViewItems
+            .bind(to: collectionView.rx.items( cellIdentifier: UserCollectionViewCell.identifier, cellType: UserCollectionViewCell.self)){ (item, element, cell) in
+                cell.label.text = element
+            }
+            .disposed(by: disposeBag)
+        
+        //MARK: - 셀을 선택했을 때 콜렉션 뷰에 이름 보여주기
+        tableView.rx.modelSelected(Person.self)
+            .map{ $0.name}
+            .bind(with: self) { owner, name in
+                owner.collectionViewItems
+                    .accept(owner.collectionViewItems.value + [name])
             }
             .disposed(by: disposeBag)
     }
