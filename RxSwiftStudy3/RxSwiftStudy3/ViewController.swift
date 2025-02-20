@@ -24,82 +24,100 @@ class ViewController: UIViewController {
     }
     
     /*
-    //subscribe: next, complete, error, 메인쓰레드 실행을 보장 x
-    //bind: next. 메인쓰레드 실행을 보장 x
-    //drive, 메인쓰레드 실행을 보장, 쓰레드 공유
-    //Trait - Driver, ControlPropertey, ControlEvent etc...
-    func bindButton(){
-        //MARK: - 1) subscribe
-        //        nextButton.rx.tap
-        //            .subscribe(with: self) { owner, _ in
-        //                print(#function, "클릭")
-        //            } onError: { owner, error in
-        //                print(#function, "onError")
-        //            } onCompleted: { owner in
-        //                print(#function, "onCompleted")
-        //            } onDisposed: { owner in
-        //                print(#function, "onDisposed")
-        //            }
-        //            .disposed(by: disposeBag)
-        
-        //MARK: - 2) bind
-        //        //버튼 > 서버통신(비동기) > UI업데이트(main Thread)
-        //        nextButton.rx.tap
-        //            .map{
-        //                print("observe 전",Thread.isMainThread)
-        //            }
-        ////            .observe(on: MainScheduler.instance) //이 코드 뒤의 코드는 Main Thread에서 실행하겠어. 라는 의미의 코드
-        //            .observe(on: ConcurrentDispatchQueueScheduler(qos: .default)) //이 코드 뒤의 코드는 Background Thread에서 실행하겠어. 라는 의미의 코드
-        //            .map{
-        //                print("observe 후",Thread.isMainThread)
-        //            }
-        //            .bind(with: self) { owner, _ in
-        //                print("bind 했을 때",Thread.isMainThread)
-        //                print(#function, "클릭")
-        //                //메인
-        //            }
-        //            .disposed(by: disposeBag)
-        
-        //MARK: - 3) drive
-        nextButton.rx.tap
-            .asDriver()
-            .drive(with: self){ owner, _ in
-                print("drive")
-            }
-            .disposed(by: disposeBag)
-        
-    }
+     //subscribe: next, complete, error, 메인쓰레드 실행을 보장 x
+     //bind: next. 메인쓰레드 실행을 보장 x
+     //drive, 메인쓰레드 실행을 보장, 쓰레드 공유
+     //Trait - Driver, ControlPropertey, ControlEvent etc...
+     func bindButton(){
+     //MARK: - 1) subscribe
+     //        nextButton.rx.tap
+     //            .subscribe(with: self) { owner, _ in
+     //                print(#function, "클릭")
+     //            } onError: { owner, error in
+     //                print(#function, "onError")
+     //            } onCompleted: { owner in
+     //                print(#function, "onCompleted")
+     //            } onDisposed: { owner in
+     //                print(#function, "onDisposed")
+     //            }
+     //            .disposed(by: disposeBag)
+     
+     //MARK: - 2) bind
+     //        //버튼 > 서버통신(비동기) > UI업데이트(main Thread)
+     //        nextButton.rx.tap
+     //            .map{
+     //                print("observe 전",Thread.isMainThread)
+     //            }
+     ////            .observe(on: MainScheduler.instance) //이 코드 뒤의 코드는 Main Thread에서 실행하겠어. 라는 의미의 코드
+     //            .observe(on: ConcurrentDispatchQueueScheduler(qos: .default)) //이 코드 뒤의 코드는 Background Thread에서 실행하겠어. 라는 의미의 코드
+     //            .map{
+     //                print("observe 후",Thread.isMainThread)
+     //            }
+     //            .bind(with: self) { owner, _ in
+     //                print("bind 했을 때",Thread.isMainThread)
+     //                print(#function, "클릭")
+     //                //메인
+     //            }
+     //            .disposed(by: disposeBag)
+     
+     //MARK: - 3) drive
+     nextButton.rx.tap
+     .asDriver()
+     .drive(with: self){ owner, _ in
+     print("drive")
+     }
+     .disposed(by: disposeBag)
+     
+     }
      */
     
     func bindButton(){
         let button = nextButton.rx.tap
             .map{ "안녕하세요 \(Int.random(in: 1...100))"}
-            
+            .share() //하나의 subscribe를 공유하도록
+        
         //MARK: - 기본 bind 예제
         /*
-            button
-                .bind(with: self) { owner, value in
-                    print("1", value)
-                }
-                .disposed(by: disposeBag)
-
-            button
-                .bind(with: self) { owner, value in
-                    print("2", value)
-                }
-                .disposed(by: disposeBag)
-
-            button
-                .bind(with: self) { owner, value in
-                    print("3", value)
-                }
-                .disposed(by: disposeBag)
-            
-            /*
-             1 안녕하세요 13
-             2 안녕하세요 98
-             3 안녕하세요 50
-             */
+         button
+         .bind(with: self) { owner, value in
+         print("1", value)
+         }
+         .disposed(by: disposeBag)
+         
+         button
+         .bind(with: self) { owner, value in
+         print("2", value)
+         }
+         .disposed(by: disposeBag)
+         
+         button
+         .bind(with: self) { owner, value in
+         print("3", value)
+         }
+         .disposed(by: disposeBag)
+         
+         /*
+          1 안녕하세요 13
+          2 안녕하세요 98
+          3 안녕하세요 50
+          */
+         */
+        
+        //MARK: - share 연산자를 사용한 예제
+        button
+            .bind(to: navigationItem.rx.title)
+            .disposed(by: disposeBag)
+        
+        button
+            .bind(to: nextButton.rx.title())
+            .disposed(by: disposeBag)
+        
+        button
+            .bind(to: nicknameTextField.rx.text)
+            .disposed(by: disposeBag)
+        
+        /*
+         각 to: _ 에 해당하는 곳에 같은 값들이 존재함
          */
     }
     
