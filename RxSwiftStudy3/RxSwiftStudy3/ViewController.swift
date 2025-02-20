@@ -10,6 +10,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
+enum SniffingError: Error{
+    case incorrect
+}
+
 class ViewController: UIViewController {
     
     let nicknameTextField = SignTextField(placeholderText: "닉네임을 입력해주세요")
@@ -44,7 +48,7 @@ class ViewController: UIViewController {
             if number == self.quiz{
                 value.onNext(true)
             }else{
-                value.onNext(false)
+                value.onError(SniffingError.incorrect)
             }
             
             return Disposables.create()
