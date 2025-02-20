@@ -22,6 +22,10 @@ class HomeworkViewController: UIViewController {
     let tableView = UITableView()
     lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout())
     let searchBar = UISearchBar()
+    
+    let disposeBag = DisposeBag()
+    
+    let items = BehaviorSubject(value: ["test"])
      
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +34,33 @@ class HomeworkViewController: UIViewController {
     }
      
     private func bind() {
-          
+        //MARK: - TableView -> Show
+        items
+            .asDriver(onErrorJustReturn: [])
+            .drive(
+                tableView.rx
+                    .items(
+                        cellIdentifier: PersonTableViewCell.identifier,
+                        cellType: PersonTableViewCell.self)
+            ){ (row, element, cell) in
+                cell.usernameLabel.text = element
+            }
+            .disposed(by: disposeBag)
+            
+        //MARK: - search -> TableView append
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .distinctUntilChanged()
+            .map{ "\($0)님"}
+            .asDriver(onErrorJustReturn: "손님")
+            .drive(with: self){ owner, value in
+                var data = try! owner.items.value()
+                
+                data.append(value)
+                
+                owner.items.onNext(data)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func configure() {
