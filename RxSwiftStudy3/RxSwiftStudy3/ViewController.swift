@@ -23,6 +23,7 @@ class ViewController: UIViewController {
         bindButton()
     }
     
+    /*
     //subscribe: next, complete, error, 메인쓰레드 실행을 보장 x
     //bind: next. 메인쓰레드 실행을 보장 x
     //drive, 메인쓰레드 실행을 보장, 쓰레드 공유
@@ -67,6 +68,39 @@ class ViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+    }
+     */
+    
+    func bindButton(){
+        let button = nextButton.rx.tap
+            .map{ "안녕하세요 \(Int.random(in: 1...100))"}
+            
+        //MARK: - 기본 bind 예제
+        /*
+            button
+                .bind(with: self) { owner, value in
+                    print("1", value)
+                }
+                .disposed(by: disposeBag)
+
+            button
+                .bind(with: self) { owner, value in
+                    print("2", value)
+                }
+                .disposed(by: disposeBag)
+
+            button
+                .bind(with: self) { owner, value in
+                    print("3", value)
+                }
+                .disposed(by: disposeBag)
+            
+            /*
+             1 안녕하세요 13
+             2 안녕하세요 98
+             3 안녕하세요 50
+             */
+         */
     }
     
     func configureLayout() {
