@@ -58,7 +58,6 @@ class HomeworkViewController: UIViewController {
         
         //MARK: - collectionView -> show
         output.recent
-            .asDriver() // 위의 subject의 경우는 .asDriver()를 사용할 수 없었던 이유: subject의 경우  onNext, onCompleted, OnError로 방출할 수 있다보니 에러가 발생할 경우 처리해주는 코드가 필요, relay의 경우 accept만 사용하여 방출하기 떄문에 에러처리를 해줄 필요가 없다.
             .drive(
                 collectionView.rx
                     .items(

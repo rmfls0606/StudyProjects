@@ -23,7 +23,7 @@ final class HomeworkViewModel{
     
     struct Output{
         let items: BehaviorSubject<[String]> //테이블뷰
-        let recent: BehaviorRelay<[String]> //컬렉션뷰
+        let recent: Driver<[String]> //컬렉션뷰
     }
     
     func transform(input: Input) -> Output{
@@ -51,6 +51,6 @@ final class HomeworkViewModel{
                 .disposed(by: disposeBag)
 
         
-        return Output(items: itemsList, recent: recentList)
+        return Output(items: itemsList, recent: recentList.asDriver())
     }
 }
