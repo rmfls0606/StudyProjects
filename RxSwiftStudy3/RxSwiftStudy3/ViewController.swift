@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    let textFieldText = BehaviorSubject(value: "킁킁")
     
     let publisSubject = PublishSubject<Int>() //PublishSubject: 초기값 없음
     let behaviorSubject = BehaviorSubject(value: 0) //BehaviorSubject: 초기값 설정해줘야 함
@@ -28,59 +29,74 @@ class ViewController: UIViewController {
     }
     
     func bindTextField(){
-        //버튼 선택으로 textfield의 값을 변경해주면 위의 textfield실시간 반영 코드는 실행될까?
-        //=> textfield에 값은 반영되지만 orEmpty는 실행안됨, 그러니 구독이 끊어진 것은 아니다!
-        //UI처리에 특화된 Observable(전달만 가능, 값을 받을 수는 없음)이 Trait
-        //RxCocoa의 Trait은 ControlProperty, ControlEvent, Driver
-        nicknameTextField.rx.text.orEmpty
+        textFieldText
             .subscribe(with: self) { owner, value in
-                print(#function, value)
-                print("실시간으로 텍스트필드 달라짐")
-            } onError: { owner, error in
-                print(#function, "onError")
-            } onCompleted: { owner in
-                print(#function, "onCompleted")
-            } onDisposed: { owner in
-                print(#function, "onDisposed")
+                owner.nicknameTextField.text = value
+                print("111111")
             }
             .disposed(by: disposeBag)
         
         nextButton.rx.tap
-            .bind(with: self) { owner, _ in
-                owner.nicknameTextField.text = "5"
+            .subscribe(with: self) { owner, _ in
+                owner.textFieldText.onNext("5")
             }
             .disposed(by: disposeBag)
-        
-        /*
-            //처음에는 초기값이 없기에 출력안됨.
-            //버튼 클릭으로 값이 들어오면 출력됨
-            publisSubject
-                .subscribe(with: self) { owner, value in
-                    print(#function, value)
-                    print("publisSubject")
-                } onError: { owner, error in
-                    print(#function, "onError")
-                } onCompleted: { owner in
-                    print(#function, "onCompleted")
-                } onDisposed: { owner in
-                    print(#function, "onDisposed")
-                }
-                .disposed(by: disposeBag)
-            
-            behaviorSubject
-                .subscribe(with: self) { owner, value in
-                    print(#function, value)
-                    print("behaviorSubject")
-                } onError: { owner, error in
-                    print(#function, "onError")
-                } onCompleted: { owner in
-                    print(#function, "onCompleted")
-                } onDisposed: { owner in
-                    print(#function, "onDisposed")
-                }
-                .disposed(by: disposeBag)
-         */
     }
+    
+//    func bindTextField(){
+//        //버튼 선택으로 textfield의 값을 변경해주면 위의 textfield실시간 반영 코드는 실행될까?
+//        //=> textfield에 값은 반영되지만 orEmpty는 실행안됨, 그러니 구독이 끊어진 것은 아니다!
+//        //UI처리에 특화된 Observable(전달만 가능, 값을 받을 수는 없음)이 Trait
+//        //RxCocoa의 Trait은 ControlProperty, ControlEvent, Driver
+//        nicknameTextField.rx.text.orEmpty
+//            .subscribe(with: self) { owner, value in
+//                print(#function, value)
+//                print("실시간으로 텍스트필드 달라짐")
+//            } onError: { owner, error in
+//                print(#function, "onError")
+//            } onCompleted: { owner in
+//                print(#function, "onCompleted")
+//            } onDisposed: { owner in
+//                print(#function, "onDisposed")
+//            }
+//            .disposed(by: disposeBag)
+//        
+//        nextButton.rx.tap
+//            .bind(with: self) { owner, _ in
+//                owner.nicknameTextField.text = "5"
+//            }
+//            .disposed(by: disposeBag)
+//        
+//        /*
+//            //처음에는 초기값이 없기에 출력안됨.
+//            //버튼 클릭으로 값이 들어오면 출력됨
+//            publisSubject
+//                .subscribe(with: self) { owner, value in
+//                    print(#function, value)
+//                    print("publisSubject")
+//                } onError: { owner, error in
+//                    print(#function, "onError")
+//                } onCompleted: { owner in
+//                    print(#function, "onCompleted")
+//                } onDisposed: { owner in
+//                    print(#function, "onDisposed")
+//                }
+//                .disposed(by: disposeBag)
+//            
+//            behaviorSubject
+//                .subscribe(with: self) { owner, value in
+//                    print(#function, value)
+//                    print("behaviorSubject")
+//                } onError: { owner, error in
+//                    print(#function, "onError")
+//                } onCompleted: { owner in
+//                    print(#function, "onCompleted")
+//                } onDisposed: { owner in
+//                    print(#function, "onDisposed")
+//                }
+//                .disposed(by: disposeBag)
+//         */
+//    }
     
     /*
      //subscribe: next, complete, error, 메인쓰레드 실행을 보장 x
