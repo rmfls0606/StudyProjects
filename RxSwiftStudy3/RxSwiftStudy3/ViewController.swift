@@ -47,8 +47,10 @@ class ViewController: UIViewController {
         return Observable<Bool>.create { value in
             if number == self.quiz{
                 value.onNext(true)
+                value.onCompleted()
             }else{
-                value.onError(SniffingError.incorrect)
+                value.onNext(false)
+                value.onCompleted()
             }
             
             return Disposables.create()
