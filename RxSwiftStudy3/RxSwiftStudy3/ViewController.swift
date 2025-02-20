@@ -74,7 +74,9 @@ class ViewController: UIViewController {
     func bindButton(){
         let button = nextButton.rx.tap
             .map{ "안녕하세요 \(Int.random(in: 1...100))"}
-            .share() //하나의 subscribe를 공유하도록
+        //Driver의 경우 share연산자를 내부적으로 가지고 있어서 사용하지 않아도 됨
+//            .share() //하나의 subscribe를 공유하도록
+            .asDriver(onErrorJustReturn: "") //실패를 하거나 문자가 안 올때 해당 값을 return 해줘라
         
         //MARK: - 기본 bind 예제
         /*
@@ -104,16 +106,35 @@ class ViewController: UIViewController {
          */
         
         //MARK: - share 연산자를 사용한 예제
+        /*
+            button
+                .bind(to: navigationItem.rx.title)
+                .disposed(by: disposeBag)
+            
+            button
+                .bind(to: nextButton.rx.title())
+                .disposed(by: disposeBag)
+            
+            button
+                .bind(to: nicknameTextField.rx.text)
+                .disposed(by: disposeBag)
+            
+            /*
+             각 to: _ 에 해당하는 곳에 같은 값들이 존재함
+             */
+         */
+        
+        //MARK: - drive 바인딩을 사용한 예제
         button
-            .bind(to: navigationItem.rx.title)
+            .drive(navigationItem.rx.title)
             .disposed(by: disposeBag)
         
         button
-            .bind(to: nextButton.rx.title())
+            .drive(nextButton.rx.title())
             .disposed(by: disposeBag)
         
         button
-            .bind(to: nicknameTextField.rx.text)
+            .drive(nicknameTextField.rx.text)
             .disposed(by: disposeBag)
         
         /*
