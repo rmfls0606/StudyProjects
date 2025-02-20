@@ -25,8 +25,7 @@ class HomeworkViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
-    var recent = BehaviorRelay(value: ["킁킁"])
-    let items = BehaviorSubject(value: ["test"])
+    let viewModel = HomeworkViewModel()
      
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,8 +34,17 @@ class HomeworkViewController: UIViewController {
     }
      
     private func bind() {
+        let recentText = PublishSubject<String>()
+        
+        let input = HomeworkViewModel.Input(
+            searchButtonTap: searchBar.rx.searchButtonClicked,
+            searchText: searchBar.rx.text.orEmpty,
+            recentText: recentText
+        )
+        let output = viewModel.transform(input: input)
+        
         //MARK: - TableView -> Show
-        items
+        output.items
             .asDriver(onErrorJustReturn: [])
             .drive(
                 tableView.rx
@@ -47,23 +55,9 @@ class HomeworkViewController: UIViewController {
                 cell.usernameLabel.text = element
             }
             .disposed(by: disposeBag)
-            
-        //MARK: - search -> TableView append
-        searchBar.rx.searchButtonClicked
-            .withLatestFrom(searchBar.rx.text.orEmpty)
-            .distinctUntilChanged()
-            .map{ "\($0)님"}
-            .asDriver(onErrorJustReturn: "손님")
-            .drive(with: self){ owner, value in
-                var data = try! owner.items.value()
-                data.append(value)
-                
-                owner.items.onNext(data)
-            }
-            .disposed(by: disposeBag)
         
         //MARK: - collectionView -> show
-        recent
+        output.recent
             .asDriver() // 위의 subject의 경우는 .asDriver()를 사용할 수 없었던 이유: subject의 경우  onNext, onCompleted, OnError로 방출할 수 있다보니 에러가 발생할 경우 처리해주는 코드가 필요, relay의 경우 accept만 사용하여 방출하기 떄문에 에러처리를 해줄 필요가 없다.
             .drive(
                 collectionView.rx
@@ -84,11 +78,7 @@ class HomeworkViewController: UIViewController {
             .map{ $0.0 }
             .bind(with: self) { owner, text in
                 print(text)
-                
-                var data = owner.recent.value
-                data.append(text)
-                
-                owner.recent.accept(data)
+                recentText.onNext(text)
             }
             .disposed(by: disposeBag)
         
