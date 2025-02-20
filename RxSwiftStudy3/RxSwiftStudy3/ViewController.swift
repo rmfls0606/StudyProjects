@@ -22,31 +22,89 @@ class ViewController: UIViewController {
     let publisSubject = PublishSubject<Int>() //PublishSubject: 초기값 없음
     let behaviorSubject = BehaviorSubject(value: 0) //BehaviorSubject: 초기값 설정해줘야 함
     
+    let quiz = Int.random(in: 1...10)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureLayout()
-        bindTextField()
+        print("quiz", quiz)
+        bindCustomObservable()
+        
+        randomNumbebr()
+            .subscribe(with: self) { owner, value in
+                print(value)
+            }
+            .disposed(by: disposeBag)
+
     }
     
-    func bindTextField(){
-        textFieldText
-            .subscribe(with: self) { owner, value in
-                owner.nicknameTextField.text = value
-                print("111111")
-            }
-            .disposed(by: disposeBag)
+    func randomQuiz(number: Int) -> Observable<Bool>{
         
+        return Observable<Bool>.create { value in
+            if number == self.quiz{
+                value.onNext(true)
+            }else{
+                value.onNext(false)
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    func randomNumbebr() -> Observable<Int>{
+        
+        return Observable<Int>.create { value in
+            
+            value.onNext(Int.random(in: 1...10))
+            
+            return Disposables.create()
+        }
+    }
+    
+    func play(value: Int){
+        randomQuiz(number: value)
+            .subscribe(
+                with: self) { owner, value in
+                    print("next", value)
+                } onError: { owner, error in
+                    print("Error", error)
+                } onCompleted: { owner in
+                    print("Completed")
+                } onDisposed: { owner in
+                    print("Disposed")
+                }
+            .disposed(by: disposeBag)
+    }
+    
+    func bindCustomObservable(){
         nextButton.rx.tap
-            .subscribe(with: self) { owner, _ in
-                //PublishSubject의 경우 subscribe를 사용하여 값을 가지고 올 수 있다.
-                
-                print("Behavior에 들어있는 데이터 가져오기")
-//                let result = try! owner.textFieldText.value()
-                let result = owner.textFieldText.value
-                print(result)
+            .map{ Int.random(in: 1...10) }
+            .bind(with: self) { owner, value in
+                print("value", value)
+                owner.play(value: value)
             }
             .disposed(by: disposeBag)
     }
+    
+//    func bindTextField(){
+//        textFieldText
+//            .subscribe(with: self) { owner, value in
+//                owner.nicknameTextField.text = value
+//                print("111111")
+//            }
+//            .disposed(by: disposeBag)
+//        
+//        nextButton.rx.tap
+//            .subscribe(with: self) { owner, _ in
+//                //PublishSubject의 경우 subscribe를 사용하여 값을 가지고 올 수 있다.
+//                
+//                print("Behavior에 들어있는 데이터 가져오기")
+////                let result = try! owner.textFieldText.value()
+//                let result = owner.textFieldText.value
+//                print(result)
+//            }
+//            .disposed(by: disposeBag)
+//    }
     
 //    func bindTextField(){
 //        //버튼 선택으로 textfield의 값을 변경해주면 위의 textfield실시간 반영 코드는 실행될까?
