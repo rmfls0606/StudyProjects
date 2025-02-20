@@ -10,10 +10,12 @@
 		79C0CEB62D66B9C700415425 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 79C0CEB52D66B9C700415425 /* RxCocoa */; };
 		79C0CEB82D66B9C700415425 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C0CEB72D66B9C700415425 /* RxSwift */; };
 		79C0CEBB2D66BA2500415425 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79C0CEBA2D66BA2500415425 /* SnapKit */; };
+		79C0CEC22D66BB2600415425 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79C0CEC12D66BB2600415425 /* Resource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		79C0CE9C2D66B89400415425 /* RxSwiftStudy3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxSwiftStudy3.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79C0CEC12D66BB2600415425 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -56,6 +58,7 @@
 			children = (
 				79C0CE9E2D66B89400415425 /* RxSwiftStudy3 */,
 				79C0CE9D2D66B89400415425 /* Products */,
+				79C0CEC12D66BB2600415425 /* Resource.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79C0CEC22D66BB2600415425 /* Resource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
