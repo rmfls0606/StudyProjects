@@ -73,13 +73,17 @@ class ViewController: UIViewController {
     
     func bindButton(){
         let button = nextButton.rx.tap
+            .map{ print("버튼 클릭")}
+            .debug("1")
+            .debug("2")
+            .debug("3")
             .map{ "안녕하세요 \(Int.random(in: 1...100))"}
         //Driver의 경우 share연산자를 내부적으로 가지고 있어서 사용하지 않아도 됨
 //            .share() //하나의 subscribe를 공유하도록
-            .asDriver(onErrorJustReturn: "") //실패를 하거나 문자가 안 올때 해당 값을 return 해줘라
+//            .asDriver(onErrorJustReturn: "") //실패를 하거나 문자가 안 올때 해당 값을 return 해줘라
         
         //MARK: - 기본 bind 예제
-        /*
+        
          button
          .bind(with: self) { owner, value in
          print("1", value)
@@ -103,7 +107,6 @@ class ViewController: UIViewController {
           2 안녕하세요 98
           3 안녕하세요 50
           */
-         */
         
         //MARK: - share 연산자를 사용한 예제
         /*
@@ -125,20 +128,22 @@ class ViewController: UIViewController {
          */
         
         //MARK: - drive 바인딩을 사용한 예제
-        button
-            .drive(navigationItem.rx.title)
-            .disposed(by: disposeBag)
-        
-        button
-            .drive(nextButton.rx.title())
-            .disposed(by: disposeBag)
-        
-        button
-            .drive(nicknameTextField.rx.text)
-            .disposed(by: disposeBag)
-        
         /*
-         각 to: _ 에 해당하는 곳에 같은 값들이 존재함
+            button
+                .drive(navigationItem.rx.title)
+                .disposed(by: disposeBag)
+            
+            button
+                .drive(nextButton.rx.title())
+                .disposed(by: disposeBag)
+            
+            button
+                .drive(nicknameTextField.rx.text)
+                .disposed(by: disposeBag)
+            
+            /*
+             각 to: _ 에 해당하는 곳에 같은 값들이 존재함
+             */
          */
     }
     
