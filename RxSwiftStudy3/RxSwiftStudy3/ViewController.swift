@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
-    let textFieldText = BehaviorSubject(value: "킁킁")
+    let textFieldText = PublishSubject<String>()
     
     let publisSubject = PublishSubject<Int>() //PublishSubject: 초기값 없음
     let behaviorSubject = BehaviorSubject(value: 0) //BehaviorSubject: 초기값 설정해줘야 함
