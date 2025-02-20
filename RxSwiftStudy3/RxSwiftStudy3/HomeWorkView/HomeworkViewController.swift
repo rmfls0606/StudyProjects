@@ -25,6 +25,7 @@ class HomeworkViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    var recent = BehaviorRelay(value: ["킁킁"])
     let items = BehaviorSubject(value: ["test"])
      
     override func viewDidLoad() {
@@ -55,12 +56,43 @@ class HomeworkViewController: UIViewController {
             .asDriver(onErrorJustReturn: "손님")
             .drive(with: self){ owner, value in
                 var data = try! owner.items.value()
-                
                 data.append(value)
                 
                 owner.items.onNext(data)
             }
             .disposed(by: disposeBag)
+        
+        //MARK: - collectionView -> show
+        recent
+            .asDriver() // 위의 subject의 경우는 .asDriver()를 사용할 수 없었던 이유: subject의 경우  onNext, onCompleted, OnError로 방출할 수 있다보니 에러가 발생할 경우 처리해주는 코드가 필요, relay의 경우 accept만 사용하여 방출하기 떄문에 에러처리를 해줄 필요가 없다.
+            .drive(
+                collectionView.rx
+                    .items(
+                        cellIdentifier: UserCollectionViewCell.identifier,
+                        cellType: UserCollectionViewCell.self
+                    )
+            ){ (row, element, cell) in
+                cell.label.text = element
+            }
+            .disposed(by: disposeBag)
+        
+        Observable
+            .zip(
+                tableView.rx.modelSelected(String.self),
+                tableView.rx.itemSelected
+            )
+            .map{ $0.0 }
+            .bind(with: self) { owner, text in
+                print(text)
+                
+                var data = owner.recent.value
+                data.append(text)
+                
+                owner.recent.accept(data)
+            }
+            .disposed(by: disposeBag)
+        
+        
     }
     
     private func configure() {
