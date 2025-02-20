@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
-    let textFieldText = BehaviorSubject(value: "고래밥 \(Int.random(in: 1...100))")
+    let textFieldText = BehaviorRelay(value: "고래밥 \(Int.random(in: 1...100))")
     
     let publisSubject = PublishSubject<Int>() //PublishSubject: 초기값 없음
     let behaviorSubject = BehaviorSubject(value: 0) //BehaviorSubject: 초기값 설정해줘야 함
@@ -41,7 +41,8 @@ class ViewController: UIViewController {
                 //PublishSubject의 경우 subscribe를 사용하여 값을 가지고 올 수 있다.
                 
                 print("Behavior에 들어있는 데이터 가져오기")
-                let result = try! owner.textFieldText.value()
+//                let result = try! owner.textFieldText.value()
+                let result = owner.textFieldText.value
                 print(result)
             }
             .disposed(by: disposeBag)
