@@ -25,7 +25,7 @@ class NewSearchViewController: UIViewController {
     }()
     
     let searchBar = UISearchBar()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setSearchController()
@@ -51,17 +51,27 @@ class NewSearchViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        //        tableView.rx.itemSelected
+        //            .map{ _ in
+        //                Observable<Int>
+        //                    .interval(.seconds(1), scheduler: MainScheduler.instance)
+        //            }
+        //            .subscribe(with: self) { owner, value in
+        //                value
+        //                    .subscribe { value in
+        //                        print(value)
+        //                    }
+        //                    .disposed(by: owner.disposeBag)
+        //            }
+        //            .disposed(by: disposeBag)
+        
         tableView.rx.itemSelected
-            .map{ _ in
+            .withLatestFrom(
                 Observable<Int>
                     .interval(.seconds(1), scheduler: MainScheduler.instance)
-            }
+            )
             .subscribe(with: self) { owner, value in
-                value
-                    .subscribe { value in
-                        print(value)
-                    }
-                    .disposed(by: owner.disposeBag)
+                print(value)
             }
             .disposed(by: disposeBag)
     }
