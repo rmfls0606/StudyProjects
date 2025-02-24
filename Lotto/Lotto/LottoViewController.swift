@@ -9,6 +9,8 @@
 import UIKit
 import SnapKit
 import Alamofire
+import RxSwift
+import RxCocoa
 
 struct Lotto: Decodable{
     let drwNoDate: String
@@ -24,7 +26,7 @@ struct Lotto: Decodable{
 
 class LottoViewController: UIViewController {
     
-    private var lotto: Lotto?
+//    private var lotto: Lotto?
     
     private let pickerView: UIPickerView = {
         let pickerView = UIPickerView()
@@ -146,10 +148,28 @@ class LottoViewController: UIViewController {
         return view
     }()
     
+    let viewModel = LottoViewModel()
+    
+    private let disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadLotto(no: 1154)
+//        loadLotto(no: 1154)
         setUp()
+        setBind()
+    }
+    
+    func setBind(){
+        let input = LottoViewModel.Input(
+            pickerGesture: pickerView.rx.itemSelected
+        )
+        let output = viewModel.transform(input: input)
+        
+        output.lottoRound
+            .bind(to: pickerView.rx.itemTitles){ (row, element) in
+                return "\(element)"
+            }
+            .disposed(by: disposeBag)
     }
     
     func setUp(){
@@ -219,7 +239,7 @@ class LottoViewController: UIViewController {
         AF.request(url, method: .get).responseDecodable(of: Lotto.self) { response in
             switch response.result{
             case .success(let value):
-                self.lotto = value
+//                self.lotto = value
                 self.insertData(data: value)
             case .failure(let error):
                 print(error)
@@ -271,23 +291,23 @@ class LottoViewController: UIViewController {
         }
     }
 }
-
-extension LottoViewController: UIPickerViewDelegate, UIPickerViewDataSource{
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        1154
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        1
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return String(row + 1)
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        loadLotto(no: row + 1)
-        self.textxField.text = String(row + 1)
-    }
-    
-}
+//x
+//extension LottoViewController: UIPickerViewDelegate, UIPickerViewDataSource{
+//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+//        1154
+//    }
+//    
+//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+//        1
+//    }
+//    
+//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+//        return String(row + 1)
+//    }
+//    
+//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+//        loadLotto(no: row + 1)
+//        self.textxField.text = String(row + 1)
+//    }
+//    
+//}

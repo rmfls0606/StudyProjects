@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		7913109C2D6C50BB00E21CA0 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7913109B2D6C50BB00E21CA0 /* SnapKit */; };
 		7913109F2D6C513E00E21CA0 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 7913109E2D6C513E00E21CA0 /* Alamofire */; };
+		791310CF2D6C57A700E21CA0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 791310CE2D6C57A700E21CA0 /* RxCocoa */; };
+		791310D12D6C57A700E21CA0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 791310D02D6C57A700E21CA0 /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +43,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				791310CF2D6C57A700E21CA0 /* RxCocoa in Frameworks */,
 				7913109C2D6C50BB00E21CA0 /* SnapKit in Frameworks */,
+				791310D12D6C57A700E21CA0 /* RxSwift in Frameworks */,
 				7913109F2D6C513E00E21CA0 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -87,6 +91,8 @@
 			packageProductDependencies = (
 				7913109B2D6C50BB00E21CA0 /* SnapKit */,
 				7913109E2D6C513E00E21CA0 /* Alamofire */,
+				791310CE2D6C57A700E21CA0 /* RxCocoa */,
+				791310D02D6C57A700E21CA0 /* RxSwift */,
 			);
 			productName = Lotto;
 			productReference = 7913103F2D6C4D9500E21CA0 /* Lotto.app */;
@@ -119,6 +125,7 @@
 			packageReferences = (
 				7913109A2D6C50BB00E21CA0 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				7913109D2D6C513E00E21CA0 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				791310CD2D6C57A700E21CA0 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 791310402D6C4D9500E21CA0 /* Products */;
@@ -370,6 +377,14 @@
 				minimumVersion = 5.10.2;
 			};
 		};
+		791310CD2D6C57A700E21CA0 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -382,6 +397,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7913109D2D6C513E00E21CA0 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		791310CE2D6C57A700E21CA0 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 791310CD2D6C57A700E21CA0 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		791310D02D6C57A700E21CA0 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 791310CD2D6C57A700E21CA0 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
