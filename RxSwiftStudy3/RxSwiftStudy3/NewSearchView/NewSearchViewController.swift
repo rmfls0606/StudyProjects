@@ -52,11 +52,16 @@ class NewSearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         tableView.rx.itemSelected
-            .map{
-                "\($0) 텍스트"
+            .map{ _ in
+                Observable<Int>
+                    .interval(.seconds(1), scheduler: MainScheduler.instance)
             }
             .subscribe(with: self) { owner, value in
-                print(value)
+                value
+                    .subscribe { value in
+                        print(value)
+                    }
+                    .disposed(by: owner.disposeBag)
             }
             .disposed(by: disposeBag)
     }
