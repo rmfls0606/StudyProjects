@@ -26,10 +26,8 @@ class LottoViewController: UIViewController {
     
     private var lotto: Lotto?
     
-    private lazy var pickerView: UIPickerView = {
+    private let pickerView: UIPickerView = {
         let pickerView = UIPickerView()
-        pickerView.delegate = self
-        pickerView.dataSource = self
         return pickerView
     }()
     
@@ -42,16 +40,15 @@ class LottoViewController: UIViewController {
         return textField
     }()
     
-    private lazy var winInformationText: UILabel = {
+    private let winInformationText: UILabel = {
         let label = UILabel()
         label.text = "당첨번호 안내"
         label.font = UIFont.systemFont(ofSize: 14)
         return label
     }()
     
-    private lazy var winInformationDate: UILabel = {
+    private let winInformationDate: UILabel = {
         let label = UILabel()
-//        label.text = "2020-06-30 추천"
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
         return label
@@ -74,14 +71,14 @@ class LottoViewController: UIViewController {
         return view
     }()
     
-    private lazy var winnerResultNoText: UILabel = {
+    private let winnerResultNoText: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20)
         label.textColor = .orange
         return label
     }()
     
-    private lazy var winnerResultText: UILabel = {
+    private let winnerResultText: UILabel = {
         let label = UILabel()
         label.text = "당첨결과"
         label.font = UIFont.systemFont(ofSize: 20)
@@ -96,13 +93,14 @@ class LottoViewController: UIViewController {
     }()
     
     // TODO: 넘겨 받는 데이터에 따라서 한번에 만들 수 있을 것 같다
-    private lazy var oneBall = createBacllLabel()
-    private lazy var twoBall = createBacllLabel()
-    private lazy var threeBall = createBacllLabel()
-    private lazy var fourBall = createBacllLabel()
-    private lazy var fiveBall = createBacllLabel()
-    private lazy var sixBall = createBacllLabel()
-    private lazy var plusLabel: UILabel = {
+    private lazy var oneBall = createBallLabel()
+    private lazy var twoBall = createBallLabel()
+    private lazy var threeBall = createBallLabel()
+    private lazy var fourBall = createBallLabel()
+    private lazy var fiveBall = createBallLabel()
+    private lazy var sixBall = createBallLabel()
+    
+    private let plusLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.text = "+"
@@ -119,7 +117,7 @@ class LottoViewController: UIViewController {
         return label
     }()
     
-    private lazy var bonusBall = createBacllLabel()
+    private lazy var bonusBall = createBallLabel()
     
     private lazy var bonusView: UIView = {
         let view = UIView()
@@ -197,7 +195,7 @@ class LottoViewController: UIViewController {
         }
     }
     
-    func createBacllLabel() -> UILabel{
+    func createBallLabel() -> UILabel{
         let label = UILabel()
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
@@ -209,8 +207,7 @@ class LottoViewController: UIViewController {
         label.layer.masksToBounds = true
         
         label.snp.makeConstraints { make in
-            make.width.equalTo(width)
-            make.height.equalTo(width)
+            make.size.equalTo(width)
         }
         
         return label
