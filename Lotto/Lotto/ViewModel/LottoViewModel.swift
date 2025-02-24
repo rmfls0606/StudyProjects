@@ -31,14 +31,22 @@ class LottoViewModel{
         let lottoRound = Observable.just(lottoRoundData) //현재 1160회차
         let lottoData = PublishSubject<Lotto>()
         
-        let selectedRound = input.pickerGesture
+        let pickerSelected = input.pickerGesture
             .withLatestFrom(lottoRound){ (pickerSelection, lottoRounds) -> Int in
                 let (row, _) = pickerSelection
                 return lottoRounds[row]
             }
-            .startWith(0)
+            .startWith(lottoRoundData.first!)
         
-        selectedRound
+        let buttonSelectedRound = Observable.merge(
+            input.observabledBtnTap.map{self.lottoRoundData.first!},
+            input.singleBtnTap.map{self.lottoRoundData.first!}
+        )
+        
+        let selectedRound = Observable.merge(pickerSelected, buttonSelectedRound)
+            .startWith(lottoRoundData.first!)
+        
+        pickerSelected
             .flatMapLatest({ round in
                 self.ObservableCallLotto(round: round)
             })
@@ -48,7 +56,7 @@ class LottoViewModel{
             .disposed(by: disposeBag)
         
         input.observabledBtnTap
-            .withLatestFrom(selectedRound)
+            .map{ self.lottoRoundData.first!}
             .flatMapLatest { round in
                 self.ObservableCallLotto(round: round)
             }
@@ -58,7 +66,7 @@ class LottoViewModel{
             .disposed(by: disposeBag)
         
         input.singleBtnTap
-            .withLatestFrom(selectedRound)
+            .map{ self.lottoRoundData.first!}
             .flatMapLatest { round in
                 self.SingleCallLotto(round: round)
             }

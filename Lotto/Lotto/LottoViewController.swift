@@ -5,7 +5,6 @@
 //  Created by 이상민 on 2/24/25.
 //
 
-
 import UIKit
 import SnapKit
 import Alamofire
@@ -14,7 +13,6 @@ import RxCocoa
 
 struct Lotto: Decodable{
     let drwNoDate: String
-    let drwNo: Int
     let drwtNo1: Int
     let drwtNo2: Int
     let drwtNo3: Int
@@ -277,7 +275,6 @@ class LottoViewController: UIViewController {
     // TODO: 코드 최적화 시키기
     func insertData(data: Lotto){
         self.winInformationDate.text = "\(data.drwNoDate) 추천"
-        self.winnerResultNoText.text = "\(data.drwNo)회"
         
         self.oneBall.text = "\(data.drwtNo1)"
         self.oneBall.backgroundColor = setBallColor(number: data.drwtNo1)
