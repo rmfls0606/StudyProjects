@@ -31,12 +31,6 @@ class NewSearchViewController: UIViewController {
         setSearchController()
         configure()
         bind()
-        
-        NetworkManager.shared.callBoxOffice(date: "20250201")
-            .subscribe(with: self) { owner, value in
-                print(value)
-            }
-            .disposed(by: disposeBag)
     }
     
     func bind(){
@@ -53,7 +47,7 @@ class NewSearchViewController: UIViewController {
                         cellType: SearchTableViewCell.self
                     )
             ){(row, element, cell) in
-                cell.appNameLabel.text = element
+                cell.appNameLabel.text = element.movieNm
             }
             .disposed(by: disposeBag)
         

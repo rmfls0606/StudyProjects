@@ -19,11 +19,11 @@ final class NewSearchViewModel{
     }
     
     struct Output{
-        let list: Observable<[String]>
+        let list: Observable<[DailyBoxOfficeList]>
     }
     
     func transform(input: Input) -> Output{
-        let list = Observable.just(["가", "나", "디"])
+        let list = PublishSubject<[DailyBoxOfficeList]>()
         
         //map, withLatestFrom, flatmap, flatMapLatest etc...
         input.searchTap
@@ -37,12 +37,18 @@ final class NewSearchViewModel{
                 return text
             }
             .map{ return "\($0)"}
-//            .map{
-                //네트워크 통신
+//            .map{ //value가 Observable 타입이라 2번 subscribe해줘야함 -> flatMap을 사용하자
+//                NetworkManager.shared.callBoxOffice(date: $0)
 //            }
+            .flatMap{
+                NetworkManager.shared.callBoxOffice(date: $0)
+            }
             .subscribe(
                 with: self) { owner, value in
                     print("next", value)
+                    
+                    list.onNext(value.boxOfficeResult.dailyBoxOfficeList)
+                    
                 } onError: { owner, error in
                     print("onError")
                 } onCompleted: { owner in
