@@ -176,7 +176,9 @@ class LottoViewController: UIViewController {
     
     func setBind(){
         let input = LottoViewModel.Input(
-            pickerGesture: pickerView.rx.itemSelected
+            pickerGesture: pickerView.rx.itemSelected,
+            observabledBtnTap: observableBtn.rx.tap,
+            singleBtnTap: singleBtn.rx.tap
         )
         let output = viewModel.transform(input: input)
         
