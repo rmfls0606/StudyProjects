@@ -53,6 +53,7 @@ final class NetworkManager{
                     do{
                         let result = try JSONDecoder().decode(Movie.self, from: data)
                         value.onNext(result)
+                        value.onCompleted()//원하는 데이터 전달 시 종료 필요!!(중요!!!)
                     }catch{
                         value.onError(APIError.unknownResponse)
                     }

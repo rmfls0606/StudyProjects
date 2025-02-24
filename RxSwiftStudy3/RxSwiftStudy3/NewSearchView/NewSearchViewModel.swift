@@ -42,10 +42,11 @@ final class NewSearchViewModel{
 //            }
             .flatMap{
                 NetworkManager.shared.callBoxOffice(date: $0)
+                    .debug("movie")
             }
+            .debug("tap")
             .subscribe(
                 with: self) { owner, value in
-                    print("next", value)
                     
                     list.onNext(value.boxOfficeResult.dailyBoxOfficeList)
                     
