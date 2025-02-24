@@ -182,7 +182,7 @@ class LottoViewController: UIViewController {
         
         output.lottoRound
             .bind(to: pickerView.rx.itemTitles){ (row, element) in
-                return "\(element)"
+                return "\(element)회"
             }
             .disposed(by: disposeBag)
         
@@ -191,6 +191,11 @@ class LottoViewController: UIViewController {
             .subscribe(with: self) { owner, value in
                 owner.insertData(data: value)
             }
+            .disposed(by: disposeBag)
+        
+        output.selectedRound
+            .map { "\($0)회" }
+            .bind(to: textxField.rx.text)
             .disposed(by: disposeBag)
     }
     

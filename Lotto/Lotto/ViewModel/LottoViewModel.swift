@@ -13,7 +13,7 @@ import Alamofire
 class LottoViewModel{
     
     private let disposeBag = DisposeBag()
-    let lottoRoundData = [Int](1...1160)
+    let lottoRoundData = [Int](1...1160).reversed().map{Int($0)}
     
     struct Input{
         let pickerGesture: ControlEvent<(row: Int, component: Int)>
@@ -22,17 +22,21 @@ class LottoViewModel{
     struct Output{
         let lottoRound: Observable<[Int]>
         let lottoData: PublishSubject<Lotto>
+        let selectedRound: Observable<Int>
     }
     
     func transform(input: Input) -> Output{
         let lottoRound = Observable.just(lottoRoundData) //현재 1160회차
         let lottoData = PublishSubject<Lotto>()
         
-        input.pickerGesture
+        let selectedRound = input.pickerGesture
             .withLatestFrom(lottoRound){ (pickerSelection, lottoRounds) -> Int in
                 let (row, _) = pickerSelection
                 return lottoRounds[row]
             }
+            .startWith(0)
+        
+        selectedRound
             .flatMapLatest({ round in
                 self.callLotto(round: round)
             })
@@ -41,8 +45,8 @@ class LottoViewModel{
             })
             .disposed(by: disposeBag)
         
-        print(lottoData.values)
-        return Output(lottoRound: lottoRound, lottoData: lottoData)
+        
+        return Output(lottoRound: lottoRound, lottoData: lottoData, selectedRound: selectedRound)
     }
     
     //MARK: - Observable로 구현한 방식
