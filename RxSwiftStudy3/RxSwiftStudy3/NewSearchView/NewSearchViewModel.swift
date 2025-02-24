@@ -23,7 +23,7 @@ final class NewSearchViewModel{
     }
     
     func transform(input: Input) -> Output{
-        let list = Observable.just(["기"])
+        let list = Observable.just(["가", "나", "디"])
         
         //map, withLatestFrom, flatmap, flatMapLatest etc...
         input.searchTap

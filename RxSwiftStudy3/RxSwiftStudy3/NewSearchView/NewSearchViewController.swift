@@ -76,11 +76,14 @@ class NewSearchViewController: UIViewController {
         //            .disposed(by: disposeBag)
         
         //map의 경우 subscribe를 한번 더 호출해 줬어야 했는데 flatMap은 한번만 해줘도 됨
+        //flatMapLatest의 경우 셀을 선택하면 타이머 시작되는데 다른 셀을 선택하면 과거의 실행되는 타이머는 사라진다. 즉 셀을 선택한 순간 새로 시작한다.
         tableView.rx.itemSelected
-            .flatMap{ _ in
+            .flatMapLatest{ _ in
                 Observable<Int>
                     .interval(.seconds(1), scheduler: MainScheduler.instance)
+                    .debug("timer")
             }
+            .debug("cell")
             .subscribe { value in
                 print(value)
             }
