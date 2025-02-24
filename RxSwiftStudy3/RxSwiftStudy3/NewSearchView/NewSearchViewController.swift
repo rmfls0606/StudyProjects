@@ -32,14 +32,11 @@ class NewSearchViewController: UIViewController {
         configure()
         bind()
         
-        NetworkManager.shared.callBoxOffice(date: "20250201") { response in
-            switch response{
-            case .success(let success):
-                print(success)
-            case .failure(let failure):
-                print(failure)
+        NetworkManager.shared.callBoxOffice(date: "20250201")
+            .subscribe(with: self) { owner, value in
+                print(value)
             }
-        }
+            .disposed(by: disposeBag)
     }
     
     func bind(){

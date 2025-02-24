@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import RxSwift
+import RxCocoa
 
 enum APIError: Error{
     case invalidURL
@@ -22,37 +24,47 @@ final class NetworkManager{
     
     private init() { }
     
-    func callBoxOffice(date: String, completionHandler: @escaping ((Result<Movie, APIError>) -> Void)){
-        let url =  "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=1e11e012e5de56d8598e901746dc0848&targetDt=\(date)"
+    func callBoxOffice(date: String) -> Observable<Movie>{
         
-        guard let url = URL(string: url) else {
-            completionHandler(.failure(.invalidURL))
-            return
-        }
-        
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error{
-                completionHandler(.failure(.unknownResponse))
-                return
-            }
+        return Observable<Movie>.create { value in
             
-            guard let response = response as? HTTPURLResponse,
-                  (200...299).contains(response.statusCode) else{
-                completionHandler(.failure(.statusError))
-                return
-            }
+            let url =  "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=1e11e012e5de56d8598e901746dc0848&targetDt=\(date)"
             
-            if let data = data{
-                do{
-                    let result = try JSONDecoder().decode(Movie.self, from: data)
-                    completionHandler(.success(result))
-                }catch{
-                    completionHandler(.failure(.unknownResponse))
+            guard let url = URL(string: url) else {
+                value.onError(APIError.invalidURL)
+                return Disposables.create {
+                    print("끝")
                 }
-            }else{
-                completionHandler(.failure(.unknownResponse))
+            }
+            
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let error = error{
+                    value.onError(APIError.unknownResponse)
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse,
+                      (200...299).contains(response.statusCode) else{
+                    value.onError(APIError.statusError)
+                    return
+                }
+                
+                if let data = data{
+                    do{
+                        let result = try JSONDecoder().decode(Movie.self, from: data)
+                        value.onNext(result)
+                    }catch{
+                        value.onError(APIError.unknownResponse)
+                    }
+                }else{
+                    value.onError(APIError.unknownResponse)
+                }
+            }
+            .resume()
+            
+            return Disposables.create {
+                print("끝")
             }
         }
-        .resume()
     }
 }
