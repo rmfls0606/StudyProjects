@@ -27,7 +27,19 @@ final class NewSearchViewModel{
         
         //map, withLatestFrom, flatmap, flatMapLatest etc...
         input.searchTap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .withLatestFrom(input.searchText)
+            .distinctUntilChanged()
+            .map{
+                guard let text = Int($0) else {
+                    return 20250223
+                }
+                return text
+            }
+            .map{ return "\($0)"}
+//            .map{
+                //네트워크 통신
+//            }
             .subscribe(
                 with: self) { owner, value in
                     print("next", value)
