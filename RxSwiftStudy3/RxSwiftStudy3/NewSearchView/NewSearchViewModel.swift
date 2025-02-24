@@ -41,8 +41,9 @@ final class NewSearchViewModel{
 //                NetworkManager.shared.callBoxOffice(date: $0)
 //            }
             .flatMap{
-                NetworkManager.shared.callBoxOffice(date: $0)
-                    .debug("movie")
+//                NetworkManager.shared.callBoxOffice(date: $0)
+//                    .debug("movie")
+                NetworkManager.shared.callBoxOfficeWithSingle(date: $0)
             }
             .debug("tap")
             .subscribe(
