@@ -65,12 +65,23 @@ class NewSearchViewController: UIViewController {
         //            }
         //            .disposed(by: disposeBag)
         
+        //        tableView.rx.itemSelected
+        //            .withLatestFrom(
+        //                Observable<Int>
+        //                    .interval(.seconds(1), scheduler: MainScheduler.instance)
+        //            )
+        //            .subscribe(with: self) { owner, value in
+        //                print(value)
+        //            }
+        //            .disposed(by: disposeBag)
+        
+        //map의 경우 subscribe를 한번 더 호출해 줬어야 했는데 flatMap은 한번만 해줘도 됨
         tableView.rx.itemSelected
-            .withLatestFrom(
+            .flatMap{ _ in
                 Observable<Int>
                     .interval(.seconds(1), scheduler: MainScheduler.instance)
-            )
-            .subscribe(with: self) { owner, value in
+            }
+            .subscribe { value in
                 print(value)
             }
             .disposed(by: disposeBag)
