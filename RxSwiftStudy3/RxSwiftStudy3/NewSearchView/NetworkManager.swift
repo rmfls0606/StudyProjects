@@ -69,6 +69,10 @@ final class NetworkManager{
             }
         }
     }
+    
+    
+    
+    //MARK: - Single
 //    func callBoxOfficeWithSingle(date: String) -> Single<Movie>{
 //        //single:  next가 끝나면 자동으로 completed해주는 기능
 //
