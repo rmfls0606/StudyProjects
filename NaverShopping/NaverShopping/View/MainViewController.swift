@@ -56,7 +56,7 @@ final class MainViewController: BaseViewController {
                 with: self) {
                     owner,
                     value in
-                    let nextVC = SearchViewController()
+                    let nextVC = SearchViewController(query: value)
                     owner.navigationController?
                         .pushViewController(
                             nextVC,

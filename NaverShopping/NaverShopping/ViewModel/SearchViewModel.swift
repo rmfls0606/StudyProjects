@@ -11,6 +11,12 @@ import RxCocoa
 
 final class SearchViewModel {
     
+    private let query: String
+    
+    init(query: String) {
+        self.query = query
+    }
+    
     struct Input{
         
     }
