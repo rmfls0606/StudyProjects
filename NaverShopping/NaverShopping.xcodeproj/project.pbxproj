@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		79BC31112D6DCA9D00F6E6FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79BC31102D6DCA9D00F6E6FE /* SnapKit */; };
+		79BC31412D6DDF0D00F6E6FE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 79BC31402D6DDF0D00F6E6FE /* RxCocoa */; };
+		79BC31432D6DDF0D00F6E6FE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79BC31422D6DDF0D00F6E6FE /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79BC31432D6DDF0D00F6E6FE /* RxSwift in Frameworks */,
+				79BC31412D6DDF0D00F6E6FE /* RxCocoa in Frameworks */,
 				79BC31112D6DCA9D00F6E6FE /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -84,6 +88,8 @@
 			name = NaverShopping;
 			packageProductDependencies = (
 				79BC31102D6DCA9D00F6E6FE /* SnapKit */,
+				79BC31402D6DDF0D00F6E6FE /* RxCocoa */,
+				79BC31422D6DDF0D00F6E6FE /* RxSwift */,
 			);
 			productName = NaverShopping;
 			productReference = 79BC30462D6DB40600F6E6FE /* NaverShopping.app */;
@@ -115,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				79BC310F2D6DCA9D00F6E6FE /* XCRemoteSwiftPackageReference "SnapKit" */,
+				79BC313F2D6DDF0D00F6E6FE /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 79BC30472D6DB40600F6E6FE /* Products */;
@@ -358,6 +365,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		79BC313F2D6DDF0D00F6E6FE /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -365,6 +380,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 79BC310F2D6DCA9D00F6E6FE /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		79BC31402D6DDF0D00F6E6FE /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79BC313F2D6DDF0D00F6E6FE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		79BC31422D6DDF0D00F6E6FE /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79BC313F2D6DDF0D00F6E6FE /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
