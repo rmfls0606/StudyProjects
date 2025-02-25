@@ -17,8 +17,13 @@ struct Mentor{//섹션
     
 }
 
+struct Ment{
+    let word: String
+    let count = Int.random(in: 1...1000)
+}
+
 extension Mentor: SectionModelType{
-    typealias Item = String
+    typealias Item = Ment
     
     init(original: Mentor, items: [Item]) {
         self = original
@@ -65,7 +70,7 @@ class MulitiSectionViewController: UIViewController {
                 for: indexPath
             )
             
-            cell.textLabel?.text = item
+            cell.textLabel?.text = "\(item.word) - \(item.count)번"
             return cell
         }
         
@@ -75,13 +80,16 @@ class MulitiSectionViewController: UIViewController {
         
         let mentor = [
             Mentor(name: "Jack", items: [
-                "맛점하셨나요?", "다시해볼까요?", "가보겠습니다", "자 과제 나갑니다", "진짠데", "돌아오세요", "저는 여러분이 고생했으면 좋겠어요"
+                Ment(word: "다시 해볼까요"),
+                Ment(word: "저는 여러분이 고생했으면 좋겠어요"),
+                Ment(word: "진짠데")
             ]),
             Mentor(name: "Den", items: [
-                "정답은 업죠", "그건 00님이 찾아보고 알려주세요", "스스로 해보시고", "로그 찍어보세요", "화이팅"
+                Ment(word: "정답은 없죠"),
+                Ment(word: "화이팅")
             ]),
             Mentor(name: "Bran", items: [
-                "잘 되시나요"
+                Ment(word: "잘 되시나요")
             ])
         ]
         
