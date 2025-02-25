@@ -41,31 +41,34 @@ final class NewSearchViewModel{
         //                NetworkManager.shared.callBoxOffice(date: $0)
         //            }
             .flatMap{
-                //                NetworkManager.shared.callBoxOffice(date: $0)
-                //                    .debug("movie")
+                NetworkManager.shared.callBoxOffice(date: $0)
+                    .debug("movie")
+                    
+                
+                //                NetworkManager.shared.callBoxOfficeWithSingle(date: $0)
+                //                    .debug("single movie")
                 //                    .catch { error in
-                //
                 //                        print("movie error", error)
                 //                        let dummy = Movie(
                 //                            boxOfficeResult: BoxOfficeResult(
                 //                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
                 //                            )
                 //                        )
-                //                        return Observable.just(dummy)
+                //                        return Single.just(dummy)
                 //                    }
-                NetworkManager.shared.callBoxOfficeWithSingle(date: $0)
-                    .debug("single movie")
-                    .catch { error in
-                        print("movie error", error)
-                        let dummy = Movie(
-                            boxOfficeResult: BoxOfficeResult(
-                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
-                            )
-                        )
-                        return Single.just(dummy)
-                    }
-                    .debug("single movie")
+                //                    .debug("single movie")
             }
+            .catch { error in
+                
+                print("movie error", error)
+                let dummy = Movie(
+                    boxOfficeResult: BoxOfficeResult(
+                        dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
+                    )
+                )
+                return Observable.just(dummy)
+            }
+        
             .debug("tap")
             .subscribe(
                 with: self) { owner, value in
