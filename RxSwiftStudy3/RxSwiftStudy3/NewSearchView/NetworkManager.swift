@@ -119,4 +119,60 @@ final class NetworkManager{
             }
         }
     }
+    
+    //MARK: - Single2
+    func callBoxOfficeWithSingle2(date: String) -> Single<Result<Movie, Error>>{
+        //single:  next가 끝나면 자동으로 completed해주는 기능
+
+        return Single<Result<Movie, Error>>.create { value in
+            
+            let url =  "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=1e11e012e5de56d8598e901746dc0848&targetDt=\(date)"
+            
+            guard let url = URL(string: url) else {
+//                value(.failure(APIError.invalidURL))
+                
+                value(.success(.failure(APIError.invalidURL)))
+                return Disposables.create {
+                    print("끝")
+                }
+            }
+            
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let error = error{
+//                    value(.failure(APIError.unknownResponse))
+                    value(.success(.failure(APIError.unknownResponse)))
+                    return
+                }
+                
+                guard let response = response as? HTTPURLResponse,
+                      (200...299).contains(response.statusCode) else{
+//                    value(.failure(APIError.statusError))
+                    value(.success(.failure(APIError.statusError)))
+                    return
+                }
+                
+                if let data = data{
+                    do{
+                        let result = try JSONDecoder().decode(Movie.self, from: data)
+//                        value(.success(result))
+//                        value(.failure(APIError.unknownResponse))
+                        value(.success(.failure(APIError.unknownResponse)))
+
+                    }catch{
+//                        value(.failure(APIError.unknownResponse))
+                        value(.success(.failure(APIError.unknownResponse)))
+                    }
+                }else{
+//                    value(.failure(APIError.unknownResponse))
+                    value(.success(.failure(APIError.unknownResponse)))
+                }
+            }
+            .resume()
+            
+            return Disposables.create {
+                print("끝")
+            }
+        }
+    }
+
 }
