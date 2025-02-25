@@ -12,6 +12,7 @@ import RxCocoa
 final class SearchViewModel {
     
     private let query: String
+    private let disposeBag =  DisposeBag()
     
     init(query: String) {
         self.query = query
@@ -22,21 +23,21 @@ final class SearchViewModel {
     }
     
     struct Output{
-        let items: PublishSubject<ItemResponse>
+        let items: PublishRelay<[Item]>
     }
     
     func tranform(input: Input) -> Output {
-        let items = PublishSubject<ItemResponse>()
+        let items = PublishRelay<[Item]>()
         
         input.searchTrigger
-            .flatMap {
+            .flatMap { _ in
                 NetworkManager.shared.callShoppingRequest(query: self.query)
-            }
-            .subscribe(with: self) { owner, value in
-                items.onNext(value)
-            }
-            .disposed(by: DisposeBag())
-        
+                    .asObservable()
+           }
+            .subscribe(with: self, onNext: { owner, value in
+                items.accept(value.items)
+            })
+            .disposed(by: disposeBag)
         return Output(items: items)
     }
 }

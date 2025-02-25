@@ -6,13 +6,18 @@
 //
 
 import UIKit
+import SnapKit
 import RxSwift
 import RxCocoa
 
 final class SearchViewController: BaseViewController {
     
+    let numberFormatter = NumberFormatter()
+    
     private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
+    
+    private let searchItemsView = SearchItemsView()
     
     init(query: String){
         self.viewModel = SearchViewModel(query: query)
@@ -25,11 +30,14 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configureHierarchy() {
-        
+        self.view.addSubview(searchItemsView)
     }
     
     override func configureLayout() {
-        
+        searchItemsView.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalToSuperview()
+        }
     }
     
     override func configureView() {
@@ -41,9 +49,15 @@ final class SearchViewController: BaseViewController {
         let output = viewModel.tranform(input: input)
         
         output.items
-            .subscribe(with: self) { owner, items in
-                print("API 호출 결과: \(items)")
+            .bind(to: searchItemsView.collectionView.rx.items(
+                cellIdentifier: SearchItemCollectionViewCell.identifier,
+                cellType: SearchItemCollectionViewCell.self)
+            ) { (row, element, cell) in
+                print(element)
+                cell.configureData(data: element)
             }
             .disposed(by: disposeBag)
+        
+        print(output.items.values)
     }
 }

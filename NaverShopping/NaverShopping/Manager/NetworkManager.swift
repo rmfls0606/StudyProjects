@@ -18,7 +18,7 @@ final class NetworkManager {
     func callShoppingRequest(query: String) -> Single<ItemResponse>{
         
         return Single<ItemResponse>.create { value in
-            let url = "https://openapi.naver.com/v1/search/shop?query=\(query)"
+            let url = "https://openapi.naver.com/v1/search/shop?query=\(query)&display=100"
             
             guard let url = URL(string: url) else {
                 return Disposables.create {
@@ -55,7 +55,6 @@ final class NetworkManager {
                 if let data = data{
                     do{
                         let result = try JSONDecoder().decode(ItemResponse.self, from: data)
-                        print(result)
                         value(.success(result))
                     }catch{
                         value(.failure(error))
