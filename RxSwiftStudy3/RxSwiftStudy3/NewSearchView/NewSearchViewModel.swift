@@ -41,27 +41,20 @@ final class NewSearchViewModel{
 //                NetworkManager.shared.callBoxOffice(date: $0)
 //            }
             .flatMap{
-                NetworkManager.shared.callBoxOffice(date: $0)
-                    .debug("movie")
-                    .catch { error in
-                        
-                        switch error as? APIError{
-                        case .invalidURL:
-                        case .statusError:
-                        case .unknownResponse:
-                        default:
-                            
-                        }
-                        
-                        print("movie error", error)
-                        let dummy = Movie(
-                            boxOfficeResult: BoxOfficeResult(
-                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
-                            )
-                        )
-                        return Observable.just(dummy)
-                    }
-//                NetworkManager.shared.callBoxOfficeWithSingle(date: $0)
+//                NetworkManager.shared.callBoxOffice(date: $0)
+//                    .debug("movie")
+//                    .catch { error in
+//                      
+//                        print("movie error", error)
+//                        let dummy = Movie(
+//                            boxOfficeResult: BoxOfficeResult(
+//                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
+//                            )
+//                        )
+//                        return Observable.just(dummy)
+//                    }
+                NetworkManager.shared.callBoxOfficeWithSingle(date: $0)
+                    .debug("single movie")
             }
             .debug("tap")
             .subscribe(
