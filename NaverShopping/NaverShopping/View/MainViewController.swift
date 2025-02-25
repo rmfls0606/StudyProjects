@@ -35,5 +35,6 @@ final class MainViewController: BaseViewController {
     override func configureView() {
         self.view.backgroundColor = .black
         self.navigationItem.title = "도봉러의 쇼핑쇼핑"
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
     }
 }
