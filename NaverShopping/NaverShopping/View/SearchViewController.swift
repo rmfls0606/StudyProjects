@@ -33,6 +33,17 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configureView() {
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .black
+    }
+    
+    override func configureBind() {
+        let input = SearchViewModel.Input(searchTrigger: Observable<Void>.just(()))
+        let output = viewModel.tranform(input: input)
+        
+        output.items
+            .subscribe(with: self) { owner, items in
+                print("API 호출 결과: \(items)")
+            }
+            .disposed(by: disposeBag)
     }
 }

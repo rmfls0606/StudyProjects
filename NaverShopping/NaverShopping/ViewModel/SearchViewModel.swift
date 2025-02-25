@@ -22,11 +22,21 @@ final class SearchViewModel {
     }
     
     struct Output{
-        let items: Observable<ItemResponse>
+        let items: PublishSubject<ItemResponse>
     }
     
     func tranform(input: Input) -> Output {
-        let items = Observable<ItemResponse>.empty()
+        let items = PublishSubject<ItemResponse>()
+        
+        input.searchTrigger
+            .flatMap {
+                NetworkManager.shared.callShoppingRequest(query: self.query)
+            }
+            .subscribe(with: self) { owner, value in
+                items.onNext(value)
+            }
+            .disposed(by: DisposeBag())
+        
         return Output(items: items)
     }
 }
