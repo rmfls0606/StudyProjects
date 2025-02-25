@@ -12,7 +12,7 @@ import RxCocoa
 final class NewSearchViewModel{
     
     let disposeBag = DisposeBag()
-
+    
     struct Input{
         let searchTap: ControlEvent<Void>
         let searchText: ControlProperty<String>
@@ -37,23 +37,33 @@ final class NewSearchViewModel{
                 return text
             }
             .map{ return "\($0)"}
-//            .map{ //value가 Observable 타입이라 2번 subscribe해줘야함 -> flatMap을 사용하자
-//                NetworkManager.shared.callBoxOffice(date: $0)
-//            }
+        //            .map{ //value가 Observable 타입이라 2번 subscribe해줘야함 -> flatMap을 사용하자
+        //                NetworkManager.shared.callBoxOffice(date: $0)
+        //            }
             .flatMap{
-//                NetworkManager.shared.callBoxOffice(date: $0)
-//                    .debug("movie")
-//                    .catch { error in
-//                      
-//                        print("movie error", error)
-//                        let dummy = Movie(
-//                            boxOfficeResult: BoxOfficeResult(
-//                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
-//                            )
-//                        )
-//                        return Observable.just(dummy)
-//                    }
+                //                NetworkManager.shared.callBoxOffice(date: $0)
+                //                    .debug("movie")
+                //                    .catch { error in
+                //
+                //                        print("movie error", error)
+                //                        let dummy = Movie(
+                //                            boxOfficeResult: BoxOfficeResult(
+                //                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
+                //                            )
+                //                        )
+                //                        return Observable.just(dummy)
+                //                    }
                 NetworkManager.shared.callBoxOfficeWithSingle(date: $0)
+                    .debug("single movie")
+                    .catch { error in
+                        print("movie error", error)
+                        let dummy = Movie(
+                            boxOfficeResult: BoxOfficeResult(
+                                dailyBoxOfficeList: [DailyBoxOfficeList(movieNm: "잭잭", openDt: "2025.01.01")]
+                            )
+                        )
+                        return Single.just(dummy)
+                    }
                     .debug("single movie")
             }
             .debug("tap")
