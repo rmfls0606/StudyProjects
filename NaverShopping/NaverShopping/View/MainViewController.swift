@@ -12,6 +12,9 @@ import RxCocoa
 
 final class MainViewController: BaseViewController {
     
+    private let viewModel = MainViewModel()
+    private let disposeBag = DisposeBag()
+    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.placeholder = "브랜드, 상품, 프로필, 태그 등"
@@ -38,5 +41,30 @@ final class MainViewController: BaseViewController {
         self.view.backgroundColor = .black
         self.navigationItem.title = "도봉러의 쇼핑쇼핑"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+    }
+    
+    override func configureBind() {
+        let input = MainViewModel.Input(
+            searchReturn: searchBar.rx.searchButtonClicked,
+            searchText: searchBar.rx.text.orEmpty
+        )
+        
+        let output = viewModel.transform(input: input)
+        
+        output.query
+            .subscribe(
+                with: self) {
+                    owner,
+                    value in
+                    let nextVC = SearchViewController()
+                    owner.navigationController?
+                        .pushViewController(
+                            nextVC,
+                            animated: true
+                        )
+                }
+                .disposed(by: disposeBag)
+        
+        
     }
 }
