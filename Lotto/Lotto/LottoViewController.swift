@@ -5,7 +5,6 @@
 //  Created by 이상민 on 2/24/25.
 //
 
-
 import UIKit
 import SnapKit
 import Alamofire
@@ -14,7 +13,6 @@ import RxCocoa
 
 struct Lotto: Decodable{
     let drwNoDate: String
-    let drwNo: Int
     let drwtNo1: Int
     let drwtNo2: Int
     let drwtNo3: Int
@@ -148,27 +146,56 @@ class LottoViewController: UIViewController {
         return view
     }()
     
+    private let observableBtn: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Observable", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.backgroundColor = .gray
+        return btn
+    }()
+    
+    private let singleBtn: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Single", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.backgroundColor = .gray
+        return btn
+    }()
+    
     let viewModel = LottoViewModel()
     
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        loadLotto(no: 1154)
         setUp()
         setBind()
     }
     
     func setBind(){
         let input = LottoViewModel.Input(
-            pickerGesture: pickerView.rx.itemSelected
+            pickerGesture: pickerView.rx.itemSelected,
+            observabledBtnTap: observableBtn.rx.tap,
+            singleBtnTap: singleBtn.rx.tap
         )
         let output = viewModel.transform(input: input)
         
         output.lottoRound
             .bind(to: pickerView.rx.itemTitles){ (row, element) in
-                return "\(element)"
+                return "\(element)회"
             }
+            .disposed(by: disposeBag)
+        
+        output.lottoData
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, value in
+                owner.insertData(data: value)
+            }
+            .disposed(by: disposeBag)
+        
+        output.selectedRound
+            .map { "\($0)회" }
+            .bind(to: textxField.rx.text)
             .disposed(by: disposeBag)
     }
     
@@ -178,6 +205,8 @@ class LottoViewController: UIViewController {
         self.view.addSubview(winInformationView)
         self.view.addSubview(winnerResultStackView)
         self.view.addSubview(winResultStackView)
+        self.view.addSubview(observableBtn)
+        self.view.addSubview(singleBtn)
         
         textxField.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(12)
@@ -213,6 +242,16 @@ class LottoViewController: UIViewController {
             make.leading.equalToSuperview().offset(24)
             make.trailing.equalToSuperview().offset(-24)
         }
+        
+        observableBtn.snp.makeConstraints { make in
+            make.top.equalTo(winResultStackView.snp.bottom).offset(10)
+            make.leading.equalToSuperview().offset(24)
+        }
+        
+        singleBtn.snp.makeConstraints { make in
+            make.top.equalTo(winResultStackView.snp.bottom).offset(10)
+            make.leading.equalTo(observableBtn.snp.trailing).offset(14)
+        }
     }
     
     func createBallLabel() -> UILabel{
@@ -233,24 +272,9 @@ class LottoViewController: UIViewController {
         return label
     }
     
-    func loadLotto(no: Int){
-        let url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=\(no)"
-        
-        AF.request(url, method: .get).responseDecodable(of: Lotto.self) { response in
-            switch response.result{
-            case .success(let value):
-//                self.lotto = value
-                self.insertData(data: value)
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
-    
     // TODO: 코드 최적화 시키기
     func insertData(data: Lotto){
         self.winInformationDate.text = "\(data.drwNoDate) 추천"
-        self.winnerResultNoText.text = "\(data.drwNo)회"
         
         self.oneBall.text = "\(data.drwtNo1)"
         self.oneBall.backgroundColor = setBallColor(number: data.drwtNo1)
@@ -291,23 +315,3 @@ class LottoViewController: UIViewController {
         }
     }
 }
-//x
-//extension LottoViewController: UIPickerViewDelegate, UIPickerViewDataSource{
-//    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-//        1154
-//    }
-//    
-//    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-//        1
-//    }
-//    
-//    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-//        return String(row + 1)
-//    }
-//    
-//    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        loadLotto(no: row + 1)
-//        self.textxField.text = String(row + 1)
-//    }
-//    
-//}

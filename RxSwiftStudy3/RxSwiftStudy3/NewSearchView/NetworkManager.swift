@@ -23,56 +23,52 @@ final class NetworkManager{
     static let shared = NetworkManager()
     
     private init() { }
-    func callBoxOffice(date: String) -> Observable<Movie>{
-        
-        return Observable<Movie>.create { value in
-            
-            let url =  "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=1e11e012e5de56d8598e901746dc0848&targetDt=\(date)"
-            
-            guard let url = URL(string: url) else {
-                value.onError(APIError.invalidURL)
-                return Disposables.create {
-                    print("끝")
-                }
-            }
-            
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error{
-                    value.onError(APIError.unknownResponse)
-                    return
-                }
-                
-                guard let response = response as? HTTPURLResponse,
-                      (200...299).contains(response.statusCode) else{
-                    value.onError(APIError.statusError)
-                    return
-                }
-                
-                if let data = data{
-                    do{
-                        let result = try JSONDecoder().decode(Movie.self, from: data)
-                        value.onError(APIError.unknownResponse)
-                        
-//                        value.onNext(result)
-//                        value.onCompleted()//원하는 데이터 전달 시 종료 필요!!(중요!!!)
-                    }catch{
-                        value.onError(APIError.unknownResponse)
-                    }
-                }else{
-                    value.onError(APIError.unknownResponse)
-                }
-            }
-            .resume()
-            
-            return Disposables.create {
-                print("끝")
-            }
-        }
-    }
-    
-    
-    
-    //MARK: - Single
+//    func callBoxOffice(date: String) -> Observable<Movie>{
+//        
+//        return Observable<Movie>.create { value in
+//            
+//            let url =  "https://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json?key=1e11e012e5de56d8598e901746dc0848&targetDt=\(date)"
+//            
+//            guard let url = URL(string: url) else {
+//                value.onError(APIError.invalidURL)
+//                return Disposables.create {
+//                    print("끝")
+//                }
+//            }
+//            
+//            URLSession.shared.dataTask(with: url) { data, response, error in
+//                if let error = error{
+//                    value.onError(APIError.unknownResponse)
+//                    return
+//                }
+//                
+//                guard let response = response as? HTTPURLResponse,
+//                      (200...299).contains(response.statusCode) else{
+//                    value.onError(APIError.statusError)
+//                    return
+//                }
+//                
+//                if let data = data{
+//                    do{
+//                        let result = try JSONDecoder().decode(Movie.self, from: data)
+//                        value.onError(APIError.unknownResponse)
+//                        
+////                        value.onNext(result)
+////                        value.onCompleted()//원하는 데이터 전달 시 종료 필요!!(중요!!!)
+//                    }catch{
+//                        value.onError(APIError.unknownResponse)
+//                    }
+//                }else{
+//                    value.onError(APIError.unknownResponse)
+//                }
+//            }
+//            .resume()
+//            
+//            return Disposables.create {
+//                print("끝")
+//            }
+//        }
+//    }
     func callBoxOfficeWithSingle(date: String) -> Single<Movie>{
         //single:  next가 끝나면 자동으로 completed해주는 기능
 
