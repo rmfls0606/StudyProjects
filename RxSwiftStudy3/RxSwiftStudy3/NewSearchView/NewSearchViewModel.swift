@@ -44,6 +44,15 @@ final class NewSearchViewModel{
                 NetworkManager.shared.callBoxOffice(date: $0)
                     .debug("movie")
                     .catch { error in
+                        
+                        switch error as? APIError{
+                        case .invalidURL:
+                        case .statusError:
+                        case .unknownResponse:
+                        default:
+                            
+                        }
+                        
                         print("movie error", error)
                         let dummy = Movie(
                             boxOfficeResult: BoxOfficeResult(
