@@ -6,8 +6,19 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class SearchViewController: BaseViewController {
+    
+    private let viewModel: SearchViewModel
+    private let disposeBag = DisposeBag()
+    
+    init(query: String){
+        self.viewModel = SearchViewModel(query: query)
+        super.init(nibName: nil, bundle: nil)
+        self.title = query
+    }
     
     override func configureHierarchy() {
         
