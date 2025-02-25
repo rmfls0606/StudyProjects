@@ -18,14 +18,15 @@ final class SearchViewModel {
     }
     
     struct Input{
-        
+        let searchTrigger: Observable<Void>
     }
     
     struct Output{
-        
+        let items: Observable<ItemResponse>
     }
     
     func tranform(input: Input) -> Output {
-        return Output()
+        let items = Observable<ItemResponse>.empty()
+        return Output(items: items)
     }
 }
