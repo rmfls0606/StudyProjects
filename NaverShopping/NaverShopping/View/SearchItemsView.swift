@@ -7,8 +7,13 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class SearchItemsView: BaseView{
+    
+    let sortOptionRelay = PublishRelay<sortOptions>()
+
     lazy var collectionView = createCollectionView()
     private let totalLabel = UILabel()
     private let accuracyBtn = SortButtonView(text: "정확도")
@@ -17,7 +22,8 @@ final class SearchItemsView: BaseView{
     private let lowPrBtn = SortButtonView(text: "가격낮은순")
     private let scrollView = UIScrollView(frame: .zero)
     private lazy var stackView = UIStackView(arrangedSubviews: [accuracyBtn,dateBtn,hightPrBtn,lowPrBtn])
-    private var sortOption: sortOptions = .sim
+    
+    var sortOption: sortOptions = .sim
     
 //    weak var delegate: SearchItemsViewDelegate?
     
@@ -106,17 +112,19 @@ extension SearchItemsView: SortButtonDelegate{
         }
         sender.isSelected = true
         
+        var newSortOption: sortOptions = .sim
         switch sender {
         case accuracyBtn:
-            self.sortOption = .sim
+            newSortOption = .sim
         case dateBtn:
-            self.sortOption = .date
+            newSortOption = .date
         case hightPrBtn:
-            self.sortOption = .asc
+            newSortOption = .asc
         default:
-            self.sortOption = .dsc
+            newSortOption = .dsc
         }
         
-//        delegate?.didSelectSortOption(self.sortOption)
+        self.sortOption = newSortOption
+        sortOptionRelay.accept(newSortOption)
     }
 }

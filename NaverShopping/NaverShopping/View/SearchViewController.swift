@@ -45,7 +45,8 @@ final class SearchViewController: BaseViewController {
     }
     
     override func configureBind() {
-        let input = SearchViewModel.Input(searchTrigger: Observable<Void>.just(()))
+        let input = SearchViewModel.Input(searchTrigger: Observable<Void>.just(()),
+                                          sortOption: searchItemsView.sortOptionRelay.asObservable())
         let output = viewModel.tranform(input: input)
         
         output.items

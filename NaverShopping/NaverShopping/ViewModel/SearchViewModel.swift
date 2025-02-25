@@ -20,6 +20,7 @@ final class SearchViewModel {
     
     struct Input{
         let searchTrigger: Observable<Void>
+        let sortOption: Observable<sortOptions>
     }
     
     struct Output{
@@ -29,9 +30,9 @@ final class SearchViewModel {
     func tranform(input: Input) -> Output {
         let items = PublishRelay<[Item]>()
         
-        input.searchTrigger
-            .flatMap { _ in
-                NetworkManager.shared.callShoppingRequest(query: self.query)
+        Observable.combineLatest(input.searchTrigger, input.sortOption.startWith(.sim))
+            .flatMap { (_, sortOption) -> Observable<ItemResponse> in
+                NetworkManager.shared.callShoppingRequest(query: self.query, sortOption: sortOption)
                     .asObservable()
            }
             .subscribe(with: self, onNext: { owner, value in

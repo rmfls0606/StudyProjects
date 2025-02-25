@@ -15,10 +15,10 @@ final class NetworkManager {
     
     private init() {}
     
-    func callShoppingRequest(query: String) -> Single<ItemResponse>{
+    func callShoppingRequest(query: String, sortOption: sortOptions) -> Single<ItemResponse>{
         
         return Single<ItemResponse>.create { value in
-            let url = "https://openapi.naver.com/v1/search/shop?query=\(query)&display=100"
+            let url = "https://openapi.naver.com/v1/search/shop?query=\(query)&display=100&sort=\(sortOption.rawValue)"
             
             guard let url = URL(string: url) else {
                 return Disposables.create {
