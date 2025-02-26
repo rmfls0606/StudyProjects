@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 struct Wish: Hashable{
     let name: String
@@ -16,9 +18,11 @@ struct Wish: Hashable{
 class WishListViewController: BaseViewController {
     private var dateFormatter: DateFormatter{
         let dateFormatted = DateFormatter()
-        dateFormatted.dateFormat = "yyyy년 MM월 dd일"
+        dateFormatted.dateFormat = "yyyy-MM-dd"
         return dateFormatted
     }
+    
+    private let disposeBag = DisposeBag()
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -35,11 +39,7 @@ class WishListViewController: BaseViewController {
     var dataSource: UICollectionViewDiffableDataSource<String, Wish>!
     
 //    var list = ["킁킁", "냄새", "향기"] //임시 데이터
-    var list = [
-        Wish(name: "킁킁"),
-        Wish(name: "냄세"),
-        Wish(name: "형기")
-    ]
+    var list = [Wish]()
     
     lazy var collectionView = UICollectionView(
         frame: .zero,
@@ -85,6 +85,19 @@ class WishListViewController: BaseViewController {
 //        configureCell()
         configureDataSource()
         updateSnapshot()
+    }
+    
+    override func configureBind() {
+        self.searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .map{ $0 }
+            .distinctUntilChanged()
+            .subscribe(with: self) { owner, text in
+                owner.list.append(Wish(name: text))
+                
+                owner.updateSnapshot()
+            }
+            .disposed(by: disposeBag)
     }
     
     private func updateSnapshot(){
