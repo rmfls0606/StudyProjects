@@ -10,6 +10,7 @@ import SnapKit
 /*
  Data
  -> Delegate, DataSource (가장 큰 특징: 인덱스 기반)
+ -> Delegate, DiffableDataSource( list[itemPath.item]사용안함 -> 데이터 기반)
  list[indexPath.row]
  
  Layout
@@ -20,10 +21,10 @@ import SnapKit
  Presentation
  -> CellForRowAt / dequeueReusableCell
  ->
- -> List Cell
+ -> List Cell / dequeueConfiguredReusbleCell
  */
 
-struct Product {
+struct Product: Hashable {
     let name: String
     let price = Int.random(in: 1...10000) * 1000
     let count = Int.random(in: 1...10)
@@ -38,8 +39,11 @@ class SimpleCollectionViewController: UIViewController {
         collectionViewLayout: createLayout()
     )
     
-    //collectionView.register 대신
-    var registration: UICollectionView.CellRegistration<UICollectionViewListCell, Product>!
+    //numberOfItemsInSection, cellforItemAt을 대신해준다.
+    //<섹션을 구분해 줄 대이터 타입, 셀에 들어가는 데이터 타입>
+    var dataSource: UICollectionViewDiffableDataSource<String, Product>!
+    //PRoduct confirm to Hashable
+    
     
 //    var list = [
 //        "Hue", "Jack", "Bran", "Den"
@@ -73,18 +77,35 @@ class SimpleCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
         
         collectionView.delegate = self
-        collectionView.dataSource = self
+//        collectionView.dataSource = self
         
-        configureCell()
+//        configureCell()
+        configureDataSource()
+        updateSnapshot()
     }
     
-    private func configureCell(){
+    private func updateSnapshot(){
+        
+        var snapshot = NSDiffableDataSourceSnapshot<String, Product>()
+        snapshot.appendSections(["Jack", "리스트", "고래밥"])
+        snapshot.appendItems([Product(name: "Jack")], toSection: "Jack")
+        snapshot.appendItems(list, toSection: "리스트")
+        snapshot.appendItems([Product(name: "고래밥")], toSection: "고래밥")
+        
+        dataSource.apply(snapshot)
+    }
+    
+    private func configureDataSource(){
+        //collectionView.register 대신
+        var registration: UICollectionView.CellRegistration<UICollectionViewListCell, Product>!
+        
         //cellForItemAt 내부 코드
         registration = UICollectionView.CellRegistration(handler: { cell, indexPath, itemIdentifier in
             
@@ -111,14 +132,58 @@ class SimpleCollectionViewController: UIViewController {
             
             cell.backgroundConfiguration = backgroundConfig
         })
+        
+        dataSource = UICollectionViewDiffableDataSource(
+            collectionView: collectionView,
+            cellProvider: { collectionView, indexPath, itemIdentifier in
+                
+                //Q. list[indexPath.item] ??
+                let cell = collectionView.dequeueConfiguredReusableCell(
+                    using: registration,
+                    for: indexPath,
+                    item: itemIdentifier
+                )
+            
+                return cell
+            }
+        )
     }
+    
+//    private func configureCell(){
+//        //cellForItemAt 내부 코드
+//        registration = UICollectionView.CellRegistration(handler: { cell, indexPath, itemIdentifier in
+//            
+//            var content = UIListContentConfiguration.valueCell()
+//            
+//            content.text = itemIdentifier.name
+//            content.textProperties.color = .brown
+//            
+//            content.textProperties.font = .boldSystemFont(ofSize: 20)
+//            
+//            content.secondaryText = itemIdentifier.price.formatted() + "원"
+//            content.secondaryTextProperties.color = .blue
+//            
+//            content.image = UIImage(systemName: "star")
+//            content.imageProperties.tintColor = .orange
+//            
+//            cell.contentConfiguration = content
+//            
+//            var backgroundConfig = UIBackgroundConfiguration.listGroupedCell()
+//            backgroundConfig.backgroundColor = .yellow
+//            backgroundConfig.cornerRadius = 10
+//            backgroundConfig.strokeWidth = 2.0
+//            backgroundConfig.strokeColor = .red
+//            
+//            cell.backgroundConfiguration = backgroundConfig
+//        })
+//    }
 }
 
-extension SimpleCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource{
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        list.count
-    }
+extension SimpleCollectionViewController: UICollectionViewDelegate{
+    //Q. 얘는 어디로 가는 거지?
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        list.count
+//    }
 
     /*
      기존)
@@ -129,16 +194,16 @@ extension SimpleCollectionViewController: UICollectionViewDelegate, UICollection
      dequeueConfiguredReusableCell
      systemCell +     x     + CellRegisteration
      */
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueConfiguredReusableCell(
-            using: registration,
-            for: indexPath,
-            item: list[indexPath.item]
-        )
-    
-        return cell
-    }
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        
+//        let cell = collectionView.dequeueConfiguredReusableCell(
+//            using: registration,
+//            for: indexPath,
+//            item: list[indexPath.item]
+//        )
+//    
+//        return cell
+//    }
 
     
 }
