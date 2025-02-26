@@ -24,10 +24,12 @@ import SnapKit
  -> List Cell / dequeueConfiguredReusbleCell
  */
 
-struct Product: Hashable {
+struct Product: Hashable, Identifiable {
+    let id = UUID()
     let name: String
-    let price = Int.random(in: 1...10000) * 1000
-    let count = Int.random(in: 1...10)
+    let price = /*Int.random(in: 1...10000) * */1000
+//    let count = Int.random(in: 1...10)
+    let count = 8
 }
 
 //huan error 빙지 차원에서
@@ -58,9 +60,15 @@ class SimpleCollectionViewController: UIViewController {
 //        1, 234, 555, 9006, 618
 //    ]
     
+    /*
+     DiffableDataSource
+     
+     1. Hashable 해야한다.
+     */
+    
     var list = [
         Product(name: "Macbook Pro M5"),
-        Product(name: "키보드"),
+        Product(name: "Macbook Pro M5"),
         Product(name: "트랙패드"),
         Product(name: "금")
     ]
