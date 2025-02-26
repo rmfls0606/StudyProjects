@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		797C71402D6E4013008AB1A4 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 797C713F2D6E4013008AB1A4 /* Config.xcconfig */; };
 		797C71422D6E4469008AB1A4 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 797C71412D6E4469008AB1A4 /* .gitignore */; };
 		797C714B2D6E45CF008AB1A4 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 797C714A2D6E45CF008AB1A4 /* Kingfisher */; };
 		79BC31112D6DCA9D00F6E6FE /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79BC31102D6DCA9D00F6E6FE /* SnapKit */; };
 		79BC31412D6DDF0D00F6E6FE /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 79BC31402D6DDF0D00F6E6FE /* RxCocoa */; };
 		79BC31432D6DDF0D00F6E6FE /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79BC31422D6DDF0D00F6E6FE /* RxSwift */; };
+		79F7BB872D6EF78F008617F2 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 79F7BB862D6EF78F008617F2 /* Config.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		797C713F2D6E4013008AB1A4 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		797C71412D6E4469008AB1A4 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		79BC30462D6DB40600F6E6FE /* NaverShopping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NaverShopping.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		79F7BB862D6EF78F008617F2 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -60,8 +60,8 @@
 		79BC303D2D6DB40600F6E6FE = {
 			isa = PBXGroup;
 			children = (
+				79F7BB862D6EF78F008617F2 /* Config.xcconfig */,
 				797C71412D6E4469008AB1A4 /* .gitignore */,
-				797C713F2D6E4013008AB1A4 /* Config.xcconfig */,
 				79BC30482D6DB40600F6E6FE /* NaverShopping */,
 				79BC30472D6DB40600F6E6FE /* Products */,
 			);
@@ -148,8 +148,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79F7BB872D6EF78F008617F2 /* Config.xcconfig in Resources */,
 				797C71422D6E4469008AB1A4 /* .gitignore in Resources */,
-				797C71402D6E4013008AB1A4 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -228,7 +228,7 @@
 		};
 		79BC305C2D6DB40700F6E6FE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 797C713F2D6E4013008AB1A4 /* Config.xcconfig */;
+			baseConfigurationReference = 79F7BB862D6EF78F008617F2 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;

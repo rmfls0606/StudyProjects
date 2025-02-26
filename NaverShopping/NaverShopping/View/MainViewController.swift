@@ -41,6 +41,16 @@ final class MainViewController: BaseViewController {
         self.view.backgroundColor = .black
         self.navigationItem.title = "도봉러의 쇼핑쇼핑"
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        let rightBarButton = UIBarButtonItem(
+            image: UIImage(systemName: "heart.fill"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+        
+        rightBarButton.tintColor = .systemPink
+        self.navigationItem.rightBarButtonItem = rightBarButton
     }
     
     override func configureBind() {
@@ -64,7 +74,5 @@ final class MainViewController: BaseViewController {
                         )
                 }
                 .disposed(by: disposeBag)
-        
-        
     }
 }
