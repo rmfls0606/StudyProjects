@@ -30,6 +30,12 @@ struct Product: Hashable {
     let count = Int.random(in: 1...10)
 }
 
+//huan error 빙지 차원에서
+enum Section: CaseIterable{ //케이스가 더 늘어날 것을 대비하기 위해 프로토콜 선언
+    case main
+    case sub
+}
+
 
 class SimpleCollectionViewController: UIViewController {
 
@@ -41,7 +47,7 @@ class SimpleCollectionViewController: UIViewController {
     
     //numberOfItemsInSection, cellforItemAt을 대신해준다.
     //<섹션을 구분해 줄 대이터 타입, 셀에 들어가는 데이터 타입>
-    var dataSource: UICollectionViewDiffableDataSource<String, Product>!
+    var dataSource: UICollectionViewDiffableDataSource<Section, Product>!
     //PRoduct confirm to Hashable
     
     
@@ -93,11 +99,11 @@ class SimpleCollectionViewController: UIViewController {
     
     private func updateSnapshot(){
         
-        var snapshot = NSDiffableDataSourceSnapshot<String, Product>()
-        snapshot.appendSections(["Jack", "리스트", "고래밥"])
-        snapshot.appendItems([Product(name: "Jack")], toSection: "Jack")
-        snapshot.appendItems(list, toSection: "리스트")
-        snapshot.appendItems([Product(name: "고래밥")], toSection: "고래밥")
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Product>()
+        snapshot.appendSections(Section.allCases)
+        snapshot.appendItems([Product(name: "Jack")], toSection: .main)
+        snapshot.appendItems(list, toSection: .main)
+        snapshot.appendItems([Product(name: "고래밥")], toSection: .sub)
         
         dataSource.apply(snapshot)
     }
