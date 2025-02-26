@@ -18,6 +18,7 @@ class WishListViewController: BaseViewController {
     }
     
     override func configureView() {
-        self.view.backgroundColor = .red
+        self.view.backgroundColor = .black
+        self.title = "위시리스트"
     }
 }
