@@ -32,15 +32,14 @@ struct Product: Hashable, Identifiable {
     let count = 8
 }
 
-//huan error 빙지 차원에서
-enum Section: CaseIterable{ //케이스가 더 늘어날 것을 대비하기 위해 프로토콜 선언
-    case main
-    case sub
-}
-
-
 class SimpleCollectionViewController: UIViewController {
 
+    //huan error 빙지 차원에서
+    enum Section: CaseIterable{ //케이스가 더 늘어날 것을 대비하기 위해 프로토콜 선언
+        case main
+        case sub
+    }
+    
     //Flow -> compositional -> List configuration
     lazy var collectionView = UICollectionView(
         frame: .zero,
