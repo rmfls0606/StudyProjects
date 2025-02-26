@@ -51,6 +51,7 @@ class WishListViewController: BaseViewController {
             appearance: .plain
         )
         
+        configuraion.showsSeparators = false
         configuraion.backgroundColor = .black
         let layout = UICollectionViewCompositionalLayout.list(
             using: configuraion
@@ -104,7 +105,7 @@ class WishListViewController: BaseViewController {
             var content = UIListContentConfiguration.valueCell()
             
             content.text = itemIdentifier.name
-            content.textProperties.color = .brown
+            content.textProperties.color = .white
             content.textProperties.font = .boldSystemFont(ofSize: 20)
             
             content.secondaryText = self.dateFormatter
@@ -114,10 +115,7 @@ class WishListViewController: BaseViewController {
             cell.contentConfiguration = content
             
             var backgroundConfig = UIBackgroundConfiguration.listCell()
-            backgroundConfig.backgroundColor = .yellow
-            backgroundConfig.cornerRadius = 10
-            backgroundConfig.strokeWidth = 2.0
-            backgroundConfig.strokeColor = .red
+            backgroundConfig.backgroundColor = .black
             
             cell.backgroundConfiguration = backgroundConfig
         })
