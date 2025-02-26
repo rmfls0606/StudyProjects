@@ -74,5 +74,13 @@ final class MainViewController: BaseViewController {
                         )
                 }
                 .disposed(by: disposeBag)
+        
+        self.navigationItem.rightBarButtonItem?.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                let nextVC = WishListViewController()
+                owner.navigationController?
+                    .pushViewController(nextVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
