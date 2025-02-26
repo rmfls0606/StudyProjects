@@ -174,21 +174,12 @@ class WishListViewController: BaseViewController {
 
 //MARK: - CollectionView
 extension WishListViewController: UICollectionViewDelegate {
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        list.count
-//    }
-
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueConfiguredReusableCell(
-//            using: registration,
-//            for: indexPath,
-//            item: list[indexPath.item]
-//        )
-//        
-//        cell.backgroundColor = .orange
-//        
-//        return cell
-//    }
-//
-    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        self.list.remove(at: indexPath.item)
+        
+        self.updateSnapshot()
+    }
 }
