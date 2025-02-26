@@ -20,6 +20,23 @@ class WishListViewController: BaseViewController {
         return searchBar
     }()
     
+    lazy var collectionView = UICollectionView(
+        frame: .zero,
+        collectionViewLayout: createLayout()
+    )
+    
+    private func createLayout() -> UICollectionViewLayout {
+        var configuraion = UICollectionLayoutListConfiguration(
+            appearance: .plain
+        )
+        
+        let layout = UICollectionViewCompositionalLayout.list(
+            using: configuraion
+        )
+        
+        return layout
+    }
+    
     override func configureHierarchy() {
         self.view.addSubview(searchBar)
     }
