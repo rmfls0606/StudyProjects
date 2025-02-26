@@ -10,9 +10,10 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-struct Wish: Hashable{
+struct Wish: Codable, Hashable{
+    var id = UUID().uuidString
     let name: String
-    let date = Date()
+    var date = Date()
 }
 
 class WishListViewController: BaseViewController {
@@ -23,6 +24,21 @@ class WishListViewController: BaseViewController {
     }
     
     private let disposeBag = DisposeBag()
+    
+    private var user: [Wish] {
+        get {
+            guard let data = UserDefaults.standard.data(forKey: "wish"),
+                  let wishes = try? JSONDecoder().decode([Wish].self, from: data) else {
+                return []
+            }
+            return wishes
+        }
+        set {
+            if let data = try? JSONEncoder().encode(newValue) {
+                UserDefaults.standard.set(data, forKey: "wish")
+            }
+        }
+    }
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -39,7 +55,7 @@ class WishListViewController: BaseViewController {
     var dataSource: UICollectionViewDiffableDataSource<String, Wish>!
     
 //    var list = ["킁킁", "냄새", "향기"] //임시 데이터
-    var list = [Wish]()
+//    var list = [Wish]()
     
     lazy var collectionView = UICollectionView(
         frame: .zero,
@@ -93,7 +109,10 @@ class WishListViewController: BaseViewController {
             .map{ $0 }
             .distinctUntilChanged()
             .subscribe(with: self) { owner, text in
-                owner.list.append(Wish(name: text))
+//                owner.list.append(Wish(name: text))
+                var newData = owner.user
+                newData.append(Wish(name: text))
+                owner.user = newData
                 
                 owner.updateSnapshot()
             }
@@ -103,7 +122,7 @@ class WishListViewController: BaseViewController {
     private func updateSnapshot(){
         var snapshot = NSDiffableDataSourceSnapshot<String, Wish>()
         snapshot.appendSections(["위시리스트"])
-        snapshot.appendItems(list, toSection: "위시리스트")
+        snapshot.appendItems(user, toSection: "위시리스트")
         
         dataSource.apply(snapshot)
     }
@@ -178,7 +197,10 @@ extension WishListViewController: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        self.list.remove(at: indexPath.item)
+//        self.list.remove(at: indexPath.item)
+        var item = self.user
+        item.remove(at: indexPath.item)
+        self.user = item
         
         self.updateSnapshot()
     }
