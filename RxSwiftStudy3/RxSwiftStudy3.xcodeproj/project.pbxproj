@@ -60,9 +60,9 @@
 		79C0CE932D66B89400415425 = {
 			isa = PBXGroup;
 			children = (
-				79C0CE9E2D66B89400415425 /* RxSwiftStudy3 */,
 				79C0CE9D2D66B89400415425 /* Products */,
 				79C0CEC12D66BB2600415425 /* Resource.swift */,
+				79C0CE9E2D66B89400415425 /* RxSwiftStudy3 */,
 			);
 			sourceTree = "<group>";
 		};
