@@ -6,15 +6,28 @@
 //
 
 import UIKit
+import SnapKit
 
 class WishListViewController: BaseViewController {
-
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "위시리스트"
+        searchBar.barTintColor = .black
+        searchBar.searchTextField.backgroundColor = UIColor(named: "searchBarbc")
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: searchBar.placeholder!, attributes: [.foregroundColor: UIColor.lightGray])
+        searchBar.searchTextField.textColor = .lightGray
+        searchBar.searchTextField.leftView?.tintColor = .lightGray
+        return searchBar
+    }()
+    
     override func configureHierarchy() {
-        
+        self.view.addSubview(searchBar)
     }
     
     override func configureLayout() {
-        
+        self.searchBar.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+        }
     }
     
     override func configureView() {
