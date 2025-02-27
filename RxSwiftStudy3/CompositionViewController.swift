@@ -10,6 +10,10 @@ import SnapKit
 
 class CompositionViewController: UIViewController {
     
+    enum Section {
+        case First
+    }
+    
     lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: createLayout()
@@ -29,6 +33,8 @@ class CompositionViewController: UIViewController {
         return layout
     }
     
+    var dataSource: UICollectionViewDiffableDataSource<Section, Int>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,12 +52,31 @@ class CompositionViewController: UIViewController {
     
     private func configureDataSource(){
         //cell register
-        //cellForItemAt
         var cellRegistraion = UICollectionView.CellRegistration<UICollectionViewListCell, Int> { cell, indexPath, itemIdentifier in
+            
+            print("CellRegistration", indexPath)
+            
             var content = UIListContentConfiguration.subtitleCell()
             content.text = "\(itemIdentifier)"
             content.image = UIImage(systemName: "star")
             cell.contentConfiguration = content
         }
+        
+        //cellForItemAt
+        dataSource = UICollectionViewDiffableDataSource(
+            collectionView: collectionView,
+            cellProvider: {
+ collectionView,
+                indexPath,
+                itemIdentifier in
+                let cell = collectionView.dequeueConfiguredReusableCell(
+                    using: cellRegistraion,
+                    for: indexPath,
+                    item: itemIdentifier
+                )
+                print("ReusableCell", indexPath)
+                return cell
+            }
+        )
     }
 }
