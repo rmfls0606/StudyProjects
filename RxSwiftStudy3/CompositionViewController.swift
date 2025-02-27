@@ -20,51 +20,125 @@ class CompositionViewController: UIViewController {
         collectionViewLayout: createLayout()
     )
     
-    //MARK: - 앱스토어 처럼 수평 수직 스크롤, 수직에는 몇개가 쌓여있게
+    //MARK: - SectionProvider
     func createLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1/3)
-        )
-        
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(
-            top: 5,
-            leading: 5,
-            bottom: 5,
-            trailing: 5
-        )//cell 내부 간격
-        
-        let innerSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1/3),
-            heightDimension: .fractionalHeight(1)
-        )
-        
-        let innerGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: innerSize,
-            subitems: [item]
-        )
-        
-        //,fraction: 비율, .absolute: 고정
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(300.0),
-            heightDimension: .absolute(100.0)
-        )
-        
-        let group = NSCollectionLayoutGroup
-            .horizontal(layoutSize: groupSize, subitems: [innerGroup])
-        
-        let section = NSCollectionLayoutSection(group: group)
-        //        section.interGroupSpacing = 20 //행사이의 간격
-        
-        /*section.orthogonalScrollingBehavior = .continuous*/ //group에 관한 수평 스크롤
-        /*section.orthogonalScrollingBehavior = .paging*/ //group에 관한 수평 스크롤
-        section.orthogonalScrollingBehavior = .groupPaging
-        
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        
+        let layout = UICollectionViewCompositionalLayout { sectionIndex, _ in
+            if sectionIndex == 0{
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalHeight(1/3)
+                )
+                
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(
+                    top: 5,
+                    leading: 5,
+                    bottom: 5,
+                    trailing: 5
+                )//cell 내부 간격
+                
+                let innerSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1/3),
+                    heightDimension: .fractionalHeight(1)
+                )
+                
+                let innerGroup = NSCollectionLayoutGroup.vertical(
+                    layoutSize: innerSize,
+                    subitems: [item]
+                )
+                
+                //,fraction: 비율, .absolute: 고정
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .absolute(300.0),
+                    heightDimension: .absolute(100.0)
+                )
+                
+                let group = NSCollectionLayoutGroup
+                    .horizontal(layoutSize: groupSize, subitems: [innerGroup])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                //        section.interGroupSpacing = 20 //행사이의 간격
+                
+                /*section.orthogonalScrollingBehavior = .continuous*/ //group에 관한 수평 스크롤
+                /*section.orthogonalScrollingBehavior = .paging*/ //group에 관한 수평 스크롤
+                section.orthogonalScrollingBehavior = .groupPaging
+                return section
+            }else{
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1/3),
+                    heightDimension: .fractionalHeight(1.0)
+                )
+                
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(
+                    top: 5,
+                    leading: 5,
+                    bottom: 5,
+                    trailing: 5
+                )//cell 내부 간격
+                
+                //,fraction: 비율, .absolute: 고정
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(100.0)
+                )
+                
+                let group = NSCollectionLayoutGroup
+                    .horizontal(layoutSize: groupSize, subitems: [item])
+                
+                let section = NSCollectionLayoutSection(group: group)
+                //        section.interGroupSpacing = 20 //행사이의 간격
+                return section
+            }
+        }
         return layout
     }
+    
+    //    //MARK: - 앱스토어 처럼 수평 수직 스크롤, 수직에는 몇개가 쌓여있게
+    //    func createLayout() -> UICollectionViewLayout {
+    //        let itemSize = NSCollectionLayoutSize(
+    //            widthDimension: .fractionalWidth(1.0),
+    //            heightDimension: .fractionalHeight(1/3)
+    //        )
+    //
+    //        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    //        item.contentInsets = NSDirectionalEdgeInsets(
+    //            top: 5,
+    //            leading: 5,
+    //            bottom: 5,
+    //            trailing: 5
+    //        )//cell 내부 간격
+    //
+    //        let innerSize = NSCollectionLayoutSize(
+    //            widthDimension: .fractionalWidth(1/3),
+    //            heightDimension: .fractionalHeight(1)
+    //        )
+    //
+    //        let innerGroup = NSCollectionLayoutGroup.vertical(
+    //            layoutSize: innerSize,
+    //            subitems: [item]
+    //        )
+    //
+    //        //,fraction: 비율, .absolute: 고정
+    //        let groupSize = NSCollectionLayoutSize(
+    //            widthDimension: .absolute(300.0),
+    //            heightDimension: .absolute(100.0)
+    //        )
+    //
+    //        let group = NSCollectionLayoutGroup
+    //            .horizontal(layoutSize: groupSize, subitems: [innerGroup])
+    //
+    //        let section = NSCollectionLayoutSection(group: group)
+    //        //        section.interGroupSpacing = 20 //행사이의 간격
+    //
+    //        /*section.orthogonalScrollingBehavior = .continuous*/ //group에 관한 수평 스크롤
+    //        /*section.orthogonalScrollingBehavior = .paging*/ //group에 관한 수평 스크롤
+    //        section.orthogonalScrollingBehavior = .groupPaging
+    //
+    //        let layout = UICollectionViewCompositionalLayout(section: section)
+    //
+    //        return layout
+    //    }
     
     //MARK: - 3
     //    //수평
@@ -202,7 +276,7 @@ class CompositionViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(list, toSection: .First)
-        //        snapshot.appendItems(list2, toSection: .Second)
+        snapshot.appendItems(list2, toSection: .Second)
         dataSource.apply(snapshot)
     }
 }
