@@ -24,7 +24,7 @@ class CompositionViewController: UIViewController {
     //수평
     func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1/3),
+            widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0)
         )
         
@@ -38,7 +38,7 @@ class CompositionViewController: UIViewController {
         
         //,fraction: 비율, .absolute: 고정
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
+            widthDimension: .absolute(300.0),
             heightDimension: .absolute(100.0)
         )
         
@@ -49,7 +49,7 @@ class CompositionViewController: UIViewController {
         //        section.interGroupSpacing = 20 //행사이의 간격
         
         /*section.orthogonalScrollingBehavior = .continuous*/ //group에 관한 수평 스크롤
-        section.orthogonalScrollingBehavior = .paging
+        section.orthogonalScrollingBehavior = .groupPaging
         
         let layout = UICollectionViewCompositionalLayout(section: section)
         
