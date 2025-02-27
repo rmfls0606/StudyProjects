@@ -20,19 +20,39 @@ class CompositionViewController: UIViewController {
         collectionViewLayout: createLayout()
     )
     
+    
     func createLayout() -> UICollectionViewLayout{
-        
-        var configuration = UICollectionLayoutListConfiguration(
-            appearance: .insetGrouped
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(0.3),
+            heightDimension: .fractionalHeight(1.0)
         )
-        configuration.backgroundColor = .purple
-        configuration.showsSeparators = true
-//        configuration.leadingSwipeActionsConfigurationProvider
-        
-        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        //,fraction: 비율, .absolute: 고정
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .absolute(50.0)
+        )
+        let group = NSCollectionLayoutGroup
+            .horizontal(layoutSize: groupSize, subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
     }
+    
+//    func createLayout() -> UICollectionViewLayout{
+//        
+//        var configuration = UICollectionLayoutListConfiguration(
+//            appearance: .insetGrouped
+//        )
+//        configuration.backgroundColor = .purple
+//        configuration.showsSeparators = true
+////        configuration.leadingSwipeActionsConfigurationProvider
+//        
+//        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+//        
+//        return layout
+//    }
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Int>!
     
@@ -57,7 +77,7 @@ class CompositionViewController: UIViewController {
     
     private func configureDataSource(){
         //cell register
-        var cellRegistraion = UICollectionView.CellRegistration<UICollectionViewListCell, Int> { cell, indexPath, itemIdentifier in
+        let cellRegistraion = UICollectionView.CellRegistration<UICollectionViewListCell, Int> { cell, indexPath, itemIdentifier in
             
             print("CellRegistration", indexPath)
             
