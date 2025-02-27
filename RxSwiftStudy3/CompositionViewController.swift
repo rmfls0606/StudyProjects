@@ -35,6 +35,8 @@ class CompositionViewController: UIViewController {
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Int>!
     
+    var list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1123, 434, 234, 5566, 654275]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
