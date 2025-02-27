@@ -20,39 +20,89 @@ class CompositionViewController: UIViewController {
         collectionViewLayout: createLayout()
     )
     
-    
-    func createLayout() -> UICollectionViewLayout{
+    //MARK: - 3
+    //수평
+    func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.5),
+            widthDimension: .fractionalWidth(1/3),
             heightDimension: .fractionalHeight(1.0)
         )
+        
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = NSDirectionalEdgeInsets(
+            top: 5,
+            leading: 5,
+            bottom: 5,
+            trailing: 5
+        )//cell 내부 간격
+        
         //,fraction: 비율, .absolute: 고정
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .absolute(50.0)
+            heightDimension: .absolute(100.0)
         )
+        
         let group = NSCollectionLayoutGroup
             .horizontal(layoutSize: groupSize, subitems: [item])
+        
         let section = NSCollectionLayoutSection(group: group)
+        //        section.interGroupSpacing = 20 //행사이의 간격
+        
+        /*section.orthogonalScrollingBehavior = .continuous*/ //group에 관한 수평 스크롤
+        section.orthogonalScrollingBehavior = .paging
+        
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
     }
     
-//    func createLayout() -> UICollectionViewLayout{
-//        
-//        var configuration = UICollectionLayoutListConfiguration(
-//            appearance: .insetGrouped
-//        )
-//        configuration.backgroundColor = .purple
-//        configuration.showsSeparators = true
-////        configuration.leadingSwipeActionsConfigurationProvider
-//        
-//        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
-//        
-//        return layout
-//    }
+    //MARK: - 2
+    //    func createLayout() -> UICollectionViewLayout{
+    //        let itemSize = NSCollectionLayoutSize(
+    //            widthDimension: .fractionalWidth(1/3),
+    //            heightDimension: .fractionalHeight(1.0)
+    //        )
+    //
+    //        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+    //        item.contentInsets = NSDirectionalEdgeInsets(
+    //            top: 5,
+    //            leading: 5,
+    //            bottom: 5,
+    //            trailing: 5
+    //        )//cell 내부 간격
+    //
+    //        //,fraction: 비율, .absolute: 고정
+    //        let groupSize = NSCollectionLayoutSize(
+    //            widthDimension: .fractionalWidth(1.0),
+    //            heightDimension: .absolute(100.0)
+    //        )
+    //
+    //        let group = NSCollectionLayoutGroup
+    //            .horizontal(layoutSize: groupSize, subitems: [item])
+    //
+    //        let section = NSCollectionLayoutSection(group: group)
+    ////        section.interGroupSpacing = 20 //행사이의 간격
+    //
+    //        let layout = UICollectionViewCompositionalLayout(section: section)
+    //
+    //        return layout
+    //    }
+    
+    
+    //MARK: - 1
+    //    func createLayout() -> UICollectionViewLayout{
+    //
+    //        var configuration = UICollectionLayoutListConfiguration(
+    //            appearance: .insetGrouped
+    //        )
+    //        configuration.backgroundColor = .purple
+    //        configuration.showsSeparators = true
+    ////        configuration.leadingSwipeActionsConfigurationProvider
+    //
+    //        let layout = UICollectionViewCompositionalLayout.list(using: configuration)
+    //
+    //        return layout
+    //    }
     
     var dataSource: UICollectionViewDiffableDataSource<Section, Int>!
     
@@ -61,7 +111,7 @@ class CompositionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         configure()
         configureDataSource()
         updateSnapshot()
@@ -88,7 +138,7 @@ class CompositionViewController: UIViewController {
         dataSource = UICollectionViewDiffableDataSource(
             collectionView: collectionView,
             cellProvider: {
- collectionView,
+                collectionView,
                 indexPath,
                 itemIdentifier in
                 let cell = collectionView.dequeueConfiguredReusableCell(
@@ -106,7 +156,7 @@ class CompositionViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(list, toSection: .First)
-        snapshot.appendItems(list2, toSection: .Second)
+        //        snapshot.appendItems(list2, toSection: .Second)
         dataSource.apply(snapshot)
     }
 }
