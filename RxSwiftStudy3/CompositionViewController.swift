@@ -37,6 +37,7 @@ class CompositionViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Int>!
     
     var list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1123, 434, 234, 5566, 654275]
+    var list2 = [1, 2, 3, 4, 5566, 654275]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +89,7 @@ class CompositionViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
         snapshot.appendSections(Section.allCases)
         snapshot.appendItems(list, toSection: .First)
-        snapshot.appendItems(list, toSection: .Second)
+        snapshot.appendItems(list2, toSection: .Second)
         dataSource.apply(snapshot)
     }
 }
