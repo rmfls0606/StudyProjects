@@ -10,8 +10,9 @@ import SnapKit
 
 class CompositionViewController: UIViewController {
     
-    enum Section {
+    enum Section: CaseIterable {
         case First
+        case Second
     }
     
     lazy var collectionView = UICollectionView(
@@ -42,6 +43,7 @@ class CompositionViewController: UIViewController {
 
         configure()
         configureDataSource()
+        updateSnapshot()
     }
     
     private func configure(){
@@ -80,5 +82,12 @@ class CompositionViewController: UIViewController {
                 return cell
             }
         )
+    }
+    
+    private func updateSnapshot(){
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Int>()
+        snapshot.appendSections(Section.allCases)
+        snapshot.appendItems(list, toSection: .First)
+        dataSource.apply(snapshot)
     }
 }
