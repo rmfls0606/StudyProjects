@@ -33,6 +33,7 @@ class CompositionViewController: UIViewController {
         super.viewDidLoad()
 
         configure()
+        configureDataSource()
     }
     
     private func configure(){
@@ -40,6 +41,17 @@ class CompositionViewController: UIViewController {
         self.view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(self.view.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func configureDataSource(){
+        //cell register
+        //cellForItemAt
+        var cellRegistraion = UICollectionView.CellRegistration<UICollectionViewListCell, Int> { cell, indexPath, itemIdentifier in
+            var content = UIListContentConfiguration.subtitleCell()
+            content.text = "\(itemIdentifier)"
+            content.image = UIImage(systemName: "star")
+            cell.contentConfiguration = content
         }
     }
 }
