@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		79841DE22D6FEABA00B3EF28 /* CompositionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79841DE12D6FEABA00B3EF28 /* CompositionViewController.swift */; };
+		79841E0E2D70002300B3EF28 /* CompositionCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79841E0D2D70002300B3EF28 /* CompositionCollectionViewCell.swift */; };
 		79C0CEB62D66B9C700415425 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 79C0CEB52D66B9C700415425 /* RxCocoa */; };
 		79C0CEB82D66B9C700415425 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79C0CEB72D66B9C700415425 /* RxSwift */; };
 		79C0CEBB2D66BA2500415425 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 79C0CEBA2D66BA2500415425 /* SnapKit */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		79841DE12D6FEABA00B3EF28 /* CompositionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionViewController.swift; sourceTree = "<group>"; };
+		79841E0D2D70002300B3EF28 /* CompositionCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositionCollectionViewCell.swift; sourceTree = "<group>"; };
 		79C0CE9C2D66B89400415425 /* RxSwiftStudy3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RxSwiftStudy3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79C0CEC12D66BB2600415425 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +64,7 @@
 		79C0CE932D66B89400415425 = {
 			isa = PBXGroup;
 			children = (
+				79841E0D2D70002300B3EF28 /* CompositionCollectionViewCell.swift */,
 				79841DE12D6FEABA00B3EF28 /* CompositionViewController.swift */,
 				79C0CE9D2D66B89400415425 /* Products */,
 				79C0CEC12D66BB2600415425 /* Resource.swift */,
@@ -161,6 +164,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79841E0E2D70002300B3EF28 /* CompositionCollectionViewCell.swift in Sources */,
 				79841DE22D6FEABA00B3EF28 /* CompositionViewController.swift in Sources */,
 				79C0CEC22D66BB2600415425 /* Resource.swift in Sources */,
 			);
