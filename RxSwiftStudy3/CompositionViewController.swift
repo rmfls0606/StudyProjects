@@ -23,7 +23,7 @@ class CompositionViewController: UIViewController {
     
     func createLayout() -> UICollectionViewLayout{
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.3),
+            widthDimension: .fractionalWidth(0.5),
             heightDimension: .fractionalHeight(1.0)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -77,14 +77,11 @@ class CompositionViewController: UIViewController {
     
     private func configureDataSource(){
         //cell register
-        let cellRegistraion = UICollectionView.CellRegistration<UICollectionViewListCell, Int> { cell, indexPath, itemIdentifier in
+        let cellRegistraion = UICollectionView.CellRegistration<CompositionCollectionViewCell, Int> { cell, indexPath, itemIdentifier in
             
             print("CellRegistration", indexPath)
             
-            var content = UIListContentConfiguration.subtitleCell()
-            content.text = "\(itemIdentifier)"
-            content.image = UIImage(systemName: "star")
-            cell.contentConfiguration = content
+            cell.label.text = "\(indexPath)"
         }
         
         //cellForItemAt
