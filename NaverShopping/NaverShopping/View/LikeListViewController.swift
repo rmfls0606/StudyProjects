@@ -16,8 +16,9 @@ class LikeListViewController: BaseViewController {
     private lazy var collectionView = createCollectionView()
     private let disposeBag = DisposeBag()
     
-    var list: Results<LikeTable>!
-    
+//    var list: Results<LikeTable>!
+    private let likeListSubject = BehaviorSubject<[LikeTable]>(value: [])
+
     let realm = try! Realm()
     
     private func createCollectionView() -> UICollectionView{
@@ -41,6 +42,11 @@ class LikeListViewController: BaseViewController {
         return layout
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.reloadData()
+    }
+    
     override func configureHierarchy() {
         self.view.addSubview(collectionView)
     }
@@ -55,13 +61,19 @@ class LikeListViewController: BaseViewController {
     }
     
     override func configureView() {
-        list = realm.objects(LikeTable.self)
         self.collectionView.backgroundColor = .black
+        reloadData()
+    }
+    
+    func reloadData(){
+        let results = realm.objects(LikeTable.self)
+        let array = Array(results)
+        likeListSubject.onNext(array)
     }
     
     override func configureBind() {
         
-        Observable.just(list)
+        likeListSubject
             .bind(
                 to: collectionView.rx
                     .items(
@@ -72,6 +84,18 @@ class LikeListViewController: BaseViewController {
                 print(element.id)
                 let data = element
                 cell.configureData2(data: data)
+                cell.likeButton.rx.tap
+                    .subscribe(with: self) { owner, _ in
+                        do{
+                            try owner.realm.write {
+                                owner.realm.delete(element)
+                            }
+                        }catch{
+                            print("삭제 실패")
+                        }
+                        owner.reloadData()
+                    }
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
     }

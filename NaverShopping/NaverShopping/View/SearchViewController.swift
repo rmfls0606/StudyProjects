@@ -50,7 +50,7 @@ final class SearchViewController: BaseViewController {
     
     override func configureView() {
         self.view.backgroundColor = .black
-        print(realm.configuration.fileURL)
+//        print(realm.configuration.fileURL)
     }
     
     override func configureBind() {
