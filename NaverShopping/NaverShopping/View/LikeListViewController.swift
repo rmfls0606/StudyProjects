@@ -13,12 +13,22 @@ import RealmSwift
 
 class LikeListViewController: BaseViewController {
     
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.placeholder = "좋아요 리스트 검색"
+        searchBar.barTintColor = .black
+        searchBar.searchTextField.backgroundColor = UIColor(named: "searchBarbc")
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: searchBar.placeholder!, attributes: [.foregroundColor: UIColor.lightGray])
+        searchBar.searchTextField.textColor = .lightGray
+        searchBar.searchTextField.leftView?.tintColor = .lightGray
+        return searchBar
+    }()
     private lazy var collectionView = createCollectionView()
     private let disposeBag = DisposeBag()
     
-//    var list: Results<LikeTable>!
+    //    var list: Results<LikeTable>!
     private let likeListSubject = BehaviorSubject<[LikeTable]>(value: [])
-
+    
     let realm = try! Realm()
     
     private func createCollectionView() -> UICollectionView{
@@ -48,12 +58,18 @@ class LikeListViewController: BaseViewController {
     }
     
     override func configureHierarchy() {
+        self.view.addSubview(searchBar)
         self.view.addSubview(collectionView)
     }
     
     override func configureLayout() {
+        self.searchBar.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+        }
+        
         self.collectionView.snp.makeConstraints { make in
-            make.top.leading.trailing
+            make.top.equalTo(searchBar.snp.bottom)
+            make.leading.trailing
                 .equalTo(self.view.safeAreaLayoutGuide)
                 .inset(12)
             make.bottom.equalToSuperview()
