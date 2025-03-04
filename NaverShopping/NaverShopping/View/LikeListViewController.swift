@@ -114,5 +114,21 @@ class LikeListViewController: BaseViewController {
                     .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
+        
+        searchBar.rx.searchButtonClicked
+            .withLatestFrom(searchBar.rx.text.orEmpty)
+            .distinctUntilChanged()
+            .subscribe(with: self) { (owner, text) in
+                let filtered: [LikeTable]
+                if text.isEmpty{
+                    filtered = Array(owner.realm.objects(LikeTable.self))
+                }else{
+                    filtered = Array(owner.realm.objects(LikeTable.self).filter{ $0.productName.contains(text) || $0.productContent.contains(text)})
+                }
+                owner.likeListSubject.onNext(filtered)
+                owner.searchBar.resignFirstResponder()
+            }
+            .disposed(by: disposeBag)
+        
     }
 }
