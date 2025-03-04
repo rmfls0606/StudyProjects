@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		04753C102D7671530069A260 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04753C0F2D7671530069A260 /* SnapKit */; };
 		796C33162D7685C4004B2760 /* Readme in Resources */ = {isa = PBXBuildFile; fileRef = 796C33152D7685C4004B2760 /* Readme */; };
+		796C331D2D768AB3004B2760 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 796C331C2D768AB3004B2760 /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				796C331D2D768AB3004B2760 /* RealmSwift in Frameworks */,
 				04753C102D7671530069A260 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +96,7 @@
 			name = SeSAC6Database;
 			packageProductDependencies = (
 				04753C0F2D7671530069A260 /* SnapKit */,
+				796C331C2D768AB3004B2760 /* RealmSwift */,
 			);
 			productName = SeSAC6Database;
 			productReference = 04753BF02D7670890069A260 /* SeSAC6Database.app */;
@@ -125,6 +128,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				04753C0E2D7671530069A260 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				796C331B2D768AB3004B2760 /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 04753BF12D7670890069A260 /* Products */;
@@ -371,6 +375,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		796C331B2D768AB3004B2760 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 20.0.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -378,6 +390,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 04753C0E2D7671530069A260 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		796C331C2D768AB3004B2760 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 796C331B2D768AB3004B2760 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
