@@ -43,14 +43,23 @@ final class MainViewController: BaseViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         let rightBarButton = UIBarButtonItem(
+            image: UIImage(systemName: "list.bullet.circle.fill"),
+            style: .plain,
+            target: self,
+            action: nil
+        )
+        
+        let leftButton = UIBarButtonItem(
             image: UIImage(systemName: "heart.fill"),
             style: .plain,
             target: self,
             action: nil
         )
         
-        rightBarButton.tintColor = .systemPink
+        rightBarButton.tintColor = .white
+        leftButton.tintColor = .systemPink
         self.navigationItem.rightBarButtonItem = rightBarButton
+        self.navigationItem.leftBarButtonItem = leftButton
     }
     
     override func configureBind() {
