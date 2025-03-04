@@ -14,6 +14,7 @@ class MainViewController: UIViewController {
     let tableView = UITableView()
     
     var list: Results<Table>!
+//    var list: [Table] = []
      
     let realm = try! Realm() //default.realm
     
@@ -26,12 +27,23 @@ class MainViewController: UIViewController {
         configureConstraints()
         
 //        dump(realm.objects(Table.self))
+        
+//        list = realm
+//            .objects(Table.self)
+//            .sorted(byKeyPath: "money", ascending: false)
+        
         list = realm.objects(Table.self)
+//            .where { $0.incomeOrExpense == true}
+//            .where{ $0.product.contains("sesa", options: .caseInsensitive)  }
+            .sorted(byKeyPath: "money", ascending: false)
+        
+//        list = Array(data)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print(#function)
+        tableView.reloadData()
     }
     
     private func configureHierarchy() {
@@ -84,7 +96,23 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
- 
+        let data = list[indexPath.row]
+        
+        do{
+            try realm.write {
+//                realm.delete(data)
+                
+                //수정
+                realm.create(Table.self, value: [
+                    "id": data.id,
+                    "money": 10000000000
+                ], update: .modified)
+                
+                tableView.reloadData()
+            }
+        }catch{
+            print("램 데이터 삭제 실패")
+        }
     }
       
     

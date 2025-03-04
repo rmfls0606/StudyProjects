@@ -53,9 +53,9 @@ class AddViewController: UIViewController {
             try realm.write {
                 
                 let data = Table(
-                    money: 4700,
-                    categoryName: "카페",
-                    product: "스타벅스",
+                    money: .random(in: 100...1000) * 100,
+                    categoryName: "생활비",
+                    product: "린스",
                     incomeOrExpense: false,
                     memo: memoField.text
                 )
