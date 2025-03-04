@@ -106,7 +106,7 @@ final class SearchItemCollectionViewCell: BaseCollectionViewCell{
         self.itemSubTitle.text = data.productContent.htmlEscaped
         let result = Int(data.price)?.formatted(.number)
         self.itemPrice.text = result
-        
+        self.likeButton.isSelected = true
     }
 }
 
