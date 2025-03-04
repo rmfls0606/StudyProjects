@@ -91,5 +91,13 @@ final class MainViewController: BaseViewController {
                     .pushViewController(nextVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        self.navigationItem.leftBarButtonItem?.rx.tap
+            .subscribe(with: self, onNext: { owner, _ in
+                let nextVC = LikeListViewController()
+                owner.navigationController?
+                    .pushViewController(nextVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
