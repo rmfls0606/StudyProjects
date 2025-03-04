@@ -20,6 +20,12 @@ final class SearchItemCollectionViewCell: BaseCollectionViewCell{
     private lazy var itemTitle = UILabel()
     private lazy var itemSubTitle = UILabel()
     private lazy var itemPrice = UILabel()
+    let likeButton: UIButton = {
+        let btn = UIButton()
+        btn.setImage(UIImage(systemName: "heart"), for: .normal)
+        btn.tintColor = .white
+        return btn
+    }()
     
     
     override func configureHierarchy() {
@@ -27,6 +33,7 @@ final class SearchItemCollectionViewCell: BaseCollectionViewCell{
         self.contentView.addSubview(itemTitle)
         self.contentView.addSubview(itemSubTitle)
         self.contentView.addSubview(itemPrice)
+        self.contentView.addSubview(likeButton)
     }
     
     override func configureLayout() {
@@ -50,6 +57,10 @@ final class SearchItemCollectionViewCell: BaseCollectionViewCell{
             make.top.equalTo(itemSubTitle.snp.bottom).offset(5)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
+        }
+        
+        self.likeButton.snp.makeConstraints { make in
+            make.bottom.trailing.equalTo(itemImageView)
         }
     }
     
