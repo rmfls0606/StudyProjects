@@ -9,14 +9,14 @@ import Foundation
 import RealmSwift
 
 class LikeTable: Object {
-    @Persisted(primaryKey: true) var id: ObjectId
+    @Persisted(primaryKey: true) var id: String
     @Persisted var imageNamge: String
     @Persisted var productName: String
     @Persisted var productContent: String
     @Persisted var price: String
     
     convenience init(
-        id: ObjectId,
+        id: String,
         imageNamge: String,
         productName: String,
         productContent: String,

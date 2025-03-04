@@ -27,8 +27,6 @@ class LikeListViewController: BaseViewController {
         return collectionView
     }
     
-    var array = Observable.just([1,2,3]) //testData
-    
     private func createCollectionViewLayout() -> UICollectionViewLayout{
         let padding = 12.0
         let spacing = 12.0
@@ -58,12 +56,12 @@ class LikeListViewController: BaseViewController {
     
     override func configureView() {
         list = realm.objects(LikeTable.self)
-        print("여기가 리스트", list)
+        self.collectionView.backgroundColor = .black
     }
     
     override func configureBind() {
         
-        array
+        Observable.just(list)
             .bind(
                 to: collectionView.rx
                     .items(
@@ -71,7 +69,9 @@ class LikeListViewController: BaseViewController {
                         cellType: SearchItemCollectionViewCell.self
                     )
             ){ (row, element, cell) in
-                cell.likeButton.isSelected = true
+                print(element.id)
+                let data = element
+                cell.configureData2(data: data)
             }
             .disposed(by: disposeBag)
     }

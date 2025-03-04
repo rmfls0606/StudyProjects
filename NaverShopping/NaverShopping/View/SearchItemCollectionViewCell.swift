@@ -8,25 +8,32 @@
 import UIKit
 import SnapKit
 import Kingfisher
-
+import RxSwift
+import RxCocoa
 
 final class SearchItemCollectionViewCell: BaseCollectionViewCell{
     
     let numberFormatter = NumberFormatter()
-    
+    private var disposeBag = DisposeBag()
     static let identifier = "SearchItemCollectionViewCell"
     
-    private lazy var itemImageView = UIImageView()
-    private lazy var itemTitle = UILabel()
-    private lazy var itemSubTitle = UILabel()
-    private lazy var itemPrice = UILabel()
+    let itemImageView = UIImageView()
+    let itemTitle = UILabel()
+    let itemSubTitle = UILabel()
+    let itemPrice = UILabel()
     let likeButton: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(systemName: "heart"), for: .normal)
-        btn.tintColor = .white
+        btn.setImage(UIImage(systemName: "heart.fill"), for: .selected)
+        btn.tintColor = .systemPink
         return btn
     }()
     
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     
     override func configureHierarchy() {
         self.contentView.addSubview(itemImageView)
@@ -83,11 +90,21 @@ final class SearchItemCollectionViewCell: BaseCollectionViewCell{
         itemPrice.textColor = .white
     }
     
-    func configureData(data: Item){
+    func configureData(data: Item, isSelected: Bool){
         self.itemImageView.kf.setImage(with: URL(string: data.image))
         self.itemTitle.text = data.mallName
         self.itemSubTitle.text = data.title.htmlEscaped
         let result = Int(data.lprice)?.formatted(.number)
+        self.itemPrice.text = result
+        
+        self.likeButton.isSelected = isSelected
+    }
+    
+    func configureData2(data: LikeTable){
+        self.itemImageView.kf.setImage(with: URL(string: data.imageNamge))
+        self.itemTitle.text = data.productName
+        self.itemSubTitle.text = data.productContent.htmlEscaped
+        let result = Int(data.price)?.formatted(.number)
         self.itemPrice.text = result
         
     }

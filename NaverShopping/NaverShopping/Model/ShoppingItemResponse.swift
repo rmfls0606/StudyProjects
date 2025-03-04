@@ -13,6 +13,8 @@ struct ItemResponse: Decodable{
 }
 
 struct Item: Decodable{
+    let productId: String
+    
     let image: String
     let mallName: String
     let title: String

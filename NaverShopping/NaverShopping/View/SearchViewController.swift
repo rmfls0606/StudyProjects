@@ -9,15 +9,23 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RealmSwift
 
 final class SearchViewController: BaseViewController {
     
     let numberFormatter = NumberFormatter()
     
+    let realm = try! Realm()
+    
     private let viewModel: SearchViewModel
     private let disposeBag = DisposeBag()
     
     private let searchItemsView = SearchItemsView()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.searchItemsView.collectionView.reloadData()
+    }
     
     init(query: String){
         self.viewModel = SearchViewModel(query: query)
@@ -42,6 +50,7 @@ final class SearchViewController: BaseViewController {
     
     override func configureView() {
         self.view.backgroundColor = .black
+        print(realm.configuration.fileURL)
     }
     
     override func configureBind() {
@@ -54,8 +63,52 @@ final class SearchViewController: BaseViewController {
                 cellIdentifier: SearchItemCollectionViewCell.identifier,
                 cellType: SearchItemCollectionViewCell.self)
             ) { (row, element, cell) in
-                print(element)
-                cell.configureData(data: element)
+                cell
+                    .configureData(
+                        data: element,
+                        isSelected: self.realm
+                            .objects(LikeTable.self)
+                            .contains{$0.id == element.productId}
+                    )
+//                let disposeBag = DisposeBag()
+                cell.likeButton.rx.tap
+                    .subscribe(with: self) {
+ owner,
+ _ in
+                        if cell.likeButton.isSelected{
+                            cell.likeButton.isSelected.toggle()
+                            do{
+                                try owner.realm.write {
+                                    let data = owner.realm.objects(
+                                        LikeTable.self
+                                    ).where { $0.id == element.productId
+                                    }
+                                    owner.realm.delete(data)
+                                }
+                                owner.searchItemsView.collectionView.reloadData()
+                            }catch{
+                                print("삭제 실패")
+                            }
+                        }else{
+                            cell.likeButton.isSelected.toggle()
+                            do{
+                                try owner.realm.write {
+                                    let data = LikeTable(
+                                        id: element.productId,
+                                        imageNamge: element.image,
+                                        productName: element.mallName,
+                                        productContent: element.title,
+                                        price: element.lprice
+                                    )
+                                    
+                                    owner.realm.add(data)
+                                }
+                            }catch{
+                                print("삽입 실패")
+                            }
+                        }
+                    }
+                    .disposed(by: self.disposeBag)
             }
             .disposed(by: disposeBag)
         
