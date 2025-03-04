@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		04753C102D7671530069A260 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04753C0F2D7671530069A260 /* SnapKit */; };
+		796C33162D7685C4004B2760 /* Readme in Resources */ = {isa = PBXBuildFile; fileRef = 796C33152D7685C4004B2760 /* Readme */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		04753BF02D7670890069A260 /* SeSAC6Database.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SeSAC6Database.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		796C33152D7685C4004B2760 /* Readme */ = {isa = PBXFileReference; lastKnownFileType = text; path = Readme; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -33,6 +35,11 @@
 			path = SeSAC6Database;
 			sourceTree = "<group>";
 		};
+		796C33172D768603004B2760 /* New Folder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "New Folder";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +57,8 @@
 		04753BE72D7670890069A260 = {
 			isa = PBXGroup;
 			children = (
+				796C33152D7685C4004B2760 /* Readme */,
+				796C33172D768603004B2760 /* New Folder */,
 				04753BF22D7670890069A260 /* SeSAC6Database */,
 				04753BF12D7670890069A260 /* Products */,
 			);
@@ -80,6 +89,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				04753BF22D7670890069A260 /* SeSAC6Database */,
+				796C33172D768603004B2760 /* New Folder */,
 			);
 			name = SeSAC6Database;
 			packageProductDependencies = (
@@ -131,6 +141,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				796C33162D7685C4004B2760 /* Readme in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
