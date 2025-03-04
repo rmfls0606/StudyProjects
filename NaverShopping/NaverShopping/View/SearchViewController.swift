@@ -70,7 +70,6 @@ final class SearchViewController: BaseViewController {
                             .objects(LikeTable.self)
                             .contains{$0.id == element.productId}
                     )
-//                let disposeBag = DisposeBag()
                 cell.likeButton.rx.tap
                     .subscribe(with: self) {
  owner,
@@ -108,7 +107,7 @@ final class SearchViewController: BaseViewController {
                             }
                         }
                     }
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         

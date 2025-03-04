@@ -14,7 +14,7 @@ import RxCocoa
 final class SearchItemCollectionViewCell: BaseCollectionViewCell{
     
     let numberFormatter = NumberFormatter()
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     static let identifier = "SearchItemCollectionViewCell"
     
     let itemImageView = UIImageView()
