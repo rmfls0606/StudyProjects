@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class AddViewController: UIViewController {
      
@@ -18,6 +19,8 @@ class AddViewController: UIViewController {
     
     let titleTextField = UITextField()
     let contentTextField = UITextField()
+    
+    let realm = try! Realm()
        
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +47,26 @@ class AddViewController: UIViewController {
     
     @objc func saveButtonClicked() {
         print(#function)
+        
+        //Create
+        do{
+            try realm.write {
+                
+                let data = Table(
+                    money: 4700,
+                    categoryName: "카페",
+                    product: "스타벅스",
+                    incomeOrExpense: false,
+                    memo: memoField.text
+                )
+                
+                realm.add(data)
+                print("앰 저장 완료")
+            }
+        }catch{
+            print("램에 저장이 실패한 경우")
+        }
+        
         navigationController?.popViewController(animated: true)
         
     }

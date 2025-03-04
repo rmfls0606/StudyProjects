@@ -7,19 +7,26 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class MainViewController: UIViewController {
 
     let tableView = UITableView()
     
-    let list = Array(1...100)
+    var list: Results<Table>!
      
+    let realm = try! Realm() //default.realm
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
         configureHierarchy()
         configureView()
+        print(realm.configuration.fileURL)
         configureConstraints()
+        
+//        dump(realm.objects(Table.self))
+        list = realm.objects(Table.self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -69,7 +76,9 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         let data = list[indexPath.row]
         
-        cell.testUI()
+        cell.titleLabel.text = data.product
+        cell.subTitleLabel.text = data.categoryName
+        cell.overviewLabel.text = data.money.formatted()
         
         return cell
     }
