@@ -9,11 +9,16 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RealmSwift
 
 class LikeListViewController: BaseViewController {
     
     private lazy var collectionView = createCollectionView()
     private let disposeBag = DisposeBag()
+    
+    var list: Results<LikeTable>!
+    
+    let realm = try! Realm()
     
     private func createCollectionView() -> UICollectionView{
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -52,7 +57,8 @@ class LikeListViewController: BaseViewController {
     }
     
     override func configureView() {
-        
+        list = realm.objects(LikeTable.self)
+        print("여기가 리스트", list)
     }
     
     override func configureBind() {
@@ -65,7 +71,7 @@ class LikeListViewController: BaseViewController {
                         cellType: SearchItemCollectionViewCell.self
                     )
             ){ (row, element, cell) in
-                
+                cell.likeButton.isSelected = true
             }
             .disposed(by: disposeBag)
     }
