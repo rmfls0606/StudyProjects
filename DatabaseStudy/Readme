@@ -9,3 +9,32 @@ CoreData의 경우 애플에서만 사용할 수 있지만, Realm은 안드로�
 realm은 CoreData보다 읽기, 쓰기가 빠르다
 그러면 CoreData를 왜 써?
 CoreData의 경우 복잡하고 다양한 쿼리를 지원해준다.
+
+[swift download document]
+https://www.mongodb.com/ko-kr/docs/atlas/device-sdks/sdk/swift/install/#std-label-ios-install
+
+PK: 기본키
+FK: 외리키
+
+# ex)가계부
+
+카테고리
+
+금액
+
+상품명
+
+수입/지출
+
+| 카테고리 | 상품며 | 금액 | 수입/지출 |
+| --- | --- | --- | --- |
+| 수입 | 월급 | 2000000 | true |
+| 3 | 스타벅스 | 18000 | false |
+| 3 | 백다방 | 4000 | false |
+| 3 | t타벅스 | 5000 | false |
+| 식비 | 샤브샤브 | 23000 | false |
+| 생활비 | 다이소 | 15000 | false |
+
+| Id | 카테코리명 |
+| --- | --- |
+| 3 | 카페 |
