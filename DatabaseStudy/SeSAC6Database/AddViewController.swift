@@ -20,7 +20,9 @@ class AddViewController: UIViewController {
     let titleTextField = UITextField()
     let contentTextField = UITextField()
     
+    var id: ObjectId! //Folder Record Primary Key
     let repository = TableRepository()
+    let folderRepository: FolderRepositoryProtocol = FolderRepository()
        
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +51,11 @@ class AddViewController: UIViewController {
         print(#function)
         
 //        repository.createItem()
-        repository.createItemInFolder()
+        let folder = folderRepository.fetchAllCase().where{
+            $0.id == id
+        }.first!
+        
+        repository.createItemInFolder(folder: folder)
         navigationController?.popViewController(animated: true)
         
     }

@@ -14,7 +14,7 @@ protocol RespositoryProtocol{
     func createItem()
     func deleteItem(data: Table)
     func updateItem(data: Table)
-    func createItemInFolder()
+    func createItemInFolder(folder: Folder)
 }
 
 //Realm CRUD
@@ -32,15 +32,15 @@ final class TableRepository: RespositoryProtocol{
         return data
     }
     
-    func createItemInFolder(){
+    func createItemInFolder(folder: Folder){
         //Create
         do{
             try realm.write {
                 
                 //어떤 폴더에 넣어줄 지
-                let folder = realm.objects(Folder.self).where{
-                    $0.name == "개인"
-                }.first!
+//                let folder = realm.objects(Folder.self).where{
+//                    $0.name == "개인"
+//                }.first!
                 
                 let data = Table(
                     money: .random(in: 100...1000) * 100,

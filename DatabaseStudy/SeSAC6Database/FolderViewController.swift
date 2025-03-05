@@ -16,6 +16,11 @@ class FolderViewController: UIViewController {
     var list: Results<Folder>! = nil
     let repository: FolderRepositoryProtocol = FolderRepository()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -37,7 +42,6 @@ class FolderViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.id)
     }
-    
     private func configureConstraints() {
          
         tableView.snp.makeConstraints { make in
@@ -61,6 +65,18 @@ extension FolderViewController: UITableViewDelegate, UITableViewDataSource {
         cell.subTitleLabel.text = "\(data.detail.count)개"
         return cell
     }
-
+    
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        let data = list[indexPath.row]
+        
+        let nextVC = FolderDetailViewController()
+        nextVC.list = data.detail
+        nextVC.id = data.id
+        navigationController?
+            .pushViewController(nextVC, animated: true)
+    }
     
 }
