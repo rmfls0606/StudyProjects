@@ -161,9 +161,9 @@ class WishListViewController: BaseViewController {
             content.textProperties.color = .white
             content.textProperties.font = .boldSystemFont(ofSize: 20)
             
-//            content.secondaryText = self.dateFormatter
-//                .string(from: itemIdentifier.date)
-//            content.secondaryTextProperties.color = .gray
+            content.secondaryText = self.dateFormatter
+                .string(from: itemIdentifier.date)
+            content.secondaryTextProperties.color = .gray
             
             cell.contentConfiguration = content
             

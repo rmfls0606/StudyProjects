@@ -32,10 +32,10 @@ class WishFolderViewController: BaseViewController {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WishFolderCell")
         tableView.backgroundColor = .black
-//        addWhishFolder(folderName: "할 일")
-//        addWhishFolder(folderName: "예약")
-//        addWhishFolder(folderName: "쇼핑")
-//        addWhishFolder(folderName: "여행")
+        addWhishFolder(folderName: "할 일")
+        addWhishFolder(folderName: "예약")
+        addWhishFolder(folderName: "쇼핑")
+        addWhishFolder(folderName: "여행")
         
         self.list = realm.objects(FolderTable.self)
     }

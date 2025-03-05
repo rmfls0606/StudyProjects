@@ -12,9 +12,11 @@ class WishListTable: Object{
     @Persisted(primaryKey: true) var id: ObjectId
     
     @Persisted var wishListText: String
+    @Persisted var date: Date
     
     convenience init(wishListText: String){
         self.init()
         self.wishListText = wishListText
+        self.date = Date()
     }
 }
