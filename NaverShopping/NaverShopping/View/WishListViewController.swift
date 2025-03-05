@@ -26,7 +26,8 @@ class WishListViewController: BaseViewController {
     
     private let disposeBag = DisposeBag()
     
-    private let realm = try! Realm()
+    let repository: WishListTableRespositoryProtocol = WishListTableRepository()
+    let folderRepository: FolderTableRepositoryProtocol = FolderTableRepository()
     
     var list: List<WishListTable>!
     var id: ObjectId!
@@ -121,19 +122,10 @@ class WishListViewController: BaseViewController {
 //                var newData = owner.user
 //                newData.append(Wish(name: text))
 //                owner.user = newData
-                let folder = owner.realm.objects(FolderTable.self).where{
+                let folder = owner.folderRepository.fetchAllCase().where{
                     $0.id == owner.id }.first!
-                do{
-                    try owner.realm.write {
-                        let data = WishListTable(wishListText: text)
-                        
-                        folder.wishList.append(data)
-                        owner.realm.add(data)
-                    }
-                    
-                }catch{
-                    print("위시리스트 아이템 추가 실해")
-                }
+                
+                owner.repository.createItemInFolder(folder: folder, text: text)
                 
                 owner.updateSnapshot()
             }
@@ -219,13 +211,7 @@ extension WishListViewController: UICollectionViewDelegate {
         didSelectItemAt indexPath: IndexPath
     ) {
 //        self.list.remove(at: indexPath.item)
-        do{
-            try realm.write {
-                realm.delete(list[indexPath.row])
-            }
-        }catch{
-            print("아이템 삭제 실패")
-        }
+        repository.deleteItem(data: list[indexPath.item])
         
         self.updateSnapshot()
     }
