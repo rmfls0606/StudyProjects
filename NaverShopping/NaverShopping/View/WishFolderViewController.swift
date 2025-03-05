@@ -7,10 +7,14 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class WishFolderViewController: BaseViewController {
     
     private let tableView = UITableView()
+    
+    private let realm = try! Realm()
+    var list: Results<FolderTable>!
     
     override func configureHierarchy() {
         self.view.addSubview(tableView)
@@ -28,16 +32,29 @@ class WishFolderViewController: BaseViewController {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WishFolderCell")
         tableView.backgroundColor = .black
+        addWhishFolder(folderName: "할 일")
+        addWhishFolder(folderName: "예약")
+        addWhishFolder(folderName: "쇼핑")
+        addWhishFolder(folderName: "여행")
+        
+        self.list = realm.objects(FolderTable.self)
     }
     
-    override func configureBind() {
-        
+    func addWhishFolder(folderName: String){
+        do{
+            try realm.write {
+                let folder = FolderTable(name: folderName)
+                realm.add(folder)
+            }
+        }catch{
+            print("위시폴더 생성 실패")
+        }
     }
 }
 
 extension WishFolderViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        1
+        list.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,7 +64,7 @@ extension WishFolderViewController: UITableViewDelegate, UITableViewDataSource {
         )
     
         var content = cell.defaultContentConfiguration()
-        content.text = "Wish Folder"
+        content.text = list[indexPath.row].name
         content.textProperties.color = .white
         
         cell.contentConfiguration = content
