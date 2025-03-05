@@ -26,6 +26,11 @@ class WishFolderViewController: BaseViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     override func configureView() {
         self.view.backgroundColor = .black
         tableView.delegate = self
