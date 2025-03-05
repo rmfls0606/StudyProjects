@@ -14,30 +14,18 @@ class MainViewController: UIViewController {
     let tableView = UITableView()
     
     var list: Results<Table>!
-//    var list: [Table] = []
      
-    let realm = try! Realm() //default.realm
+    let repository: RespositoryProtocol = TableRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
         configureHierarchy()
         configureView()
-        print(realm.configuration.fileURL)
+        repository.getFileURL()
         configureConstraints()
         
-//        dump(realm.objects(Table.self))
-        
-//        list = realm
-//            .objects(Table.self)
-//            .sorted(byKeyPath: "money", ascending: false)
-        
-        list = realm.objects(Table.self)
-//            .where { $0.incomeOrExpense == true}
-//            .where{ $0.product.contains("sesa", options: .caseInsensitive)  }
-            .sorted(byKeyPath: "money", ascending: false)
-        
-//        list = Array(data)
+        list = repository.fetchAllCase()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,22 +85,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = list[indexPath.row]
-        
-        do{
-            try realm.write {
-//                realm.delete(data)
-                
-                //수정
-                realm.create(Table.self, value: [
-                    "id": data.id,
-                    "money": 10000000000
-                ], update: .modified)
-                
-                tableView.reloadData()
-            }
-        }catch{
-            print("램 데이터 삭제 실패")
-        }
+        repository.updateItem(data: data) //Realm write
+        tableView.reloadData()
     }
       
     

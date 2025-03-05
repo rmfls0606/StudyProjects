@@ -20,7 +20,7 @@ class AddViewController: UIViewController {
     let titleTextField = UITextField()
     let contentTextField = UITextField()
     
-    let realm = try! Realm()
+    let repository = TableRepository()
        
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,25 +48,7 @@ class AddViewController: UIViewController {
     @objc func saveButtonClicked() {
         print(#function)
         
-        //Create
-        do{
-            try realm.write {
-                
-                let data = Table(
-                    money: .random(in: 100...1000) * 100,
-                    categoryName: "생활비",
-                    product: "린스",
-                    incomeOrExpense: false,
-                    memo: memoField.text
-                )
-                
-                realm.add(data)
-                print("앰 저장 완료")
-            }
-        }catch{
-            print("램에 저장이 실패한 경우")
-        }
-        
+        repository.createItem()
         navigationController?.popViewController(animated: true)
         
     }
