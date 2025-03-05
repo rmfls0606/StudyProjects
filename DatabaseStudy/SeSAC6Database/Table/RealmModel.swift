@@ -28,6 +28,9 @@ class Table: Object {
     //좋아요
     @Persisted var like: Bool
     
+    //부모에 정보를 알기위헤 누구에게 연결되어있는 지
+    @Persisted(originProperty: "detail") //부모에 있는 list<>의 이름을 넣어줘야 함
+    var folder: LinkingObjects<Folder>
     
     convenience init(
         money: Int,

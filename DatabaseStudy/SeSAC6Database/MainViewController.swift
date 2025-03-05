@@ -83,8 +83,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         let data = list[indexPath.row]
         
-        cell.titleLabel.text = data.product
-        cell.subTitleLabel.text = data.categoryName
+        cell.titleLabel.text = "\(data.product), \(data.categoryName)"
+        cell.subTitleLabel.text = data.folder.first?.name
         cell.overviewLabel.text = data.money.formatted()
         
         return cell
