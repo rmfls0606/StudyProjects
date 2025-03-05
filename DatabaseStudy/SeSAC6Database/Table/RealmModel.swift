@@ -46,13 +46,3 @@ class Table: Object {
         self.uploadDate = Date()
     }
 }
-
-//n개의 테이블
-class Folder: Object{
-    @Persisted var name: String
-    
-    convenience init(name: String) {
-        self.init()
-        self.name = name
-    }
-}
