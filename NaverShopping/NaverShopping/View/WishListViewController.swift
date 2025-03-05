@@ -214,15 +214,19 @@ class WishListViewController: BaseViewController {
 
 //MARK: - CollectionView
 extension WishListViewController: UICollectionViewDelegate {
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        didSelectItemAt indexPath: IndexPath
-//    ) {
-////        self.list.remove(at: indexPath.item)
-//        var item = self.user
-//        item.remove(at: indexPath.item)
-//        self.user = item
-//        
-//        self.updateSnapshot()
-//    }
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+//        self.list.remove(at: indexPath.item)
+        do{
+            try realm.write {
+                realm.delete(list[indexPath.row])
+            }
+        }catch{
+            print("아이템 삭제 실패")
+        }
+        
+        self.updateSnapshot()
+    }
 }
