@@ -16,9 +16,16 @@ class MainViewController: UIViewController {
     var list: Results<Table>!
      
     let repository: RespositoryProtocol = TableRepository()
+//    let folderRepository: FolderRepositoryProtocol = FolderRepository()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        folderRepository.createItem(name: "개인")
+//        folderRepository.createItem(name: "계모임")
+//        folderRepository.createItem(name: "회사")
+//        folderRepository.createItem(name: "멘토")
+        
         print(#function)
         configureHierarchy()
         configureView()

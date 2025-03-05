@@ -13,6 +13,9 @@ class Folder: Object{
     @Persisted var id: ObjectId
     @Persisted var name: String
     
+    //1:n, to many rlationship
+    @Persisted var detail: List<Table>
+    
     convenience init(name: String) {
         self.init()
         self.name = name
