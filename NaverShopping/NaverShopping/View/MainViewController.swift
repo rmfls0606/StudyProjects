@@ -86,7 +86,7 @@ final class MainViewController: BaseViewController {
         
         self.navigationItem.rightBarButtonItem?.rx.tap
             .subscribe(with: self, onNext: { owner, _ in
-                let nextVC = WishListViewController()
+                let nextVC = WishFolderViewController()
                 owner.navigationController?
                     .pushViewController(nextVC, animated: true)
             })
