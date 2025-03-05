@@ -13,7 +13,7 @@ class WishFolderViewController: BaseViewController {
     
     private let tableView = UITableView()
     
-    private let realm = try! Realm()
+    let repository: FolderTableRepositoryProtocol = FolderTableRepository()
     var list: Results<FolderTable>!
     
     override func configureHierarchy() {
@@ -37,23 +37,12 @@ class WishFolderViewController: BaseViewController {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "WishFolderCell")
         tableView.backgroundColor = .black
-//        addWhishFolder(folderName: "할 일")
-//        addWhishFolder(folderName: "예약")
-//        addWhishFolder(folderName: "쇼핑")
-//        addWhishFolder(folderName: "여행")
+//        repository.createItem(name: "할 일")
+//        repository.createItem(name: "예약")
+//        repository.createItem(name: "쇼핑")
+//        repository.createItem(name: "여행")
         
-        self.list = realm.objects(FolderTable.self)
-    }
-    
-    func addWhishFolder(folderName: String){
-        do{
-            try realm.write {
-                let folder = FolderTable(name: folderName)
-                realm.add(folder)
-            }
-        }catch{
-            print("위시폴더 생성 실패")
-        }
+        self.list = repository.fetchAllCase()
     }
 }
 
