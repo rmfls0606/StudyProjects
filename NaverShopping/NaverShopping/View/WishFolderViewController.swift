@@ -76,6 +76,17 @@ extension WishFolderViewController: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
-
+    
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        let data = list[indexPath.row]
+        
+        let nextVC = WishListViewController()
+        nextVC.list = data.wishList
+        nextVC.id = data.id
+        navigationController?.pushViewController(nextVC, animated: true)
+    }
     
 }

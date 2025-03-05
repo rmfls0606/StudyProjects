@@ -9,12 +9,13 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RealmSwift
 
-struct Wish: Codable, Hashable{
-    var id = UUID().uuidString
-    let name: String
-    var date = Date()
-}
+//struct Wish: Codable, Hashable{
+//    var id = UUID().uuidString
+//    let name: String
+//    var date = Date()
+//}
 
 class WishListViewController: BaseViewController {
     private var dateFormatter: DateFormatter{
@@ -25,20 +26,25 @@ class WishListViewController: BaseViewController {
     
     private let disposeBag = DisposeBag()
     
-    private var user: [Wish] {
-        get {
-            guard let data = UserDefaults.standard.data(forKey: "wish"),
-                  let wishes = try? JSONDecoder().decode([Wish].self, from: data) else {
-                return []
-            }
-            return wishes
-        }
-        set {
-            if let data = try? JSONEncoder().encode(newValue) {
-                UserDefaults.standard.set(data, forKey: "wish")
-            }
-        }
-    }
+    private let realm = try! Realm()
+    
+    var list: List<WishListTable>!
+    var id: ObjectId!
+    
+//    private var user: [Wish] {
+//        get {
+//            guard let data = UserDefaults.standard.data(forKey: "wish"),
+//                  let wishes = try? JSONDecoder().decode([Wish].self, from: data) else {
+//                return []
+//            }
+//            return wishes
+//        }
+//        set {
+//            if let data = try? JSONEncoder().encode(newValue) {
+//                UserDefaults.standard.set(data, forKey: "wish")
+//            }
+//        }
+//    }
     
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -52,7 +58,7 @@ class WishListViewController: BaseViewController {
     }()
     
     //numberOfItemsInSection, cellforItemAt을 대신해준다.
-    var dataSource: UICollectionViewDiffableDataSource<String, Wish>!
+    var dataSource: UICollectionViewDiffableDataSource<String, WishListTable>!
     
 //    var list = ["킁킁", "냄새", "향기"] //임시 데이터
 //    var list = [Wish]()
@@ -108,11 +114,26 @@ class WishListViewController: BaseViewController {
             .withLatestFrom(searchBar.rx.text.orEmpty)
             .map{ $0 }
             .distinctUntilChanged()
-            .subscribe(with: self) { owner, text in
+            .subscribe(with: self) {
+ owner,
+ text in
 //                owner.list.append(Wish(name: text))
-                var newData = owner.user
-                newData.append(Wish(name: text))
-                owner.user = newData
+//                var newData = owner.user
+//                newData.append(Wish(name: text))
+//                owner.user = newData
+                let folder = owner.realm.objects(FolderTable.self).where{
+                    $0.id == owner.id }.first!
+                do{
+                    try owner.realm.write {
+                        let data = WishListTable(wishListText: text)
+                        
+                        folder.wishList.append(data)
+                        owner.realm.add(data)
+                    }
+                    
+                }catch{
+                    print("위시리스트 아이템 추가 실해")
+                }
                 
                 owner.updateSnapshot()
             }
@@ -120,29 +141,29 @@ class WishListViewController: BaseViewController {
     }
     
     private func updateSnapshot(){
-        var snapshot = NSDiffableDataSourceSnapshot<String, Wish>()
+        var snapshot = NSDiffableDataSourceSnapshot<String, WishListTable>()
         snapshot.appendSections(["위시리스트"])
-        snapshot.appendItems(user, toSection: "위시리스트")
+        snapshot.appendItems(Array(list), toSection: "위시리스트")
         
         dataSource.apply(snapshot)
     }
     
     private func configureDataSource(){
         //collectionView.register을 대신하는 코드
-        var registration: UICollectionView.CellRegistration<UICollectionViewListCell, Wish>!
+        var registration: UICollectionView.CellRegistration<UICollectionViewListCell, WishListTable>!
         
         //cellForItemAt 내부 코드
         registration = UICollectionView.CellRegistration(handler: { cell, indexPath, itemIdentifier in
             
             var content = UIListContentConfiguration.valueCell()
             
-            content.text = itemIdentifier.name
+            content.text = itemIdentifier.wishListText
             content.textProperties.color = .white
             content.textProperties.font = .boldSystemFont(ofSize: 20)
             
-            content.secondaryText = self.dateFormatter
-                .string(from: itemIdentifier.date)
-            content.secondaryTextProperties.color = .gray
+//            content.secondaryText = self.dateFormatter
+//                .string(from: itemIdentifier.date)
+//            content.secondaryTextProperties.color = .gray
             
             cell.contentConfiguration = content
             
@@ -193,15 +214,15 @@ class WishListViewController: BaseViewController {
 
 //MARK: - CollectionView
 extension WishListViewController: UICollectionViewDelegate {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
-//        self.list.remove(at: indexPath.item)
-        var item = self.user
-        item.remove(at: indexPath.item)
-        self.user = item
-        
-        self.updateSnapshot()
-    }
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        didSelectItemAt indexPath: IndexPath
+//    ) {
+////        self.list.remove(at: indexPath.item)
+//        var item = self.user
+//        item.remove(at: indexPath.item)
+//        self.user = item
+//        
+//        self.updateSnapshot()
+//    }
 }
